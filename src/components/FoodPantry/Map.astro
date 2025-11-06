@@ -1,0 +1,351 @@
+---
+// Step 1: Import everything this component needs
+import {
+  SERVICES_OFFERED,
+  SERVICE_TYPES,
+  SERVICE_AREAS,
+  REQUIRED_DOCUMENTATION,
+} from "@/consts";
+
+// Load all pantry data
+const pantryModules = await import.meta.glob("@/data/pantries/**/*.json", {
+  eager: true,
+});
+const allPantries = Object.values(pantryModules);
+---
+
+<!-- Step 2: The HTML structure remains the same -->
+<div class="container">
+  <h2 class="gradient-text">Food Pantry Locations</h2>
+  <p>
+    This map displays the locations of food pantries in our community. Use the
+    search and filter options below to find a pantry that meets your needs.
+  </p>
+
+  <form id="search-and-filter-form" onsubmit="return false;">
+    <div class="search-inline">
+      <label for="search-input" class="visually-hidden"
+        >Search food pantries</label
+      >
+      <input
+        type="text"
+        id="search-input"
+        placeholder="Search by name, city, or zip..."
+        aria-label="Search food pantries"
+        autocomplete="off"
+      />
+    </div>
+
+    <details class="filter-accordion">
+      <summary>Filter Options</summary>
+      <div class="filter-groups-container">
+        <fieldset class="filter-group">
+          <legend>Services Offered</legend>
+          <div class="checkbox-container">
+            {
+              Object.entries(SERVICES_OFFERED).map(([key, label]) => (
+                <div class="checkbox-wrapper">
+                  <>
+                    <input
+                      type="checkbox"
+                      id={key}
+                      name="servicesOffered"
+                      value={key}
+                    />
+                    <label for={key}>{label}</label>
+                  </>
+                </div>
+              ))
+            }
+          </div>
+        </fieldset>
+        <fieldset class="filter-group">
+          <legend>Service Type</legend>
+          <div class="checkbox-container">
+            {
+              Object.entries(SERVICE_TYPES).map(([key, label]) => (
+                <div class="checkbox-wrapper">
+                  <>
+                    <input
+                      type="checkbox"
+                      id={key}
+                      name="serviceTypes"
+                      value={key}
+                    />
+                    <label for={key}>{label}</label>
+                  </>
+                </div>
+              ))
+            }
+          </div>
+        </fieldset>
+        <fieldset class="filter-group">
+          <legend>Service Area</legend>
+          <div class="checkbox-container">
+            {
+              Object.entries(SERVICE_AREAS).map(([key, label]) => (
+                <div class="checkbox-wrapper">
+                  <>
+                    <input
+                      type="checkbox"
+                      id={key}
+                      name="serviceAreas"
+                      value={key}
+                    />
+                    <label for={key}>{label}</label>
+                  </>
+                </div>
+              ))
+            }
+          </div>
+        </fieldset>
+        <fieldset class="filter-group">
+          <legend>Required Documentation</legend>
+          <div class="checkbox-container">
+            {
+              Object.entries(REQUIRED_DOCUMENTATION).map(([key, label]) => (
+                <div class="checkbox-wrapper">
+                  <>
+                    <input
+                      type="checkbox"
+                      id={key}
+                      name="requiredDocs"
+                      value={key}
+                    />
+                    <label for={key}>{label}</label>
+                  </>
+                </div>
+              ))
+            }
+          </div>
+        </fieldset>
+      </div>
+    </details>
+  </form>
+  <p id="no-results-message" style="display: none;">
+    No pantries found matching your criteria.
+  </p>
+
+  <div id="map" class="map"></div>
+</div>
+
+<!-- Leaflet Assets -->
+<link
+  rel="stylesheet"
+  href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+  crossorigin=""
+/>
+<script
+  is:inline
+  src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+  crossorigin=""></script>
+
+<script define:vars={{ allPantries }}>
+  document.addEventListener("DOMContentLoaded", () => {
+    setTimeout(() => {
+      let map;
+      let markers = [];
+
+      const mapElement = document.getElementById("map");
+      const form = document.getElementById("search-and-filter-form");
+      const input = document.getElementById("search-input");
+      const noResultsMessage = document.getElementById("no-results-message");
+
+      // Function to update markers on the map
+      function updateMarkers(pantriesToDisplay) {
+        if (!map) return;
+        markers.forEach((marker) => marker.remove());
+        markers = [];
+        noResultsMessage.style.display =
+          pantriesToDisplay.length === 0 ? "block" : "none";
+
+        pantriesToDisplay.forEach((pantry) => {
+          if (
+            typeof pantry.location.latitude !== "number" ||
+            typeof pantry.location.longitude !== "number"
+          )
+            return;
+          const marker = L.marker([
+            pantry.location.latitude,
+            pantry.location.longitude,
+          ])
+            .addTo(map)
+            .bindPopup(
+              `<b style="color:var(--accent-color)">${pantry.name}</b><br><span style="color:var(--text-color)">${pantry.location.physical}</span>`
+            );
+          markers.push(marker);
+        });
+
+        if (markers.length > 0) {
+          const group = L.featureGroup(markers);
+          map.fitBounds(group.getBounds().pad(0.2));
+        }
+      }
+
+      // Function to filter data and call updateMarkers
+      function handleSearchAndFilter() {
+        const query = input.value.toLowerCase().trim();
+        
+        // THIS IS THE CORRECTED LINE - The 'as HTMLInputElement' is removed.
+        const getSelectedValues = (name) =>
+          Array.from(
+            form.querySelectorAll(`input[name="${name}"]:checked`)
+          ).map((el) => el.value);
+
+        const selected = {
+          services: getSelectedValues("servicesOffered"),
+          types: getSelectedValues("serviceTypes"),
+          areas: getSelectedValues("serviceAreas"),
+          docs: getSelectedValues("requiredDocs"),
+        };
+
+        const filteredPantries = allPantries.filter((pantry) => {
+          const textMatch =
+            query === "" ||
+            pantry.name.toLowerCase().includes(query) ||
+            pantry.location.physical.toLowerCase().includes(query);
+          const servicesMatch =
+            selected.services.length === 0 ||
+            selected.services.every((service) =>
+              pantry.services?.includes(service)
+            );
+          const typesMatch =
+            selected.types.length === 0 ||
+            selected.types.some((type) => pantry.types?.includes(type));
+          const areasMatch =
+            selected.areas.length === 0 ||
+            selected.areas.some((area) =>
+              pantry.eligibility?.serviceArea?.includes(area)
+            );
+          const docsMatch =
+            selected.docs.length === 0 ||
+            selected.docs.some((doc) =>
+              pantry.eligibility?.documents?.includes(doc)
+            );
+          return (
+            textMatch && servicesMatch && typesMatch && areasMatch && docsMatch
+          );
+        });
+
+        updateMarkers(filteredPantries);
+      }
+
+      // Function that initializes the map ONCE
+      const initializeMap = (center, zoom) => {
+        if (map) return; // If map is already initialized, do nothing.
+
+        map = L.map(mapElement).setView(center, zoom);
+        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+          attribution:
+            '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+        }).addTo(map);
+
+        // Now that the map exists, connect the form and show the initial markers
+        form.addEventListener("input", handleSearchAndFilter);
+        handleSearchAndFilter();
+      };
+
+      // Geolocation success: initialize map with user's location
+      const onGeoSuccess = (position) => {
+        initializeMap(
+          [position.coords.latitude, position.coords.longitude],
+          13
+        );
+      };
+
+      // Geolocation error: initialize map with default view
+      const onGeoError = () => {
+        initializeMap([36.5, -80.5], 9);
+      };
+
+      // Try to get user's location
+      if ("geolocation" in navigator) {
+        navigator.geolocation.getCurrentPosition(onGeoSuccess, onGeoError);
+      } else {
+        onGeoError(); // Geolocation not supported
+      }
+    }, 0);
+  });
+</script>
+
+<style>
+  /* All styles are now in one place */
+  .container {
+    max-width: 900px;
+    margin: 2rem auto;
+    padding: 1rem;
+  }
+  .gradient-text {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+  .map {
+    height: 500px;
+    width: 100%;
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+    margin-top: 1.5rem;
+    background-color: #e9e9e9;
+  }
+  .search-inline {
+    display: flex;
+  }
+  .search-inline input {
+    flex-grow: 1;
+    padding: 0.75rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+  }
+  .filter-accordion {
+    border: 1px solid #eee;
+    border-radius: 8px;
+    margin-top: 1rem;
+  }
+  .filter-accordion summary {
+    font-weight: bold;
+    padding: 1rem;
+    cursor: pointer;
+  }
+  .filter-groups-container {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    padding: 1rem;
+    border-top: 1px solid #eee;
+  }
+  @media (min-width: 768px) {
+    .filter-groups-container {
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    }
+  }
+  .filter-group {
+    border: none;
+    padding: 0;
+    margin: 0;
+  }
+  .filter-group legend {
+    font-weight: bold;
+    padding-bottom: 0.5rem;
+  }
+  .checkbox-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .checkbox-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+</style>

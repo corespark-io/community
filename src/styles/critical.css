@@ -1,0 +1,72 @@
+/* Only include essential styles needed for first paint */
+:root {
+  --primary-gradient: linear-gradient(to right, #03fff6, #00a1ff, #00ff8f);
+  --accent-color: #00a1ff;
+  --background-color: #121428;
+  --light-text: #ffffff;
+  --text-color: #333333;
+}
+
+body,
+html {
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Essential layout */
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+/* Hero section - this is what users see first */
+.hero {
+  min-height: 60vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--light-text);
+  background: linear-gradient(135deg, #165761 0%, var(--background-color) 100%);
+  position: relative;
+  padding: 2rem 0;
+}
+
+.hero-content {
+  text-align: center;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.hero-title {
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  margin-bottom: 1.5rem;
+  color: #ffffff;
+}
+
+.hero-subtitle {
+  font-size: clamp(1rem, 3vw, 1.5rem);
+  margin-bottom: 2rem;
+  opacity: 0.9;
+}
+
+/* Essential button styles */
+.btn {
+  display: inline-block;
+  padding: 0.75rem 1.5rem;
+  border-radius: 4px;
+  text-decoration: none;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  text-align: center;
+}
+
+.btn-primary {
+  background: var(--primary-gradient);
+  color: #fff;
+  border: none;
+}

@@ -1,0 +1,334 @@
+---
+import { Image } from "astro:assets";
+import { Icon } from "astro-icon/components";
+import { SOCIAL_LINKS, BASE_URL } from "../consts";
+const today = new Date();
+---
+
+<footer class="site-footer">
+  <div class="footer-container">
+    <div class="footer-content">
+      <!-- Logo and tagline -->
+      <div class="footer-brand">
+        <Image
+          class="logo-light"
+          src="/logo_w_text.webp"
+          alt="Corespark Logo"
+          width="200"
+          height="54"
+          loading="lazy"
+        />
+        <Image
+          class="logo-dark"
+          src="/logo_w_text_white.webp"
+          alt="Corespark Logo"
+          width="200"
+          height="54"
+          loading="lazy"
+        />
+        <p class="tagline">
+          Providing community resources for our community in Northwest North Carolina and Southwest Virginia through accessible technology.
+        </p>
+      </div>
+
+      <!-- Site links -->
+      <div class="footer-links">
+        <h2>Site Links</h2>
+        <ul>
+          <li>
+            <a href="https://corespark.io/privacy-policy">Privacy Policy</a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Services -->
+      <div class="footer-services">
+        <h2>Our Community Resources</h2>
+        <ul>
+          <li>Food Pantry Map</li>
+        </ul>
+      </div>
+
+      <!-- Contact -->
+      <div class="footer-contact">
+        <h2>Contact Us</h2>
+        <div class="contact-item">
+          <Icon name="mdi:map-marker-outline" class="contact-icon" />
+          <span>Elkin, North Carolina</span>
+        </div>
+        <div class="contact-item">
+          <Icon name="mdi:email-outline" class="contact-icon" />
+          <a class="contact-link" href="mailto:connect@corespark.io"
+            >community@corespark.io</a
+          >
+        </div>
+        <div class="contact-item">
+          <Icon name="mdi:phone-outline" class="contact-icon" />
+          <a class="contact-link" href="tel:3364432223">(336) 443-2223</a>
+        </div>
+      </div>
+
+      <!-- Social Media-->
+      <div class="footer-social">
+        <h2>Connect With Us</h2>
+        <div class="social-links">
+          <a
+            href={SOCIAL_LINKS["google"]}
+            target="_blank"
+            rel="noopener"
+            aria-label="Google Business Profile"
+          >
+            <Icon name="mdi:google" class="social-icon" />
+          </a>
+          <a
+            href={SOCIAL_LINKS["facebook"]}
+            target="_blank"
+            rel="noopener"
+            aria-label="Facebook"
+          >
+            <Icon name="mdi:facebook" class="social-icon" />
+          </a>
+          <a
+            href={SOCIAL_LINKS["linkedin"]}
+            target="_blank"
+            rel="noopener"
+            aria-label="LinkedIn"
+          >
+            <Icon name="mdi:linkedin" class="social-icon" />
+          </a>
+          <a
+            href={SOCIAL_LINKS["instagram"]}
+            target="_blank"
+            rel="noopener"
+            aria-label="Instagram"
+          >
+            <Icon name="mdi:instagram" class="social-icon" />
+          </a>
+          <a
+            href={SOCIAL_LINKS["x"]}
+            target="_blank"
+            rel="noopener"
+            aria-label="X"
+          >
+            <Icon name="mdi:twitter" class="social-icon" />
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom bar with copyright -->
+    <div class="footer-bottom">
+      <p class="copyright">
+        &copy; {today.getFullYear()} Corespark, LLC. All rights reserved.
+      </p>
+      <div class="local-badges">
+        <div class="badge">
+          <Icon name="mdi:hand-heart-outline" class="contact-icon" />
+          <span>Proudly Supporting Northwest NC and Southwest VA </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    background: var(--color-background);
+    padding: 4rem 1rem 2rem;
+    position: relative;
+    overflow: hidden;
+    margin-top: 2rem;
+    border-top: 1px solid var(--color-border);
+    width: 100%;
+  }
+
+  .footer-container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  .footer-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 2.5rem;
+    margin-bottom: 3rem;
+  }
+
+  .footer-brand {
+    text-align: center;
+  }
+  .footer-brand img {
+    margin: 0 auto;
+  }
+
+  /* Dark Mode Logo Toggle */
+  .logo-dark {
+    display: none;
+  }
+  .logo-light {
+    display: block;
+  }
+  @media (prefers-color-scheme: dark) {
+    :global(html:not(.theme-light)) .logo-dark {
+      display: block;
+    }
+    :global(html:not(.theme-light)) .logo-light {
+      display: none;
+    }
+  }
+  :global(html.theme-dark) .logo-dark {
+    display: block;
+  }
+  :global(html.theme-dark) .logo-light {
+    display: none;
+  }
+
+  .tagline {
+    font-size: 0.9rem;
+    opacity: 0.8;
+    margin-top: 1rem;
+    line-height: 1.5;
+  }
+
+  .site-footer h2 {
+    font-size: 1.2rem;
+    margin-bottom: 1.5rem;
+    position: relative;
+    padding-bottom: 0.5rem;
+    color: var(--color-heading);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .footer-links ul,
+  .footer-services ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .footer-services ul {
+    color: var(--color-text-soft);
+  }
+
+  .footer-links li,
+  .footer-services li {
+    margin-bottom: 1rem;
+  }
+
+  .footer-links a {
+    text-decoration: none;
+    color: var(--color-text);
+    transition: color 0.3s;
+  }
+
+  .footer-links a:hover {
+    color: var(--accent);
+    background: transparent;
+  }
+
+  .footer-social .social-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    align-items: center;
+  }
+  .footer-social .social-links a {
+    color: var(--color-text);
+    font-size: 1.5rem;
+    transition: all 0.3s ease;
+  }
+  .footer-social .social-links a:hover {
+    color: var(--accent);
+    background: transparent;
+    transform: translateY(-3px);
+  }
+
+  .contact-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+    color: var(--color-text);
+  }
+
+  .contact-icon {
+    font-size: 1.25rem;
+    flex-shrink: 0;
+    color: var(--accent-2);
+  }
+
+  .contact-link {
+    color: var(--color-text);
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+
+  .contact-link:hover {
+    color: var(--accent);
+    background: transparent;
+  }
+
+  .footer-bottom {
+    border-top: 1px solid var(--color-border);
+    padding-top: 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .copyright {
+    margin: 0;
+    font-size: 0.85rem;
+    opacity: 0.8;
+  }
+
+  .local-badges {
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+  }
+
+  .badge {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+    color: var(--color-text);
+  }
+  .badge .contact-icon {
+    font-size: 1rem;
+  }
+
+  /* Responsive design */
+  @media (max-width: 768px) {
+    .footer-content {
+      grid-template-columns: 1fr;
+      text-align: center;
+    }
+    .footer-brand,
+    .footer-links,
+    .footer-services,
+    .footer-contact,
+    .footer-social {
+      text-align: center;
+    }
+    .contact-item,
+    .footer-social .social-links {
+      justify-content: center;
+    }
+    .footer-bottom {
+      flex-direction: column;
+      justify-content: center;
+      gap: 1.5rem;
+    }
+    .local-badges {
+      justify-content: center;
+    }
+  }
+</style>
