@@ -121,4 +121,4 @@ Our first major resource is the Food Pantry Locator. To make contributing data a
 
 ## **License**
 
-This project is licensed under the MIT License. See the LICENSE file for more details.
+As we want this community project to always be free and open, we opted to license this repository under the GNU Affero General Public License (AGPLv3). See the [LICENSE](./LICENSE) file for more details.
