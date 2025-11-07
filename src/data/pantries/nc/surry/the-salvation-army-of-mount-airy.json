@@ -1,0 +1,38 @@
+{
+  "claimed": false,
+  "name": "The Salvation Army of Mount Airy",
+  "logo": "",
+  "location": {
+    "physical": "651 S South Street, Mount Airy, NC 27030",
+    "mailing": "651 S South Street, Mount Airy, NC 27030",
+    "latitude": 36.49,
+    "longitude": -80.61
+  },
+  "contact": {
+    "website": "https://southernusa.salvationarmy.org/mountairy/",
+    "phone": "336-786-4075",
+    "email": ""
+  },
+  "hours": {
+    "monday": "",
+    "tuesday": "",
+    "wednesday": "",
+    "thursday": "",
+    "friday": "",
+    "saturday": "",
+    "sunday": ""
+  },
+  "specialInstructions": "",
+  "types": [],
+  "services": [],
+  "eligibility": {
+    "serviceArea": [
+      "NC_SURRY"
+    ],
+    "documents": [],
+    "frequency": {
+      "increment": "",
+      "period": ""
+    }
+  }
+}

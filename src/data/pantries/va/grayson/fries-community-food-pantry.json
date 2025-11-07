@@ -1,0 +1,38 @@
+{
+  "claimed": false,
+  "name": "Fries Community Food Pantry",
+  "logo": "",
+  "location": {
+    "physical": "316 W Main St, Fries, VA 24330",
+    "mailing": "316 W Main St, Fries, VA 24330",
+    "latitude": 36.71668339849696,
+    "longitude": -80.97858695259755
+  },
+  "contact": {
+    "website": "https://www.facebook.com/FriesFoodPantry/",
+    "phone": "(276) 744-2404",
+    "email": ""
+  },
+  "hours": {
+    "monday": "",
+    "tuesday": "",
+    "wednesday": "",
+    "thursday": "",
+    "friday": "",
+    "saturday": "",
+    "sunday": ""
+  },
+  "specialInstructions": "",
+  "types": [],
+  "services": [],
+  "eligibility": {
+    "serviceArea": [
+      "VA_GRAYSON"
+    ],
+    "documents": [],
+    "frequency": {
+      "increment": "",
+      "period": ""
+    }
+  }
+}

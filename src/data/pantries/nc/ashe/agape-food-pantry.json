@@ -1,0 +1,38 @@
+{
+  "claimed": false,
+  "name": "Agape Food Pantry",
+  "logo": "",
+  "location": {
+    "physical": "108 W Main St, Lansing, NC 28643",
+    "mailing": "108 W Main St, Lansing, NC 28643",
+    "latitude": 36.5004,
+    "longitude": -81.5084
+  },
+  "contact": {
+    "website": "",
+    "phone": "(336) 384-8822",
+    "email": ""
+  },
+  "hours": {
+    "monday": "",
+    "tuesday": "",
+    "wednesday": "",
+    "thursday": "",
+    "friday": "",
+    "saturday": "",
+    "sunday": ""
+  },
+  "specialInstructions": "",
+  "types": [],
+  "services": [],
+  "eligibility": {
+    "serviceArea": [
+      "NC_ASHE"
+    ],
+    "documents": [],
+    "frequency": {
+      "increment": "",
+      "period": ""
+    }
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "claimed": false,
+  "name": "Compassionate Commissary",
+  "logo": "",
+  "location": {
+    "physical": "20 East Ashe St, West Jefferson, NC 28694",
+    "mailing": "20 East Ashe St, West Jefferson, NC 28694",
+    "latitude": 36.3956,
+    "longitude": -81.4913
+  },
+  "contact": {
+    "website": "https://www.compassionatecommissary.org/",
+    "phone": "828-434-8888",
+    "email": ""
+  },
+  "hours": {
+    "monday": "",
+    "tuesday": "",
+    "wednesday": "",
+    "thursday": "",
+    "friday": "",
+    "saturday": "",
+    "sunday": ""
+  },
+  "specialInstructions": "",
+  "types": [],
+  "services": [],
+  "eligibility": {
+    "serviceArea": [
+      "NC_ASHE"
+    ],
+    "documents": [],
+    "frequency": {
+      "increment": "",
+      "period": ""
+    }
+  }
+}

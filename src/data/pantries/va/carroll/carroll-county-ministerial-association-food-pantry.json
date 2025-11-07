@@ -1,0 +1,38 @@
+{
+  "claimed": false,
+  "name": "Carroll County Ministerial Association Food Pantry",
+  "logo": "",
+  "location": {
+    "physical": "111 N Main St, Hillsville, VA 24343",
+    "mailing": "111 N Main St, Hillsville, VA 24343",
+    "latitude": 36.7593,
+    "longitude": -80.7352
+  },
+  "contact": {
+    "website": "",
+    "phone": "(276) 728-7711",
+    "email": ""
+  },
+  "hours": {
+    "monday": "",
+    "tuesday": "",
+    "wednesday": "",
+    "thursday": "",
+    "friday": "",
+    "saturday": "",
+    "sunday": ""
+  },
+  "specialInstructions": "",
+  "types": [],
+  "services": [],
+  "eligibility": {
+    "serviceArea": [
+      "VA_CARROLL"
+    ],
+    "documents": [],
+    "frequency": {
+      "increment": "",
+      "period": ""
+    }
+  }
+}

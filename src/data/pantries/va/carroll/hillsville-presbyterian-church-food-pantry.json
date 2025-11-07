@@ -1,0 +1,38 @@
+{
+  "claimed": false,
+  "name": "Hillsville Presbyterian Church Food Pantry",
+  "logo": "",
+  "location": {
+    "physical": "172 South Main St, Hillsville, VA 24343",
+    "mailing": "172 South Main St, Hillsville, VA 24343",
+    "latitude": 36.761026954685185,
+    "longitude": -80.73439383210959
+  },
+  "contact": {
+    "website": "https://www.hpcourrock.org/food-pantry",
+    "phone": "",
+    "email": ""
+  },
+  "hours": {
+    "monday": "",
+    "tuesday": "",
+    "wednesday": "",
+    "thursday": "",
+    "friday": "",
+    "saturday": "",
+    "sunday": ""
+  },
+  "specialInstructions": "",
+  "types": [],
+  "services": [],
+  "eligibility": {
+    "serviceArea": [
+      "VA_CARROLL"
+    ],
+    "documents": [],
+    "frequency": {
+      "increment": "",
+      "period": ""
+    }
+  }
+}

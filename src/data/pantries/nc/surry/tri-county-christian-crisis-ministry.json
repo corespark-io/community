@@ -1,0 +1,38 @@
+{
+  "claimed": false,
+  "name": "Tri-County Christian Crisis Ministry",
+  "logo": "",
+  "location": {
+    "physical": "290 S Bridge St, Elkin, NC 28621",
+    "mailing": "290 S Bridge St, Elkin, NC 28621",
+    "latitude": 36.2443,
+    "longitude": -80.8495
+  },
+  "contact": {
+    "website": "https://www.tricountyccc.org/",
+    "phone": "(336) 835-2300",
+    "email": ""
+  },
+  "hours": {
+    "monday": "",
+    "tuesday": "",
+    "wednesday": "",
+    "thursday": "",
+    "friday": "",
+    "saturday": "",
+    "sunday": ""
+  },
+  "specialInstructions": "",
+  "types": [],
+  "services": [],
+  "eligibility": {
+    "serviceArea": [
+      "NC_SURRY"
+    ],
+    "documents": [],
+    "frequency": {
+      "increment": "",
+      "period": ""
+    }
+  }
+}

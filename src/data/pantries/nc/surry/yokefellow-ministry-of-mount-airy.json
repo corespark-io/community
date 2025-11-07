@@ -1,0 +1,38 @@
+{
+  "claimed": false,
+  "name": "Yokefellow Ministry of Mount Airy",
+  "logo": "",
+  "location": {
+    "physical": "461 N South St, Mount Airy, NC 27030",
+    "mailing": "461 N South St, Mount Airy, NC 27030",
+    "latitude": 36.5,
+    "longitude": -80.62
+  },
+  "contact": {
+    "website": "https://yokefellowministry.com/",
+    "phone": "336-789-5838",
+    "email": ""
+  },
+  "hours": {
+    "monday": "",
+    "tuesday": "",
+    "wednesday": "",
+    "thursday": "",
+    "friday": "",
+    "saturday": "",
+    "sunday": ""
+  },
+  "specialInstructions": "",
+  "types": [],
+  "services": [],
+  "eligibility": {
+    "serviceArea": [
+      "NC_SURRY"
+    ],
+    "documents": [],
+    "frequency": {
+      "increment": "",
+      "period": ""
+    }
+  }
+}

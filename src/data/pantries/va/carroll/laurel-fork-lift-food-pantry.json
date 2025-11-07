@@ -1,0 +1,38 @@
+{
+  "claimed": false,
+  "name": "Laurel Fork LIFT Food Pantry",
+  "logo": "",
+  "location": {
+    "physical": "1133 Laurel Fork Rd, Laurel Fork, VA 24352",
+    "mailing": "1133 Laurel Fork Rd, Laurel Fork, VA 24352",
+    "latitude": 36.73602043419064,
+    "longitude": -80.54922091861684
+  },
+  "contact": {
+    "website": "https://www.facebook.com/LIFTfoodpantry/",
+    "phone": "(276) 398-3112",
+    "email": ""
+  },
+  "hours": {
+    "monday": "",
+    "tuesday": "",
+    "wednesday": "",
+    "thursday": "",
+    "friday": "",
+    "saturday": "",
+    "sunday": ""
+  },
+  "specialInstructions": "",
+  "types": [],
+  "services": [],
+  "eligibility": {
+    "serviceArea": [
+      "VA_CARROLL"
+    ],
+    "documents": [],
+    "frequency": {
+      "increment": "",
+      "period": ""
+    }
+  }
+}

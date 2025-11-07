@@ -1,0 +1,38 @@
+{
+  "claimed": false,
+  "name": "Grayson County Dept of Social Services",
+  "logo": "",
+  "location": {
+    "physical": "126 S Independence Ave, Independence, VA 24348",
+    "mailing": "126 S Independence Ave, Independence, VA 24348",
+    "latitude": 36.622906,
+    "longitude": -81.151735
+  },
+  "contact": {
+    "website": "https://www.graysoncountydss.org/",
+    "phone": "276-773-2452",
+    "email": ""
+  },
+  "hours": {
+    "monday": "",
+    "tuesday": "",
+    "wednesday": "",
+    "thursday": "",
+    "friday": "",
+    "saturday": "",
+    "sunday": ""
+  },
+  "specialInstructions": "",
+  "types": [],
+  "services": [],
+  "eligibility": {
+    "serviceArea": [
+      "VA_GRAYSON"
+    ],
+    "documents": [],
+    "frequency": {
+      "increment": "",
+      "period": ""
+    }
+  }
+}

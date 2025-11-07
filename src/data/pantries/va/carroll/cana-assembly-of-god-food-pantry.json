@@ -1,0 +1,38 @@
+{
+  "claimed": false,
+  "name": "Cana Assembly of God Food Pantry",
+  "logo": "",
+  "location": {
+    "physical": "20111 Flower Gap Rd, Cana, VA 24317",
+    "mailing": "20111 Flower Gap Rd, Cana, VA 24317",
+    "latitude": 36.5658,
+    "longitude": -80.7084
+  },
+  "contact": {
+    "website": "https://www.canaaog.org/",
+    "phone": "(276) 755-3889",
+    "email": ""
+  },
+  "hours": {
+    "monday": "",
+    "tuesday": "",
+    "wednesday": "",
+    "thursday": "",
+    "friday": "",
+    "saturday": "",
+    "sunday": ""
+  },
+  "specialInstructions": "",
+  "types": [],
+  "services": [],
+  "eligibility": {
+    "serviceArea": [
+      "VA_CARROLL"
+    ],
+    "documents": [],
+    "frequency": {
+      "increment": "",
+      "period": ""
+    }
+  }
+}

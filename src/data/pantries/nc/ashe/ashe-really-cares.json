@@ -1,0 +1,38 @@
+{
+  "claimed": false,
+  "name": "Ashe Really Cares",
+  "logo": "",
+  "location": {
+    "physical": "204 Beaver Creek School Rd, West Jefferson, NC 28694",
+    "mailing": "204 Beaver Creek School Rd, West Jefferson, NC 28694",
+    "latitude": 36.38,
+    "longitude": -81.49
+  },
+  "contact": {
+    "website": "https://ashereallycares.com/",
+    "phone": "336-846-5234",
+    "email": ""
+  },
+  "hours": {
+    "monday": "",
+    "tuesday": "",
+    "wednesday": "",
+    "thursday": "",
+    "friday": "",
+    "saturday": "",
+    "sunday": ""
+  },
+  "specialInstructions": "",
+  "types": [],
+  "services": [],
+  "eligibility": {
+    "serviceArea": [
+      "NC_ASHE"
+    ],
+    "documents": [],
+    "frequency": {
+      "increment": "",
+      "period": ""
+    }
+  }
+}

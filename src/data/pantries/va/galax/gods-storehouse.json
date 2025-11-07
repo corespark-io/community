@@ -1,0 +1,38 @@
+{
+  "claimed": false,
+  "name": "God's Storehouse",
+  "logo": "",
+  "location": {
+    "physical": "206 N Main St, Galax, VA 24333",
+    "mailing": "206 N Main St, Galax, VA 24333",
+    "latitude": 36.66,
+    "longitude": -80.93
+  },
+  "contact": {
+    "website": "https://www.godsstorehouseva.org/",
+    "phone": "(276) 236-7105",
+    "email": ""
+  },
+  "hours": {
+    "monday": "",
+    "tuesday": "",
+    "wednesday": "",
+    "thursday": "",
+    "friday": "",
+    "saturday": "",
+    "sunday": ""
+  },
+  "specialInstructions": "",
+  "types": [],
+  "services": [],
+  "eligibility": {
+    "serviceArea": [
+      "VA_GALAX"
+    ],
+    "documents": [],
+    "frequency": {
+      "increment": "",
+      "period": ""
+    }
+  }
+}

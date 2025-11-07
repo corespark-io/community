@@ -1,0 +1,38 @@
+{
+  "claimed": false,
+  "name": "The Salvation Army of Galax",
+  "logo": "",
+  "location": {
+    "physical": "700 S Main St, Galax, VA 24333",
+    "mailing": "700 S Main St, Galax, VA 24333",
+    "latitude": 36.6583,
+    "longitude": -80.9250
+  },
+  "contact": {
+    "website": "https://www.salvationarmy.org/",
+    "phone": "(276) 236-0448",
+    "email": ""
+  },
+  "hours": {
+    "monday": "",
+    "tuesday": "",
+    "wednesday": "",
+    "thursday": "",
+    "friday": "",
+    "saturday": "",
+    "sunday": ""
+  },
+  "specialInstructions": "",
+  "types": [],
+  "services": [],
+  "eligibility": {
+    "serviceArea": [
+      "VA_GALAX"
+    ],
+    "documents": [],
+    "frequency": {
+      "increment": "",
+      "period": ""
+    }
+  }
+}

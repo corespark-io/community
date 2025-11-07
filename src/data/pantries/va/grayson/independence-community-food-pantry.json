@@ -1,0 +1,38 @@
+{
+  "claimed": false,
+  "name": "Independence Community Food Pantry",
+  "logo": "",
+  "location": {
+    "physical": "116 W Main St, Independence, VA 24348",
+    "mailing": "116 W Main St, Independence, VA 24348",
+    "latitude": 36.6234,
+    "longitude": -81.1519
+  },
+  "contact": {
+    "website": "",
+    "phone": "(276) 773-3434",
+    "email": ""
+  },
+  "hours": {
+    "monday": "",
+    "tuesday": "",
+    "wednesday": "",
+    "thursday": "",
+    "friday": "",
+    "saturday": "",
+    "sunday": ""
+  },
+  "specialInstructions": "",
+  "types": [],
+  "services": [],
+  "eligibility": {
+    "serviceArea": [
+      "VA_GRAYSON"
+    ],
+    "documents": [],
+    "frequency": {
+      "increment": "",
+      "period": ""
+    }
+  }
+}

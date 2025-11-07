@@ -1,0 +1,38 @@
+{
+  "claimed": false,
+  "name": "Ashe Food Pantry",
+  "logo": "",
+  "location": {
+    "physical": "115 Colvard Street, Jefferson, NC 28640",
+    "mailing": "115 Colvard Street, Jefferson, NC 28640",
+    "latitude": 36.4184,
+    "longitude": -81.4703
+  },
+  "contact": {
+    "website": "https://ashefoodpantry.org/",
+    "phone": "336-846-7019",
+    "email": ""
+  },
+  "hours": {
+    "monday": "",
+    "tuesday": "",
+    "wednesday": "",
+    "thursday": "",
+    "friday": "",
+    "saturday": "",
+    "sunday": ""
+  },
+  "specialInstructions": "",
+  "types": [],
+  "services": [],
+  "eligibility": {
+    "serviceArea": [
+      "NC_ASHE"
+    ],
+    "documents": [],
+    "frequency": {
+      "increment": "",
+      "period": ""
+    }
+  }
+}
