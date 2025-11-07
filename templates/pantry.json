@@ -1,0 +1,36 @@
+{
+    "claimed": false,
+    "name": "PLACEHOLDER_NAME",
+    "logo": "PLACEHOLDER_LOGO_URL",
+    "location": {
+        "physical": "PLACEHOLDER_PHYSICAL",
+        "mailing": "PLACEHOLDER_MAILING",
+        "latitude": 0,
+        "longitude": 0
+    },
+    "contact": {
+        "website": "PLACEHOLDER_WEBSITE",
+        "phone": "PLACEHOLDER_PHONE",
+        "email": "PLACEHOLDER_EMAIL"
+    },
+    "hours": {
+        "monday": "",
+        "tuesday": "",
+        "wednesday": "",
+        "thursday": "",
+        "friday": "",
+        "saturday": "",
+        "sunday": ""
+    },
+    "specialInstructions": "",
+    "types": [],
+    "services": [],
+    "eligibility": {
+        "serviceArea": [],
+        "documents": [],
+        "frequency": {
+            "increment": "",
+            "period": ""
+        }
+    }
+}
