@@ -35,6 +35,7 @@ export const SERVICES_OFFERED: Record<string, string> = {
   FRESH_PRODUCE: "Fresh produce",
   HOT_MEALS: "Hot meals",
   HYGIENE_PRODUCTS: "Hygiene products",
+  BABY_PRODUCTS: "Baby products",
   OTHER: "Other",
 };
 
@@ -51,7 +52,7 @@ export const SERVICE_AREAS: Record<string, string> = {
   // Virginia
   VA_GRAYSON: "Grayson County, VA",
   VA_CARROLL: "Carroll County, VA",
-  VA_GALAXY: "Galax, VA"
+  VA_GALAX: "Galax, VA"
 };
 
 // Required Documentation
