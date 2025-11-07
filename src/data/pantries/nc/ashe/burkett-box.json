@@ -1,0 +1,50 @@
+{
+    "name": "Burkett Box",
+    "logo": "",
+    "location": {
+        "physical": "108 Burkett Ave West Jefferson NC",
+        "mailing": "108 Burkett Ave West Jefferson NC",
+        "latitude": 36.40101490711057,
+        "longitude": -81.48856755336895
+    },
+    "contact": {
+        "website": "",
+        "phone": "(336) 977-2228",
+        "email": "baileyyoung0021@gmail.com"
+    },
+    "hours": {
+        "monday": "24_HOURS",
+        "tuesday": "24_HOURS",
+        "wednesday": "24_HOURS",
+        "thursday": "24_HOURS",
+        "friday": "24_HOURS",
+        "saturday": "24_HOURS",
+        "sunday": "24_HOURS"
+    },
+    "specialInstructions": "Driveway little free pantry.\nTake what you need, leave what you can.\nWe only provide hot meals once monthly",
+    "types": [
+        "WALK_IN",
+        "DRIVE_THRU",
+        "DELIVERY"
+    ],
+    "services": [
+        "PRE_PACKAGED_FOOD",
+        "CLIENT_CHOICE",
+        "FRESH_PRODUCE",
+        "HOT_MEALS",
+        "HYGIENE_PRODUCTS",
+        "BABY_PRODUCTS"
+    ],
+    "eligibility": {
+        "serviceArea": [
+            "NC_ASHE"
+        ],
+        "documents": [
+            "NO_DOCUMENTATION"
+        ],
+        "frequency": {
+            "increment": "",
+            "period": "AS_NEEDED"
+        }
+    }
+}
