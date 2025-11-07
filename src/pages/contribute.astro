@@ -1,0 +1,226 @@
+---
+import { Image } from "astro:assets";
+import Layout from "../layouts/Layout.astro";
+import "../styles/base.css";
+---
+
+<Layout title="Contribute">
+  <main>
+    <section class="hero-section">
+      <div class="hero-content">
+        <h1 class="gradient-text">Get Involved</h1>
+        <p class="subtitle">
+          Our community center is built by and for the community. Here are two
+          ways you can help us grow.
+        </p>
+      </div>
+    </section>
+
+    <section class="page-section" id="contribute">
+      <div class="contribute-grid">
+        <div class="contribute-card">
+          <div class="card-content">
+            <h3>Support With a Donation</h3>
+            <p>
+              As a 100% free resource, we rely on community support. Your
+              donation helps cover server costs, development time, and allows us
+              to expand our reach to more services.
+              <span style="display: block; margin-top: 1rem; font-weight: 600;">
+                The money raised for this project is only used directly for this
+                community resource.
+              </span>
+            </p>
+          </div>
+          <a
+            href="#"
+            class="disabled cta-button"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Coming Soon
+          </a>
+          <small class="card-note">
+            (Grow this resource with a one-time or recurring donation)
+          </small>
+        </div>
+
+        <div class="contribute-card">
+          <div class="card-content">
+            <h3>Contribute on GitHub</h3>
+            <p>
+              This entire project is open source! We welcome developers of all
+              skill levels to help us build new features, fix bugs, and make our
+              resources even more accessible.
+            </p>
+            <p>
+              If you aren't a developer but want to help, we still have many
+              ways you can contribute! Check out our GitHub repository for ideas
+              on documentation, design, and outreach.
+            </p>
+          </div>
+          <a
+            href="https://github.com/corespark-io/community"
+            class="cta-button"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            View the Repository
+          </a>
+          <small class="card-note">
+            (Find an issue, fork the repo, and submit a pull request!)
+          </small>
+        </div>
+      </div>
+    </section>
+
+    <section class="page-section" id="thanks">
+      <h2>Thank You for <span
+        class="gradient-text"
+        >Your Support
+    </span></h2>
+      <Image src="/logo.webp" alt="The Corespark Community Logo"
+      width="150" height="150" style="display: block; margin: 2rem auto; border-radius: 12px;" 
+      />
+      <p>
+        Whether it's through a donation, a line of code or simply spreading the word, your contribution
+        directly helps your neighbors in Northwest North Carolina and Southwest
+        Virginia. Thank you for being part of this community.
+      </p>
+    </section>
+  </main>
+
+  <style>
+    /* Styles are consistent with your homepage for a unified look */
+    .hero-section {
+      background-color: var(--color-background-soft, #f9f9f9);
+      padding: 5rem 1.5rem 4rem;
+      text-align: center;
+    }
+
+    .hero-content h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin: 0 auto 1rem;
+    }
+
+    .hero-content .subtitle {
+      font-size: 1.25rem;
+      color: var(--text-color, #444);
+      margin: 0 auto 1.5rem;
+      max-width: 60ch;
+      line-height: 1.6;
+    }
+
+    .page-section {
+      max-width: 900px;
+      margin: 4rem auto;
+      padding: 0 1.5rem;
+    }
+
+    .page-section h2 {
+      font-size: 2rem;
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+      text-align: center;
+    }
+
+    .page-section p {
+      font-size: 1.1rem;
+      line-height: 1.7;
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+
+    /* Contribution Card Grid */
+    .contribute-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+
+    @media (min-width: 768px) {
+      .contribute-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    .contribute-card {
+      display: flex;
+      flex-direction: column;
+      padding: 2rem 1.5rem;
+      border: 1px solid var(--color-border, #eee);
+      border-radius: 12px;
+      text-align: center;
+    }
+
+    .card-content {
+      flex-grow: 1; /* Pushes button to the bottom */
+      text-align: center;
+    }
+
+    .contribute-card h3 {
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin: 0 0 1rem;
+      color: var(--accent-color, blue);
+    }
+
+    .contribute-card p {
+      font-size: 1.1rem;
+      line-height: 1.7;
+    }
+
+    .card-icon {
+      width: 2.5rem;
+      height: 2.5rem;
+      color: var(--accent-color, blue);
+      margin-bottom: 1.5rem;
+    }
+
+    .card-note {
+      display: block;
+      margin-top: 0.75rem;
+      font-size: 0.9em;
+      opacity: 0.7;
+    }
+
+    .disabled {
+      pointer-events: none;
+      opacity: 0.6;
+    }
+
+    /* CTA Button Styles */
+    .cta-button {
+      display: inline-block;
+      width: 100%;
+      padding: 0.75rem 1.5rem;
+      background-color: var(--accent-color, blue);
+      color: white;
+      text-decoration: none;
+      font-weight: 600;
+      border-radius: 8px;
+      transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+      margin-top: 1.5rem;
+    }
+
+    .cta-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      background: var(--primary-gradient);
+      color: var(--text-color);
+    }
+
+    .cta-button.is-secondary {
+      background-color: transparent;
+      color: var(--accent-color, blue);
+      border: 2px solid var(--accent-color, blue);
+    }
+
+    .cta-button.is-secondary:hover {
+      background-color: var(--accent-color, blue);
+      color: white;
+    }
+  </style>
+</Layout>
