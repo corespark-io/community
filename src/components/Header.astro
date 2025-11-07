@@ -51,12 +51,11 @@ const foodPantriesHref = "/food-pantries";
         </div>
         <ul class="nav-links">
           <li><HeaderLink href={communityHomeHref}>Home</HeaderLink></li>
-          <li><HeaderLink href={foodPantriesHref}>Food Pantries</HeaderLink></li>
+          <li>
+            <HeaderLink href={foodPantriesHref}>Food Pantries</HeaderLink>
+          </li>
         </ul>
       </nav>
-      <!-- <button id="search-toggle" class="search-toggle" aria-label="Open search">
-        <Icon name="mdi:magnify" />
-      </button> -->
       <button class="menu-toggle" aria-label="Open menu">
         <span></span>
         <span></span>
@@ -64,6 +63,17 @@ const foodPantriesHref = "/food-pantries";
       </button>
     </div>
   </div>
+
+  <!-- 100% privacy-first analytics -->
+  <script async src="https://scripts.simpleanalyticscdn.com/latest.js"></script>
+  <noscript
+    ><img
+      src="https://queue.simpleanalyticscdn.com/noscript.gif"
+      alt=""
+      referrerpolicy="no-referrer-when-downgrade"
+    /></noscript
+  >
+  
 </header>
 
 <!-- Search Modal -->
