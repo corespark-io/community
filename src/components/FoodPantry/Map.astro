@@ -45,15 +45,28 @@ const allPantries = Object.entries(pantryModules).map(([path, data]) => {
   </p>
 
   <p class="pantry-owner-note">
-    Do you own a food pantry and want to get listed? Or maybe you see your
-    pantry listed and need to update its information? We have a simple form to
-    help you with that:
+    Do you own/manage a food pantry and want to get listed? Or maybe you see
+    your pantry listed and need to update its information? We have a simple form
+    to help you with that:
     <a
       class="org-link"
       href="https://corespark.io/community/forms/food-pantry/org-application"
       target="_blank"
       rel="noopener noreferrer">Submit or Update Your Pantry Info</a
     >.
+  </p>
+
+  <p
+    style="margin: 0 0 10px 0;color:var(--text-disclaimer); opacity: 0.9;font-style: italic;
+                  "
+  >
+    <span style="font-weight: bold;">Disclaimer:</span>
+    Information on <span style="font-weight: bold;">unclaimed pantries</span> are
+    gathered from public sources on a <span
+    style="font-weight: 500;"
+    >best effort</span> basis and may not
+    reflect the most current details or may be inaccurate. Please contact the
+    unclaimed pantry directly to confirm hours, services, and requirements.
   </p>
 
   <form id="search-and-filter-form" onsubmit="return false;">
@@ -465,6 +478,11 @@ const allPantries = Object.entries(pantryModules).map(([path, data]) => {
                 <div class="unclaimed-info" style="margin-top: 1.5rem; border-top: 1px solid #eee; padding-top: 1rem; font-size: 0.9em; color: var(--text-color); opacity: 0.9;">
                   <p style="margin: 0 0 10px 0;">
                     We are still working to collect information on this pantry.
+                  </p>
+                  <p style="margin: 0 0 10px 0;color:var(--text-disclaimer); opacity: 0.9;font-style: italic;
+                  ">
+                    <span style="font-weight: bold;">Disclaimer:</span>
+                    Information on unclaimed pantries may be inaccurate or incomplete.
                   </p>
                   <p style="margin: 0;">
                     Do you own/manage this pantry?
