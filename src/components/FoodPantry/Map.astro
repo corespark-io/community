@@ -344,73 +344,138 @@ const allPantries = Object.entries(pantryModules).map(([path, data]) => {
             )
               return;
 
-            // Build the rich HTML for the popup
-            const popupContent = `
-              ${
-                pantryData.logo
-                  ? `<img src="${pantryData.logo}" alt="${pantryData.name} logo" style="width: 100%; height: auto; border-radius: 4px; margin-bottom: 10px;">`
-                  : ""
-              }
-              <div class="popup-header">
-              <h3 class="pantry-name-title">${pantryData.name}</h3>
-              <button class="share-btn" data-pantry-id="${pantry.id}">
-                Share
-              </button>
-              </div>
-              
-              <div style="color:var(--text-color); margin-bottom: 10px;">
-                ${pantryData.location.physical}
-              </div>
+            // This variable will hold the HTML for the popup
+            let popupContent = "";
 
-              <div style="margin-bottom: 10px; display: flex; flex-direction: column; gap: 4px;">
+            // Check if the pantry is claimed.
+            // We also check for 'undefined' to safely handle older
+            // data that doesn't have this property yet.
+            if (
+              pantryData.claimed === true ||
+              pantryData.claimed === undefined
+            ) {
+              // ================================
+              // == 1. BUILD FULL POPUP (CLAIMED)
+              // ================================
+              popupContent = `
                 ${
-                  pantryData.contact?.website
-                    ? `<a href="${pantryData.contact.website}" target="_blank" rel="noopener noreferrer">Visit Website</a>`
+                  pantryData.logo
+                    ? `<img src="${pantryData.logo}" alt="${pantryData.name} logo" style="width: 100%; height: auto; border-radius: 4px; margin-bottom: 10px;">`
                     : ""
                 }
-                ${
-                  pantryData.contact?.phone
-                    ? `<a href="tel:${pantryData.contact.phone}">Call them</a>`
-                    : ""
-                }
-                ${
-                  pantryData.contact?.email
-                    ? `<a href="mailto:${pantryData.contact.email}">Email them</a>`
-                    : ""
-                }
-              </div>
+                <div class="popup-header">
+                  <h3 class="pantry-name-title">${pantryData.name}</h3>
+                  <button class="share-btn" data-pantry-id="${pantry.id}">
+                    Share
+                  </button>
+                </div>
+                
+                <div style="color:var(--text-color); margin-bottom: 10px;">
+                  ${pantryData.location.physical}
+                </div>
 
-              <b style="color:var(--text-color)">Hours:</b>
-              ${formatHours(pantryData.hours)}
+                <div style="margin-bottom: 10px; display: flex; flex-direction: column; gap: 4px;">
+                  ${
+                    pantryData.contact?.website
+                      ? `<a href="${pantryData.contact.website}" target="_blank" rel="noopener noreferrer">Visit Website</a>`
+                      : ""
+                  }
+                  ${
+                    pantryData.contact?.phone
+                      ? `<a href="tel:${pantryData.contact.phone}">Call them</a>`
+                      : ""
+                  }
+                  ${
+                    pantryData.contact?.email
+                      ? `<a href="mailto:${pantryData.contact.email}">Email them</a>`
+                      : ""
+                  }
+                </div>
 
-              ${formatSpecialInstructions(pantryData.specialInstructions)}
-              
-              <b style="color:var(--text-color)">Services:</b>
-              ${createListFromKeys(pantryData.services, SERVICES_OFFERED)}
-              
-              <b style="color:var(--text-color)">Service Type:</b>
-              ${createListFromKeys(pantryData.types, SERVICE_TYPES)}
-              
-              <b style="color:var(--text-color)">Service Area:</b>
-              ${createListFromKeys(
-                pantryData.eligibility?.serviceArea,
-                SERVICE_AREAS
-              )}
-              
-              <b style="color:var(--text-color)">Documents Needed:</b>
-              ${createListFromKeys(
-                pantryData.eligibility?.documents,
-                REQUIRED_DOCUMENTATION
-              )}
-              
-              <b style="color:var(--text-color)">Visit frequency:</b>
-              <div style="color:var(--text-color); margin-left: 20px; margin-bottom: 10px;">
-                ${formatFrequency(
-                  pantryData.eligibility?.frequency,
-                  FREQUENCY_OF_SERVICE
+                <b style="color:var(--text-color)">Hours:</b>
+                ${formatHours(pantryData.hours)}
+
+                ${formatSpecialInstructions(pantryData.specialInstructions)}
+                
+                <b style="color:var(--text-color)">Services:</b>
+                ${createListFromKeys(pantryData.services, SERVICES_OFFERED)}
+                
+                <b style="color:var(--text-color)">Service Type:</b>
+                ${createListFromKeys(pantryData.types, SERVICE_TYPES)}
+                
+                <b style="color:var(--text-color)">Service Area:</b>
+                ${createListFromKeys(
+                  pantryData.eligibility?.serviceArea,
+                  SERVICE_AREAS
                 )}
-              </div>
-            `;
+                
+                <b style="color:var(--text-color)">Documents Needed:</b>
+                ${createListFromKeys(
+                  pantryData.eligibility?.documents,
+                  REQUIRED_DOCUMENTATION
+                )}
+                
+                <b style="color:var(--text-color)">Visit frequency:</b>
+                <div style="color:var(--text-color); margin-left: 20px; margin-bottom: 10px;">
+                  ${formatFrequency(
+                    pantryData.eligibility?.frequency,
+                    FREQUENCY_OF_SERVICE
+                  )}
+                </div>
+              `;
+            } else {
+              // ===================================
+              // == 2. BUILD LIMITED POPUP (UNCLAIMED)
+              // ===================================
+              popupContent = `
+                ${
+                  pantryData.logo
+                    ? `<img src="${pantryData.logo}" alt="${pantryData.name} logo" style="width: 100%; height: auto; border-radius: 4px; margin-bottom: 10px;">`
+                    : ""
+                }
+                <div class="popup-header">
+                  <h3 class="pantry-name-title">${pantryData.name}</h3>
+                  <button class="share-btn" data-pantry-id="${pantry.id}">
+                    Share
+                  </button>
+                </div>
+                
+                <div style="margin-bottom: 10px; display: flex; flex-direction: column; gap: 4px;">
+                  ${
+                    pantryData.contact?.website
+                      ? `<a href="${pantryData.contact.website}" target="_blank" rel="noopener noreferrer">Visit Website</a>`
+                      : ""
+                  }
+                  ${
+                    pantryData.contact?.phone
+                      ? `<a href="tel:${pantryData.contact.phone}">Call them</a>`
+                      : ""
+                  }
+                  ${
+                    pantryData.contact?.email
+                      ? `<a href="mailto:${pantryData.contact.email}">Email them</a>`
+                      : ""
+                  }
+                </div>
+                
+                <div class="unclaimed-info" style="margin-top: 1.5rem; border-top: 1px solid #eee; padding-top: 1rem; font-size: 0.9em; color: var(--text-color); opacity: 0.9;">
+                  <p style="margin: 0 0 10px 0;">
+                    We are still working to collect information on this pantry.
+                  </p>
+                  <p style="margin: 0;">
+                    Do you own/manage this pantry?
+                    <a
+                      class="org-link"
+                      href="https://corespark.io/community/forms/food-pantry/org-application"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >Claim it here</a>
+                  </p>
+                </div>
+              `;
+            }
+
+            // --- The rest of the function continues as normal ---
 
             const popupOptions = {
               className: "custom-pantry-popup",
@@ -464,7 +529,7 @@ const allPantries = Object.entries(pantryModules).map(([path, data]) => {
             const group = L.featureGroup(markers);
             map.fitBounds(group.getBounds().pad(0.2));
           }
-        } // --- End of updateMarkers ---
+        }
 
         // ============================================
         // == FILTER FUNCTION
