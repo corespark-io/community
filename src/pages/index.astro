@@ -1,10 +1,214 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import Search from '../components/Search.astro';
-import Map from '../components/Map.astro';
-import '../styles/base.css';
+import Layout from "../layouts/Layout.astro";
+import "../styles/base.css";
+// You will likely have an <Icon /> component for the resource cards
+// import { Icon } from 'astro-icon/components';
 ---
 
-<Layout title="Home">
-    <h1>Corespark Community Resources</h1>
+<Layout title="Welcome">
+  <main>
+    <section class="hero-section">
+      <div class="hero-content">
+        <h1 class="gradient-text">Welcome to the Corespark Community Center</h1>
+        <p class="subtitle">
+          Your central hub for free, accessible resources in Northwest North
+          Carolina and Southwest Virginia.
+        </p>
+        <a href="#resources" class="cta-button">See All Resources</a>
+      </div>
+    </section>
+
+    <section class="page-section" id="mission">
+      <h2>
+        Our Mission: <span class="gradient-text"
+          >Accessible Support for Everyone</span>
+      </h2>
+      <p>
+        Our goal is to provide vital community resources to our neighbors using
+        easy-to-use, accessible technology. We believe that everyone deserves
+        access to help, and this virtual center is one way we're working to make
+        that happen.
+      </p>
+      <p>
+        All resources you find here are, and will always be,
+        <strong>100% free</strong> to the community. No sign-ups, no fees. Just help
+        when you need it.
+      </p>
+    </section>
+
+    <section class="page-section" id="resources">
+      <h2>Find What <span class="gradient-text">You Need</span></h2>
+      <div class="resource-grid">
+        <a href="/food-pantries" class="resource-card">
+          <div class="card-content">
+            <h3>Food Pantry Locator</h3>
+            <p>
+              Find locations, hours, services, and eligibility for food pantries
+              near you.
+            </p>
+          </div>
+          <span class="card-link">View the Map &rarr;</span>
+        </a>
+
+        <div class="resource-card">
+          <div class="card-content">
+            <h3>More Resources Coming Soon</h3>
+            <p>
+              We're always working to add more free services, like housing
+              support, job boards, and more.
+            </p>
+            <br />
+            <p>
+              Have an idea that could help our community? We'd love to hear from
+              you! Please email us at
+              <a
+                class="card-link"
+                href="mailto:community@corespark.io"
+                >community@corespark.io
+              </a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="page-section" id="about">
+      <h2>A <span class="gradient-text">Corespark</span> Initiative</h2>
+      <p>
+        Corespark is a technology partner dedicated to supporting our neighbors.
+        We believe in using our skills to strengthen our community, and this
+        virtual center is just one way we're giving back to the regions we call
+        home.
+      </p>
+      <a
+        href="https://corespark.io"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="cta-button is-secondary"
+      >
+        Learn more about Corespark
+      </a>
+    </section>
+  </main>
+
+  <style>
+    /* These styles provide a modern, accessible layout.
+      They use CSS variables from your base.css (e.g., --accent-color)
+    */
+    .hero-section {
+      background-color: var(--color-background-soft, #f9f9f9);
+      padding: 5rem 1.5rem 4rem;
+      margin-top: 1rem;
+      text-align: center;
+      border-radius: 5%;
+    }
+
+    .hero-content h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin: 0 auto 1rem;
+      max-width: 18ch;
+    }
+
+    .hero-content .subtitle {
+      font-size: 1.25rem;
+      color: var(--text-color, #444);
+      margin: 0 auto 2.5rem;
+      max-width: 60ch;
+      line-height: 1.6;
+    }
+
+    .cta-button {
+      display: inline-block;
+      padding: 0.75rem 1.5rem;
+      background-color: var(--accent-color, blue);
+      color: white;
+      text-decoration: none;
+      font-weight: 600;
+      border-radius: 8px;
+      transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+    }
+
+    .cta-button:hover {
+      transform: translateY(2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      background: var(--primary-gradient);
+      color: var(--text-color) !important;
+      border: none !important;
+    }
+
+    .page-section {
+      max-width: 900px;
+      margin: 4rem auto;
+      padding: 0 1.5rem;
+    }
+
+    .page-section h2 {
+      font-size: 2rem;
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+    }
+
+    .page-section p {
+      font-size: 1.1rem;
+      line-height: 1.7;
+      margin-bottom: 1rem;
+    }
+
+    /* Resource Card Grid */
+    .resource-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .resource-card {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 1.5rem;
+      border: 1px solid var(--color-border, #eee);
+      border-radius: 12px;
+      text-decoration: none;
+      color: var(--text-color, #333);
+      transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+    }
+
+    .resource-card:not(.is-disabled):hover {
+      transform: translateY(-4px);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+    }
+
+    .resource-card h3 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin: 0 0 0.5rem;
+      color: var(--accent-color, blue);
+    }
+
+    .resource-card p {
+      font-size: 1rem;
+      line-height: 1.6;
+      flex-grow: 1;
+    }
+
+    .card-icon {
+      width: 2.5rem;
+      height: 2.5rem;
+      color: var(--accent-color, blue);
+      margin-bottom: 1rem;
+    }
+
+    .card-link {
+      font-weight: 600;
+      color: var(--accent-color, blue);
+    }
+    .card-link:hover {
+      text-decoration: underline;
+    }
+  </style>
 </Layout>
