@@ -1,15 +1,39 @@
 ---
+// Step 1: Import everything, INCLUDING allPantries
 import {
   SERVICES_OFFERED,
   SERVICE_TYPES,
   SERVICE_AREAS,
   REQUIRED_DOCUMENTATION,
 } from "@/consts";
+
+// Load all pantry data (This is the new part)
+const pantryModules = await import.meta.glob("@/data/pantries/**/*.json", {
+  eager: true,
+});
+const allPantries = Object.values(pantryModules);
+
+// =================================================================
+// == 2. THE SERVER-SIDE "AUTO-FILL" / PERFORMANCE FIX ==
+// =================================================================
+// We build Sets of *only* the filters that are actually
+// used by at least one pantry. This happens on the server,
+// so it's zero-cost for the user's phone.
+
+const availableServices = new Set<string>();
+const availableTypes = new Set<string>();
+const availableAreas = new Set<string>();
+const availableDocs = new Set<string>();
+
+for (const pantry of allPantries) {
+  pantry.services?.forEach((service) => availableServices.add(service));
+  pantry.types?.forEach((type) => availableTypes.add(type));
+  pantry.eligibility?.serviceArea?.forEach((area) => availableAreas.add(area));
+  pantry.eligibility?.documents?.forEach((doc) => availableDocs.add(doc));
+}
 ---
 
-<!-- The oninput attribute is removed from the form tag -->
 <form id="search-and-filter-form" onsubmit="return false;">
-  <!-- Text Search -->
   <div class="search-inline">
     <label for="search-input" class="visually-hidden"
       >Search food pantries</label
@@ -17,6 +41,7 @@ import {
     <input
       type="text"
       id="search-input"
+      name="searchQuery"
       placeholder="Search by name, city, or zip..."
       aria-label="Search food pantries"
       autocomplete="off"
@@ -24,18 +49,14 @@ import {
     <button type="submit" class="search-btn">Search</button>
   </div>
 
-  {
-    /* ... The rest of the form and style sections remain exactly the same ... */
-  }
   <details class="filter-accordion">
     <summary>Filter Options</summary>
     <div class="filter-groups-container">
-      <!-- Services Offered -->
       <fieldset class="filter-group">
         <legend>Services Offered</legend>
         <div class="checkbox-container">
           {
-            Object.entries(SERVICES_OFFERED).map(([key, label]) => (
+            [...availableServices].map((key) => (
               <div class="checkbox-wrapper">
                 <>
                   <input
@@ -44,7 +65,7 @@ import {
                     name="servicesOffered"
                     value={key}
                   />
-                  <label for={key}>{label}</label>
+                  <label for={key}>{SERVICES_OFFERED[key] || key}</label>
                 </>
               </div>
             ))
@@ -52,12 +73,11 @@ import {
         </div>
       </fieldset>
 
-      <!-- Service Type -->
       <fieldset class="filter-group">
         <legend>Service Type</legend>
         <div class="checkbox-container">
           {
-            Object.entries(SERVICE_TYPES).map(([key, label]) => (
+            [...availableTypes].map((key) => (
               <div class="checkbox-wrapper">
                 <>
                   <input
@@ -66,7 +86,7 @@ import {
                     name="serviceTypes"
                     value={key}
                   />
-                  <label for={key}>{label}</label>
+                  <label for={key}>{SERVICE_TYPES[key] || key}</label>
                 </>
               </div>
             ))
@@ -74,12 +94,11 @@ import {
         </div>
       </fieldset>
 
-      <!-- Service Area -->
       <fieldset class="filter-group">
         <legend>Service Area</legend>
         <div class="checkbox-container">
           {
-            Object.entries(SERVICE_AREAS).map(([key, label]) => (
+            [...availableAreas].map((key) => (
               <div class="checkbox-wrapper">
                 <>
                   <input
@@ -88,7 +107,7 @@ import {
                     name="serviceAreas"
                     value={key}
                   />
-                  <label for={key}>{label}</label>
+                  <label for={key}>{SERVICE_AREAS[key] || key}</label>
                 </>
               </div>
             ))
@@ -96,12 +115,11 @@ import {
         </div>
       </fieldset>
 
-      <!-- Required Documentation -->
       <fieldset class="filter-group">
         <legend>Required Documentation</legend>
         <div class="checkbox-container">
           {
-            Object.entries(REQUIRED_DOCUMENTATION).map(([key, label]) => (
+            [...availableDocs].map((key) => (
               <div class="checkbox-wrapper">
                 <>
                   <input
@@ -110,7 +128,7 @@ import {
                     name="requiredDocs"
                     value={key}
                   />
-                  <label for={key}>{label}</label>
+                  <label for={key}>{REQUIRED_DOCUMENTATION[key] || key}</label>
                 </>
               </div>
             ))
@@ -120,11 +138,46 @@ import {
     </div>
   </details>
 </form>
+
 <p id="no-results-message" style="display: none;">
   No pantries found matching your criteria.
 </p>
 
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const form = document.getElementById("search-and-filter-form");
+
+    if (form) {
+      form.addEventListener("submit", (e) => {
+        e.preventDefault(); // Stop page from reloading
+
+        // Use FormData to easily get all values
+        const formData = new FormData(form);
+
+        // Get the values from the form
+        const filterData = {
+          query: formData.get("searchQuery")?.toString() || "",
+          services: formData.getAll("servicesOffered") as string[],
+          types: formData.getAll("serviceTypes") as string[],
+          areas: formData.getAll("serviceAreas") as string[],
+          docs: formData.getAll("requiredDocs") as string[],
+        };
+
+        // Create and dispatch a custom event
+        const filterEvent = new CustomEvent("pantry-filter-update", {
+          bubbles: true, // Allows the event to "bubble up"
+          detail: filterData, // This is the data we're sending
+        });
+
+        // Dispatch the event from the form itself
+        form.dispatchEvent(filterEvent);
+      });
+    }
+  });
+</script>
+
 <style>
+  /* All your existing styles... */
   .filter-accordion {
     border: 1px solid var(--color-border, #ccc);
     border-radius: 8px;
@@ -179,5 +232,26 @@ import {
     clip: rect(0, 0, 0, 0);
     white-space: nowrap;
     border: 0;
+  }
+
+  /* I added this. Your original code didn't have it,
+     but you have a .search-btn in the HTML */
+  .search-inline {
+    display: flex;
+    gap: 0.5rem;
+  }
+  .search-inline input {
+    flex-grow: 1;
+    padding: 0.75rem;
+    border: 1px solid var(--color-border, #ccc);
+    border-radius: 8px;
+  }
+  .search-btn {
+    padding: 0.75rem 1rem;
+    border: none;
+    background-color: var(--accent-color, blue);
+    color: white;
+    border-radius: 8px;
+    cursor: pointer;
   }
 </style>
