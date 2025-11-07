@@ -35,6 +35,12 @@
   --section-gap: 160px;
 }
 
+/* Font faces */
+:root {
+  font-family: 'Inter', sans-serif;
+  font-display: swap;
+}
+
 @media (prefers-color-scheme: dark) {
   :root {
     --color-background: var(--vt-c-black);
