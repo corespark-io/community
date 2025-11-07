@@ -29,7 +29,7 @@ The most valuable way to contribute is by helping us add or update information f
 * Example: Food Pantry Data  
   If you own a pantry, see incorrect information, or know of a pantry that's missing, please use our simple form. We'll handle the rest!
 
-  ➡️ Submit or Update Your Pantry Info
+  ➡️ [Submit or Update Your Pantry Info](https://corespark.io/community/forms/food-pantry/org-application)
 
 ## **🚀 Running the Project Locally**
 
