@@ -77,6 +77,7 @@ Our first major resource is the Food Pantry Locator. To make contributing data a
 
 ### **Food Pantry Data Schema**
 
+```json
 {  
   "claimed": false,  
   "name": "Pantry Name",  
@@ -113,11 +114,12 @@ Our first major resource is the Food Pantry Locator. To make contributing data a
     }  
   }  
 }
+```
 
-* **claimed**: (true/false) Whether this data has been verified by the pantry owner.  
-* **hours**: Use "09:00-12:00" for times, "Closed", "24\_HOURS", or comma-separate for split hours.  
-* **specialInstructions**: Use \\n for line breaks, which will become bullet points.  
-* **types, services, serviceArea, documents**: These all use keys from the /src/consts.ts file.
+* **claimed**: (`true`/`false`) Whether this data has been verified by the pantry owner.  
+* **hours**: Use `"09:00-12:00"` for times, `"Closed"`, `"24_HOURS"`, or comma-separate for split hours.  
+* **specialInstructions**: Use `\n` for line breaks, which will become bullet points.  
+* **types, services, serviceArea, documents**: These all use keys from the `/src/consts.ts` file.
 
 ## **License**
 
