@@ -1,0 +1,38 @@
+{
+  "claimed": false,
+  "name": "Stone's Throw Ministries",
+  "logo": "",
+  "location": {
+    "physical": "103 Fellowship Way, Elkin",
+    "mailing": "103 Fellowship Way, Elkin",
+    "latitude": 36.30830467,
+    "longitude": -80.83970312
+  },
+  "contact": {
+    "website": "https://www.stonesthrowcm.org/",
+    "phone": "(336) 366-7591",
+    "email": ""
+  },
+  "hours": {
+    "monday": "",
+    "tuesday": "",
+    "wednesday": "",
+    "thursday": "",
+    "friday": "",
+    "saturday": "",
+    "sunday": ""
+  },
+  "specialInstructions": "",
+  "types": [],
+  "services": [],
+  "eligibility": {
+    "serviceArea": [
+      "NC_SURRY"
+    ],
+    "documents": [],
+    "frequency": {
+      "increment": "",
+      "period": ""
+    }
+  }
+}

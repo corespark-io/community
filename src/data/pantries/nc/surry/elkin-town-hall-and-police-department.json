@@ -1,0 +1,38 @@
+{
+  "claimed": false,
+  "name": "Elkin Town Hall and Police Department",
+  "logo": "",
+  "location": {
+    "physical": "226 N. Bridge Street, Elkin",
+    "mailing": "226 N. Bridge Street, Elkin",
+    "latitude": 36.24600621,
+    "longitude": -80.85092296
+  },
+  "contact": {
+    "website": "https://www.elkinnc.org/",
+    "phone": "(336) 258-8900",
+    "email": ""
+  },
+  "hours": {
+    "monday": "",
+    "tuesday": "",
+    "wednesday": "",
+    "thursday": "",
+    "friday": "",
+    "saturday": "",
+    "sunday": ""
+  },
+  "specialInstructions": "",
+  "types": [],
+  "services": [],
+  "eligibility": {
+    "serviceArea": [
+      "NC_SURRY"
+    ],
+    "documents": [],
+    "frequency": {
+      "increment": "",
+      "period": ""
+    }
+  }
+}

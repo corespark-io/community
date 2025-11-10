@@ -1,0 +1,38 @@
+{
+  "claimed": false,
+  "name": "Westfield Elementary School",
+  "logo": "",
+  "location": {
+    "physical": "273 Jessup Grove Church Rd, Pilot Mountain",
+    "mailing": "273 Jessup Grove Church Rd, Pilot Mountain",
+    "latitude": 36.45970914,
+    "longitude": -80.49479117
+  },
+  "contact": {
+    "website": "https://www.surry.k12.nc.us/o/we",
+    "phone": "(336) 351-2745",
+    "email": ""
+  },
+  "hours": {
+    "monday": "",
+    "tuesday": "",
+    "wednesday": "",
+    "thursday": "",
+    "friday": "",
+    "saturday": "",
+    "sunday": ""
+  },
+  "specialInstructions": "",
+  "types": [],
+  "services": [],
+  "eligibility": {
+    "serviceArea": [
+      "NC_SURRY"
+    ],
+    "documents": [],
+    "frequency": {
+      "increment": "",
+      "period": ""
+    }
+  }
+}

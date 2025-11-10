@@ -1,0 +1,38 @@
+{
+  "claimed": false,
+  "name": "Elkin Elementary School",
+  "logo": "",
+  "location": {
+    "physical": "135 Old Virginia Road, Elkin",
+    "mailing": "135 Old Virginia Road, Elkin",
+    "latitude": 36.24555926,
+    "longitude": -80.85469417
+  },
+  "contact": {
+    "website": "https://ees.elkincityschools.org/",
+    "phone": "(336) 835-2756",
+    "email": ""
+  },
+  "hours": {
+    "monday": "",
+    "tuesday": "",
+    "wednesday": "",
+    "thursday": "",
+    "friday": "",
+    "saturday": "",
+    "sunday": ""
+  },
+  "specialInstructions": "",
+  "types": [],
+  "services": [],
+  "eligibility": {
+    "serviceArea": [
+      "NC_SURRY"
+    ],
+    "documents": [],
+    "frequency": {
+      "increment": "",
+      "period": ""
+    }
+  }
+}

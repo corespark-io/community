@@ -1,0 +1,38 @@
+{
+  "claimed": false,
+  "name": "Presbyterian Church",
+  "logo": "",
+  "location": {
+    "physical": "151 Hillcrest Rd, Elkin",
+    "mailing": "151 Hillcrest Rd, Elkin",
+    "latitude": 36.25156171,
+    "longitude": -80.85874449
+  },
+  "contact": {
+    "website": "https://elkinpres.org/",
+    "phone": "(336) 835-4545",
+    "email": ""
+  },
+  "hours": {
+    "monday": "",
+    "tuesday": "",
+    "wednesday": "",
+    "thursday": "",
+    "friday": "",
+    "saturday": "",
+    "sunday": ""
+  },
+  "specialInstructions": "",
+  "types": [],
+  "services": [],
+  "eligibility": {
+    "serviceArea": [
+      "NC_SURRY"
+    ],
+    "documents": [],
+    "frequency": {
+      "increment": "",
+      "period": ""
+    }
+  }
+}

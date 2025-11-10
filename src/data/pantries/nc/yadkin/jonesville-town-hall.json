@@ -1,0 +1,38 @@
+{
+  "claimed": false,
+  "name": "Jonesville Town Hall",
+  "logo": "",
+  "location": {
+    "physical": "1503 NC Hwy 67, Jonesville",
+    "mailing": "1503 NC Hwy 67, Jonesville",
+    "latitude": 36.24059928,
+    "longitude": -80.82539223
+  },
+  "contact": {
+    "website": "https://townofjonesvillenc.com/",
+    "phone": "(336) 835-3426",
+    "email": ""
+  },
+  "hours": {
+    "monday": "",
+    "tuesday": "",
+    "wednesday": "",
+    "thursday": "",
+    "friday": "",
+    "saturday": "",
+    "sunday": ""
+  },
+  "specialInstructions": "",
+  "types": [],
+  "services": [],
+  "eligibility": {
+    "serviceArea": [
+      "NC_YADKIN"
+    ],
+    "documents": [],
+    "frequency": {
+      "increment": "",
+      "period": ""
+    }
+  }
+}

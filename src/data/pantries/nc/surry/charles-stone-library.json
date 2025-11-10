@@ -1,0 +1,38 @@
+{
+  "claimed": false,
+  "name": "Charles Stone Library",
+  "logo": "",
+  "location": {
+    "physical": "319 W. Main St, Pilot Mountain",
+    "mailing": "319 W. Main St, Pilot Mountain",
+    "latitude": 36.38753083,
+    "longitude": -80.47086609
+  },
+  "contact": {
+    "website": "https://nwrl.org/pilot-mountain/",
+    "phone": "(336) 368-2370",
+    "email": ""
+  },
+  "hours": {
+    "monday": "",
+    "tuesday": "",
+    "wednesday": "",
+    "thursday": "",
+    "friday": "",
+    "saturday": "",
+    "sunday": ""
+  },
+  "specialInstructions": "",
+  "types": [],
+  "services": [],
+  "eligibility": {
+    "serviceArea": [
+      "NC_SURRY"
+    ],
+    "documents": [],
+    "frequency": {
+      "increment": "",
+      "period": ""
+    }
+  }
+}

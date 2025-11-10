@@ -1,0 +1,38 @@
+{
+  "claimed": false,
+  "name": "Clingman Community Center",
+  "logo": "",
+  "location": {
+    "physical": "3371 Clingman Road, Ronda",
+    "mailing": "3371 Clingman Road, Ronda",
+    "latitude": 36.17635698,
+    "longitude": -80.92914713
+  },
+  "contact": {
+    "website": "https://www.townofronda.org/facilities",
+    "phone": "(336) 835-2061",
+    "email": ""
+  },
+  "hours": {
+    "monday": "",
+    "tuesday": "",
+    "wednesday": "",
+    "thursday": "",
+    "friday": "",
+    "saturday": "",
+    "sunday": ""
+  },
+  "specialInstructions": "",
+  "types": [],
+  "services": [],
+  "eligibility": {
+    "serviceArea": [
+      "NC_WILKES"
+    ],
+    "documents": [],
+    "frequency": {
+      "increment": "",
+      "period": ""
+    }
+  }
+}

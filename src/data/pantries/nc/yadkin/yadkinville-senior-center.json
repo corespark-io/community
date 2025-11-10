@@ -1,0 +1,38 @@
+{
+  "claimed": false,
+  "name": "Yadkinville Senior Center",
+  "logo": "",
+  "location": {
+    "physical": "207 E Hemlock St, Yadkinville",
+    "mailing": "207 E Hemlock St, Yadkinville",
+    "latitude": 36.13641499,
+    "longitude": -80.65867003
+  },
+  "contact": {
+    "website": "https://yveddi.com/senior-centers/",
+    "phone": "(336) 679-3596",
+    "email": ""
+  },
+  "hours": {
+    "monday": "",
+    "tuesday": "",
+    "wednesday": "",
+    "thursday": "",
+    "friday": "",
+    "saturday": "",
+    "sunday": ""
+  },
+  "specialInstructions": "",
+  "types": [],
+  "services": [],
+  "eligibility": {
+    "serviceArea": [
+      "NC_YADKIN"
+    ],
+    "documents": [],
+    "frequency": {
+      "increment": "",
+      "period": ""
+    }
+  }
+}

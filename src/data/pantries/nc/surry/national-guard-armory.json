@@ -1,0 +1,38 @@
+{
+  "claimed": false,
+  "name": "National Guard Armory",
+  "logo": "",
+  "location": {
+    "physical": "1785 N. Bridge Street, Elkin",
+    "mailing": "1785 N. Bridge Street, Elkin",
+    "latitude": 36.27921466,
+    "longitude": -80.85354925
+  },
+  "contact": {
+    "website": "",
+    "phone": "",
+    "email": ""
+  },
+  "hours": {
+    "monday": "",
+    "tuesday": "",
+    "wednesday": "",
+    "thursday": "",
+    "friday": "",
+    "saturday": "",
+    "sunday": ""
+  },
+  "specialInstructions": "",
+  "types": [],
+  "services": [],
+  "eligibility": {
+    "serviceArea": [
+      "NC_SURRY"
+    ],
+    "documents": [],
+    "frequency": {
+      "increment": "",
+      "period": ""
+    }
+  }
+}
