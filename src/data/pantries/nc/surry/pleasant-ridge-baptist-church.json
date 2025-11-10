@@ -3,8 +3,8 @@
   "name": "Pleasant Ridge Baptist Church",
   "logo": "",
   "location": {
-    "physical": "1997 Pleasant Ridge Rd, State Road",
-    "mailing": "1997 Pleasant Ridge Rd, State Road",
+    "physical": "1997 Pleasant Ridge Rd, State Road, NC 28676",
+    "mailing": "1997 Pleasant Ridge Rd, State Road, NC 28676",
     "latitude": 36.30711267,
     "longitude": -80.88212645
   },
@@ -27,7 +27,7 @@
   "services": [],
   "eligibility": {
     "serviceArea": [
-      "NC_WILKES"
+      "NC_SURRY"
     ],
     "documents": [],
     "frequency": {
