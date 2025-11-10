@@ -13,6 +13,8 @@ const pantryModules = await import.meta.glob("@/data/pantries/**/*.json", {
 });
 
 const allPantries = Object.values(pantryModules);
+
+const pdfTitle = "Community Food Pantry Directory";
 ---
 
 <div class="download-container">
@@ -64,6 +66,7 @@ const allPantries = Object.values(pantryModules);
     SERVICE_TYPES,
     REQUIRED_DOCUMENTATION,
     FREQUENCY_OF_SERVICE,
+    pdfTitle,
   }}
 >
   document.addEventListener("DOMContentLoaded", () => {
@@ -130,6 +133,13 @@ const allPantries = Object.values(pantryModules);
       doc.text(title, pageW / 2, y, { align: "center" });
       y += 15;
       doc.setFontSize(8).setFont(undefined, "normal");
+      doc.text(
+        "Provided by the Corespark Community: https://community.corespark.io",
+        pageW / 2,
+        y,
+        { align: "center" }
+      );
+      y += 15;
       doc.text(
         `Generated on: ${new Date().toLocaleDateString()}`,
         pageW / 2,
@@ -265,23 +275,36 @@ const allPantries = Object.values(pantryModules);
             doc.setFont(undefined, "italic");
             const disclaimer =
               "We don't have all the information for this pantry yet. Please contact them directly to confirm details.";
-            const lines = doc.splitTextToSize(disclaimer, pageW - margin * 2);
-            doc.text(lines, margin, y);
-            y += lines.length * 12 + 10;
+            const disclaimerLines = doc.splitTextToSize(
+              disclaimer,
+              pageW - margin * 2
+            );
+            doc.text(disclaimerLines, margin, y);
+            y += disclaimerLines.length * 12 + 10;
 
-            doc.setFont(undefined, "normal");
-            if (data.contact?.phone) {
-              doc.text(`Phone: ${data.contact.phone}`, margin, y);
-              y += 15;
-            }
-            if (data.contact?.email) {
-              doc.text(`Email: ${data.contact.email}`, margin, y);
-              y += 15;
-            }
-            if (data.contact?.website) {
-              doc.text(`Website: ${data.contact.website}`, margin, y);
-              y += 15;
-            }
+            const unclaimedContent = [
+              { label: "Location", value: data.location?.physical },
+              { label: "Phone", value: data.contact?.phone },
+              { label: "Email", value: data.contact?.email },
+              { label: "Website", value: data.contact?.website },
+            ];
+
+            unclaimedContent.forEach((item) => {
+              if (item.value) {
+                checkPageBreak(20);
+                doc.setFont(undefined, "bold");
+                doc.text(item.label + ":", margin, y);
+
+                doc.setFont("helvetica", "normal");
+
+                const lines = doc.splitTextToSize(
+                  item.value,
+                  pageW - margin * 2 - 80
+                );
+                doc.text(lines, margin + 90, y);
+                y += lines.length * 12 + 5;
+              }
+            });
           }
           y += 10; // Extra space after each pantry entry
         });
@@ -293,7 +316,7 @@ const allPantries = Object.values(pantryModules);
     // --- Event Listeners ---
     downloadAllBtn.addEventListener("click", () => {
       const pantriesWithData = allPantries.map((data) => ({ data }));
-      generatePdf(pantriesWithData, "All Food Pantries");
+      generatePdf(pantriesWithData, pdfTitle);
     });
 
     downloadSelectedBtn.addEventListener("click", () => {
@@ -319,7 +342,7 @@ const allPantries = Object.values(pantryModules);
         return;
       }
 
-      generatePdf(filteredPantries, "Food Pantries by Selected County");
+      generatePdf(filteredPantries, pdfTitle);
     });
   });
 </script>
