@@ -1,0 +1,381 @@
+---
+import {
+  SERVICE_AREAS,
+  SERVICES_OFFERED,
+  SERVICE_TYPES,
+  REQUIRED_DOCUMENTATION,
+  FREQUENCY_OF_SERVICE,
+} from "@/consts";
+
+// Load all pantry data, similar to Map.astro
+const pantryModules = await import.meta.glob("@/data/pantries/**/*.json", {
+  eager: true,
+});
+
+const allPantries = Object.values(pantryModules);
+---
+
+<div class="download-container">
+  <details class="download-accordion">
+    <summary>Download Pantry List (PDF)</summary>
+    <div class="download-options">
+      <p>
+        Download a print-friendly PDF of all food pantries or filter by county.
+      </p>
+      <fieldset class="county-filter-group">
+        <legend>Filter by County</legend>
+        <div class="checkbox-container">
+          {
+            Object.entries(SERVICE_AREAS).map(([key, label]) => (
+              <div class="checkbox-wrapper">
+                <input
+                  type="checkbox"
+                  id={`county-${key}`}
+                  name="county"
+                  value={key}
+                />
+                <label for={`county-${key}`}>{label}</label>
+              </div>
+            ))
+          }
+        </div>
+      </fieldset>
+      <div class="button-group">
+        <button id="download-all-btn" class="download-btn">Download All</button>
+        <button id="download-selected-btn" class="download-btn"
+          >Download Selected Counties</button
+        >
+      </div>
+    </div>
+  </details>
+</div>
+
+<!-- Include jsPDF library from a CDN -->
+<script
+  is:inline
+  src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"
+></script>
+
+<script
+  define:vars={{
+    allPantries,
+    SERVICE_AREAS,
+    SERVICES_OFFERED,
+    SERVICE_TYPES,
+    REQUIRED_DOCUMENTATION,
+    FREQUENCY_OF_SERVICE,
+  }}
+>
+  document.addEventListener("DOMContentLoaded", () => {
+    const { jsPDF } = window.jspdf;
+
+    const downloadAllBtn = document.getElementById("download-all-btn");
+    const downloadSelectedBtn = document.getElementById(
+      "download-selected-btn"
+    );
+    const countyCheckboxes = document.querySelectorAll('input[name="county"]');
+
+    // --- Helper functions to format data for the PDF ---
+    const formatList = (keys, labelMap) => {
+      if (!keys || keys.length === 0) return "Not specified";
+      return keys.map((key) => `• ${labelMap[key] || key}`).join("\n");
+    };
+
+    const formatHours = (hours) => {
+      if (!hours) return "Not specified";
+      const dayOrder = [
+        "monday",
+        "tuesday",
+        "wednesday",
+        "thursday",
+        "friday",
+        "saturday",
+        "sunday",
+      ];
+      return dayOrder
+        .map((day) => {
+          const label = day.charAt(0).toUpperCase() + day.slice(1);
+          let time = hours[day] || "Closed";
+          if (time.toUpperCase() === "24_HOURS") time = "Open 24 Hours";
+          return `${label.padEnd(10)} ${time}`;
+        })
+        .join("\n");
+    };
+
+    const formatFrequency = (freq, labelMap) => {
+      if (!freq || !freq.period) return "Not specified";
+      const periodLabel = labelMap[freq.period] || freq.period;
+      if (freq.period === "AS_NEEDED") return periodLabel;
+      if (freq.increment > 0) {
+        return `${freq.increment} time(s) per ${periodLabel.toLowerCase()}`;
+      }
+      return periodLabel;
+    };
+
+    // --- PDF Generation Logic ---
+    const generatePdf = (pantries, title) => {
+      const doc = new jsPDF({ unit: "px", format: "a4" });
+      const pageW = doc.internal.pageSize.getWidth();
+      const margin = 30;
+      let y = 40;
+
+      const checkPageBreak = (height) => {
+        if (y + height > doc.internal.pageSize.getHeight() - margin) {
+          doc.addPage();
+          y = margin;
+        }
+      };
+
+      doc.setFontSize(18).setFont(undefined, "bold");
+      doc.text(title, pageW / 2, y, { align: "center" });
+      y += 15;
+      doc.setFontSize(8).setFont(undefined, "normal");
+      doc.text(
+        `Generated on: ${new Date().toLocaleDateString()}`,
+        pageW / 2,
+        y,
+        { align: "center" }
+      );
+      y += 30;
+
+      // --- Group pantries by county ---
+      const groupedByCounty = {};
+      pantries.forEach((pantry) => {
+        const serviceAreas = pantry.data.eligibility?.serviceArea || [
+          "UNCATEGORIZED",
+        ];
+        serviceAreas.forEach((countyCode) => {
+          if (!groupedByCounty[countyCode]) {
+            groupedByCounty[countyCode] = [];
+          }
+          // Avoid adding duplicates if a pantry is in multiple selected counties
+          if (
+            !groupedByCounty[countyCode].some(
+              (p) => p.data.name === pantry.data.name
+            )
+          ) {
+            groupedByCounty[countyCode].push(pantry);
+          }
+        });
+      });
+
+      // Sort county codes alphabetically, keeping 'UNCATEGORIZED' last
+      const sortedCountyCodes = Object.keys(groupedByCounty).sort((a, b) => {
+        if (a === "UNCATEGORIZED") return 1;
+        if (b === "UNCATEGORIZED") return -1;
+        return SERVICE_AREAS[a].localeCompare(SERVICE_AREAS[b]);
+      });
+
+      sortedCountyCodes.forEach((countyCode) => {
+        checkPageBreak(40); // Space for county header
+
+        // --- County Header ---
+        doc.setFontSize(16).setFont(undefined, "bold");
+        const countyName = SERVICE_AREAS[countyCode] || "Uncategorized";
+        doc.text(countyName, margin, y);
+        y += 10;
+        doc.setLineWidth(1);
+        doc.line(margin, y, pageW - margin, y);
+        y += 20;
+
+        const pantriesInCounty = groupedByCounty[countyCode];
+
+        pantriesInCounty.forEach((pantry, index) => {
+          const { data } = pantry;
+
+          checkPageBreak(80); // Minimum space for a new entry
+
+          if (index > 0) {
+            doc.setLineWidth(0.5);
+            doc.line(margin, y - 10, pageW - margin, y - 10);
+          }
+
+          doc.setFontSize(14).setFont(undefined, "bold");
+          doc.text(data.name, margin, y);
+          y += 20;
+
+          doc.setFontSize(10).setFont(undefined, "normal");
+
+          // Handle claimed vs unclaimed pantries
+          if (data.claimed === true || data.claimed === undefined) {
+            // --- CLAIMED PANTRIES ---
+            const content = [
+              { label: "Location", value: data.location.physical || "N/A" },
+              {
+                label: "Contact",
+                value:
+                  `${data.contact.phone || ""} ${data.contact.email || ""}`.trim() ||
+                  "N/A",
+              },
+              { label: "Website", value: data.contact.website || "N/A" },
+              {
+                label: "Hours",
+                value: formatHours(data.hours),
+                font: "courier",
+              },
+              {
+                label: "Services Offered",
+                value: formatList(data.services, SERVICES_OFFERED),
+              },
+              {
+                label: "Service Types",
+                value: formatList(data.types, SERVICE_TYPES),
+              },
+              {
+                label: "Service Area",
+                value: formatList(data.eligibility?.serviceArea, SERVICE_AREAS),
+              },
+              {
+                label: "Documents Required",
+                value: formatList(
+                  data.eligibility?.documents,
+                  REQUIRED_DOCUMENTATION
+                ),
+              },
+              {
+                label: "Frequency of Service",
+                value: formatFrequency(
+                  data.eligibility?.frequency,
+                  FREQUENCY_OF_SERVICE
+                ),
+              },
+              {
+                label: "Special Instructions",
+                value: data.specialInstructions || "None",
+              },
+            ];
+
+            content.forEach((item) => {
+              checkPageBreak(20);
+              doc.setFont(undefined, "bold");
+              doc.text(item.label + ":", margin, y);
+
+              const currentFont = item.font || "helvetica";
+              doc.setFont(currentFont, "normal");
+
+              const lines = doc.splitTextToSize(
+                item.value,
+                pageW - margin * 2 - 80
+              );
+              doc.text(lines, margin + 90, y);
+              y += lines.length * 12 + 10;
+            });
+          } else {
+            // --- UNCLAIMED PANTRIES ---
+            doc.setFont(undefined, "italic");
+            const disclaimer =
+              "We don't have all the information for this pantry yet. Please contact them directly to confirm details.";
+            const lines = doc.splitTextToSize(disclaimer, pageW - margin * 2);
+            doc.text(lines, margin, y);
+            y += lines.length * 12 + 10;
+
+            doc.setFont(undefined, "normal");
+            if (data.contact?.phone) {
+              doc.text(`Phone: ${data.contact.phone}`, margin, y);
+              y += 15;
+            }
+            if (data.contact?.email) {
+              doc.text(`Email: ${data.contact.email}`, margin, y);
+              y += 15;
+            }
+            if (data.contact?.website) {
+              doc.text(`Website: ${data.contact.website}`, margin, y);
+              y += 15;
+            }
+          }
+          y += 10; // Extra space after each pantry entry
+        });
+      });
+
+      doc.save("food-pantry-list.pdf");
+    };
+
+    // --- Event Listeners ---
+    downloadAllBtn.addEventListener("click", () => {
+      const pantriesWithData = allPantries.map((data) => ({ data }));
+      generatePdf(pantriesWithData, "All Food Pantries");
+    });
+
+    downloadSelectedBtn.addEventListener("click", () => {
+      const selectedCounties = Array.from(countyCheckboxes)
+        .filter((cb) => cb.checked)
+        .map((cb) => cb.value);
+
+      if (selectedCounties.length === 0) {
+        alert("Please select at least one county to download.");
+        return;
+      }
+
+      const filteredPantries = allPantries
+        .filter((pantry) =>
+          pantry.eligibility?.serviceArea?.some((area) =>
+            selectedCounties.includes(area)
+          )
+        )
+        .map((data) => ({ data }));
+
+      if (filteredPantries.length === 0) {
+        alert("No pantries found for the selected counties.");
+        return;
+      }
+
+      generatePdf(filteredPantries, "Food Pantries by Selected County");
+    });
+  });
+</script>
+
+<style>
+  .download-container {
+    margin: 1.5rem 0;
+  }
+  .download-accordion {
+    border: 1px solid #eee;
+    border-radius: 8px;
+  }
+  .download-accordion summary {
+    font-weight: bold;
+    padding: 1rem;
+    cursor: pointer;
+  }
+  .download-options {
+    padding: 1rem;
+    border-top: 1px solid #eee;
+  }
+  .county-filter-group {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 1rem;
+    margin-top: 1rem;
+  }
+  .county-filter-group legend {
+    font-weight: bold;
+    padding: 0 0.5rem;
+  }
+  .checkbox-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .checkbox-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .button-group {
+    margin-top: 1.5rem;
+    display: flex;
+    gap: 1rem;
+  }
+  .download-btn {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    background-color: var(--accent-color);
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  .download-btn:hover {
+    opacity: 0.8;
+  }
+</style>

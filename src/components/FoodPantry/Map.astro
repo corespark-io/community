@@ -8,6 +8,8 @@ import {
   FREQUENCY_OF_SERVICE,
 } from "@/consts";
 
+import Download from "@/components/FoodPantry/Download.astro";
+
 // Load all pantry data modules from the data directory.
 const pantryModules = await import.meta.glob("@/data/pantries/**/*.json", {
   eager: true,
@@ -179,6 +181,8 @@ const allPantries = Object.entries(pantryModules).map(([path, data]) => {
   <p id="no-results-message" style="display: none;">
     No pantries found matching your criteria.
   </p>
+
+  <Download />
 
   <div id="map" class="map"></div>
 </div>
