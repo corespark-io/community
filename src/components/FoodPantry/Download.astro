@@ -163,7 +163,7 @@ const allPantries = Object.values(pantryModules);
       const sortedCountyCodes = Object.keys(groupedByCounty).sort((a, b) => {
         if (a === "UNCATEGORIZED") return 1;
         if (b === "UNCATEGORIZED") return -1;
-        return SERVICE_AREAS[a].localeCompare(SERVICE_AREAS[b]);
+        return (SERVICE_AREAS[a] || a).localeCompare(SERVICE_AREAS[b] || b);
       });
 
       sortedCountyCodes.forEach((countyCode) => {
@@ -308,11 +308,11 @@ const allPantries = Object.values(pantryModules);
 
       const filteredPantries = allPantries
         .filter((pantry) =>
-          pantry.eligibility?.serviceArea?.some((area) =>
+          pantry.default?.eligibility?.serviceArea?.some((area) =>
             selectedCounties.includes(area)
           )
         )
-        .map((data) => ({ data }));
+        .map((pantry) => ({ data: pantry.default }));
 
       if (filteredPantries.length === 0) {
         alert("No pantries found for the selected counties.");
