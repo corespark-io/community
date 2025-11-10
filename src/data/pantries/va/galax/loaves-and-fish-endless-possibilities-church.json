@@ -1,0 +1,38 @@
+{
+  "claimed": false,
+  "name": "Loaves and Fish - Endless Possibilities Church",
+  "logo": "",
+  "location": {
+    "physical": "627 Glendale Rd, Galax, VA 24333",
+    "mailing": "627 Glendale Rd, Galax, VA 24333",
+    "latitude": 36.67416404,
+    "longitude": -80.91547023
+  },
+  "contact": {
+    "website": "https://epcgalax.org/",
+    "phone": "(276) 601-2850",
+    "email": ""
+  },
+  "hours": {
+    "monday": "",
+    "tuesday": "",
+    "wednesday": "",
+    "thursday": "",
+    "friday": "",
+    "saturday": "",
+    "sunday": ""
+  },
+  "specialInstructions": "",
+  "types": [],
+  "services": [],
+  "eligibility": {
+    "serviceArea": [
+      "VA_GALAX"
+    ],
+    "documents": [],
+    "frequency": {
+      "increment": "",
+      "period": ""
+    }
+  }
+}

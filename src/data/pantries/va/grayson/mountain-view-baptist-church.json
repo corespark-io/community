@@ -1,0 +1,38 @@
+{
+  "claimed": false,
+  "name": "Mountain View Baptist Church",
+  "logo": "",
+  "location": {
+    "physical": "112 Mountain View Road, Independence, VA 24348",
+    "mailing": "112 Mountain View Road, Independence, VA 24348",
+    "latitude": 36.59218388,
+    "longitude": -81.19277039
+  },
+  "contact": {
+    "website": "https://mvb-church.org",
+    "phone": "(276) 768-9839",
+    "email": ""
+  },
+  "hours": {
+    "monday": "",
+    "tuesday": "",
+    "wednesday": "",
+    "thursday": "",
+    "friday": "",
+    "saturday": "",
+    "sunday": ""
+  },
+  "specialInstructions": "",
+  "types": [],
+  "services": [],
+  "eligibility": {
+    "serviceArea": [
+      "VA_GRAYSON"
+    ],
+    "documents": [],
+    "frequency": {
+      "increment": "",
+      "period": ""
+    }
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "claimed": false,
+  "name": "Skyview Missionary Baptist Church",
+  "logo": "",
+  "location": {
+    "physical": "129 Skyview Dr, Fancy Gap, VA 24328",
+    "mailing": "129 Skyview Dr, Fancy Gap, VA 24328",
+    "latitude": 36.69136883,
+    "longitude": -80.69309572
+  },
+  "contact": {
+    "website": "https://svmbc.com/",
+    "phone": "(276) 728-2211",
+    "email": ""
+  },
+  "hours": {
+    "monday": "",
+    "tuesday": "",
+    "wednesday": "",
+    "thursday": "",
+    "friday": "",
+    "saturday": "",
+    "sunday": ""
+  },
+  "specialInstructions": "",
+  "types": [],
+  "services": [],
+  "eligibility": {
+    "serviceArea": [
+      "VA_CARROLL"
+    ],
+    "documents": [],
+    "frequency": {
+      "increment": "",
+      "period": ""
+    }
+  }
+}

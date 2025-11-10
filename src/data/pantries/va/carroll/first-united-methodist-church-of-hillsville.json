@@ -1,0 +1,38 @@
+{
+  "claimed": false,
+  "name": "First United Methodist Church of Hillsville",
+  "logo": "",
+  "location": {
+    "physical": "225 Fulcher Street, Hillsville, VA 24343",
+    "mailing": "225 Fulcher Street, Hillsville, VA 24343",
+    "latitude": 36.76058225,
+    "longitude": -80.729459
+  },
+  "contact": {
+    "website": "https://www.hillsvillefumc.org",
+    "phone": "(276) 728-2434",
+    "email": ""
+  },
+  "hours": {
+    "monday": "",
+    "tuesday": "",
+    "wednesday": "",
+    "thursday": "",
+    "friday": "",
+    "saturday": "",
+    "sunday": ""
+  },
+  "specialInstructions": "",
+  "types": [],
+  "services": [],
+  "eligibility": {
+    "serviceArea": [
+      "VA_CARROLL"
+    ],
+    "documents": [],
+    "frequency": {
+      "increment": "",
+      "period": ""
+    }
+  }
+}
