@@ -1,38 +1,49 @@
 {
-  "claimed": false,
+  "claimed": true,
   "name": "Solid Rock Food Closet",
-  "logo": "",
   "location": {
     "physical": "71 Womble St, Sparta, NC 28675",
-    "mailing": "71 Womble St, Sparta, NC 28675",
+    "mailing": "PO Box 955 Sparta NC 28675",
     "latitude": 36.5045842,
     "longitude": -81.12411365
   },
   "contact": {
     "website": "https://solidrockfoodcloset.com/",
     "phone": "(336) 372-6560",
-    "email": ""
+    "email": "foodcloset@skybest.com"
   },
   "hours": {
     "monday": "",
-    "tuesday": "",
-    "wednesday": "",
-    "thursday": "",
+    "tuesday": "10:00 - 14:00",
+    "wednesday": "10:00 - 14:00",
+    "thursday": "10:00 - 14:00",
     "friday": "",
     "saturday": "",
     "sunday": ""
   },
-  "specialInstructions": "",
-  "types": [],
-  "services": [],
+  "specialInstructions": "On the first Tuesday of every month, we are open 4:00 PM to 5:45 PM. This time is available by appointment only.\nCall for appointment",
+  "types": [
+    "DRIVE_THRU",
+    "APPOINTMENT"
+  ],
+  "services": [
+    "CLIENT_CHOICE",
+    "FRESH_PRODUCE",
+    "CANNED_BOXED_GOODS",
+    "REFRIGERATED_PRODUCTS",
+    "HYGIENE_PRODUCTS",
+    "BABY_PRODUCTS"
+  ],
   "eligibility": {
     "serviceArea": [
       "NC_ALLEGHANY"
     ],
-    "documents": [],
+    "documents": [
+      "NO_DOCUMENTATION"
+    ],
     "frequency": {
-      "increment": "",
-      "period": ""
+      "increment": "1",
+      "period": "MONTH"
     }
   }
 }
