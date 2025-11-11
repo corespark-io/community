@@ -1,9 +1,49 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import Map from '../components/FoodPantry/Map.astro';
-import '../styles/base.css';
+import Layout from "../layouts/Layout.astro";
+import Map from "../components/FoodPantry/Map.astro";
+import "../styles/base.css";
 ---
 
 <Layout title="Food Pantries">
-    <Map />
-</Layout>
+  <Map />
+  <section class="legal-note">
+    <h2>Legal Note</h2>
+    <p>
+      The information provided on this food pantry map is for informational
+      purposes only. Corespark Community Center provides this information as a
+      community service and does not operate, control, or endorse any of the
+      listed food pantries. We strive to provide the most accurate information
+      possible. Listing details are sourced either directly from the pantry
+      partners or from publicly available information. While we make every
+      reasonable effort to keep this data current, we cannot guarantee its
+      accuracy or completeness. Details such as hours, locations, and service
+      availability are managed by the pantries themselves and are subject to
+      change at any time, often without notice to us. Corespark Community Center
+      disclaims any and all responsibility or liability for any inaccuracies,
+      errors, or omissions in the information provided, or for any issues,
+      damages, or losses that may arise from your reliance on this map or your
+      use of any listed pantry's services.
+    </p>
+  </section>
+
+  <style>
+    .legal-note {
+      margin: 1rem 0;
+      padding: 0.5rem 1rem;
+      text-align: center;
+      font-size: 0.95em;
+      opacity: 0.85;
+      text-wrap: balance;
+      font-style: italic;
+    }
+
+    .legal-note strong {
+      font-weight: 500;
+    }
+
+    .legal-note h2 {
+      font-size: 1.2em;
+      margin-bottom: 0.5rem;
+    }
+  </style></Layout
+>
