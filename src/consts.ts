@@ -25,14 +25,18 @@ export const SERVICE_TYPES: Record<string, string> = {
   WALK_IN: "Walk-in",
   DRIVE_THRU: "Drive-thru",
   APPOINTMENT_ONLY: "Appointment only",
+  APPOINTMENT: "Appointment",
   DELIVERY: "Delivery",
 };
 
 // Services Offered
 export const SERVICES_OFFERED: Record<string, string> = {
-  PRE_PACKAGED_FOOD: "Pre-packaged food boxes",
-  CLIENT_CHOICE: "Client choice pantry",
+  PRE_PACKAGED_FOOD: "Pre-packaged food boxes / Meal Kits",
+  CLIENT_CHOICE: "Client choice (grocery store style)",
   FRESH_PRODUCE: "Fresh produce",
+  CANNED_BOXED_GOODS: "Canned / boxed goods",
+  REFRIGERATED_PRODUCTS: "Refrigerated products",
+  FROZEN_PRODUCTS: "Frozen products",
   HOT_MEALS: "Hot meals",
   HYGIENE_PRODUCTS: "Hygiene products",
   BABY_PRODUCTS: "Baby products",
