@@ -1,0 +1,38 @@
+{
+  "claimed": false,
+  "name": "Hillsville Pentecostal Church",
+  "logo": "",
+  "location": {
+    "physical": "203 Virginia St, Hillsville, VA 24343",
+    "mailing": "203 Virginia St, Hillsville, VA 24343",
+    "latitude": 36.7571113,
+    "longitude": -80.73009886
+  },
+  "contact": {
+    "website": "http://www.hillsvillephchurch.com/",
+    "phone": "(276) 728-4943",
+    "email": ""
+  },
+  "hours": {
+    "monday": "",
+    "tuesday": "",
+    "wednesday": "",
+    "thursday": "",
+    "friday": "",
+    "saturday": "",
+    "sunday": ""
+  },
+  "specialInstructions": "",
+  "types": [],
+  "services": [],
+  "eligibility": {
+    "serviceArea": [
+      "VA_CARROLL"
+    ],
+    "documents": [],
+    "frequency": {
+      "increment": "",
+      "period": ""
+    }
+  }
+}

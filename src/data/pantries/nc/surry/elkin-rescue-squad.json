@@ -1,0 +1,38 @@
+{
+  "claimed": false,
+  "name": "Elkin Rescue Squad",
+  "logo": "",
+  "location": {
+    "physical": "940 N. Bridge Street, Elkin, NC 28621",
+    "mailing": "940 N. Bridge Street, Elkin, NC 28621",
+    "latitude": 36.26021824,
+    "longitude": -80.84778559
+  },
+  "contact": {
+    "website": "https://elkinrescuesquad.org/",
+    "phone": "(336) 835-4101",
+    "email": ""
+  },
+  "hours": {
+    "monday": "",
+    "tuesday": "",
+    "wednesday": "",
+    "thursday": "",
+    "friday": "",
+    "saturday": "",
+    "sunday": ""
+  },
+  "specialInstructions": "",
+  "types": [],
+  "services": [],
+  "eligibility": {
+    "serviceArea": [
+      "NC_SURRY"
+    ],
+    "documents": [],
+    "frequency": {
+      "increment": "",
+      "period": ""
+    }
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "claimed": false,
+  "name": "Solid Rock Food Closet",
+  "logo": "",
+  "location": {
+    "physical": "71 Womble St, Sparta, NC 28675",
+    "mailing": "71 Womble St, Sparta, NC 28675",
+    "latitude": 36.5045842,
+    "longitude": -81.12411365
+  },
+  "contact": {
+    "website": "https://solidrockfoodcloset.com/",
+    "phone": "(336) 372-6560",
+    "email": ""
+  },
+  "hours": {
+    "monday": "",
+    "tuesday": "",
+    "wednesday": "",
+    "thursday": "",
+    "friday": "",
+    "saturday": "",
+    "sunday": ""
+  },
+  "specialInstructions": "",
+  "types": [],
+  "services": [],
+  "eligibility": {
+    "serviceArea": [
+      "NC_ALLEGHANY"
+    ],
+    "documents": [],
+    "frequency": {
+      "increment": "",
+      "period": ""
+    }
+  }
+}

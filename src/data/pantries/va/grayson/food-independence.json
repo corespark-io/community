@@ -1,0 +1,38 @@
+{
+  "claimed": false,
+  "name": "Food Independence",
+  "logo": "",
+  "location": {
+    "physical": "103 Hilltop Dr, Independence, VA 24348",
+    "mailing": "103 Hilltop Dr, Independence, VA 24348",
+    "latitude": 36.6220556,
+    "longitude": -81.1495628
+  },
+  "contact": {
+    "website": "",
+    "phone": "",
+    "email": ""
+  },
+  "hours": {
+    "monday": "",
+    "tuesday": "",
+    "wednesday": "",
+    "thursday": "",
+    "friday": "",
+    "saturday": "",
+    "sunday": ""
+  },
+  "specialInstructions": "",
+  "types": [],
+  "services": [],
+  "eligibility": {
+    "serviceArea": [
+      "VA_GRAYSON"
+    ],
+    "documents": [],
+    "frequency": {
+      "increment": "",
+      "period": ""
+    }
+  }
+}

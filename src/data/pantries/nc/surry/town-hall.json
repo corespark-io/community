@@ -1,0 +1,38 @@
+{
+  "claimed": false,
+  "name": "Town Hall",
+  "logo": "",
+  "location": {
+    "physical": "307 N. Main Street, Dobson, NC 27017",
+    "mailing": "307 N. Main Street, Dobson, NC 27017",
+    "latitude": 36.39822536,
+    "longitude": -80.7242909
+  },
+  "contact": {
+    "website": "https://www.dobson-nc.com/",
+    "phone": "(336) 356-8962",
+    "email": ""
+  },
+  "hours": {
+    "monday": "",
+    "tuesday": "",
+    "wednesday": "",
+    "thursday": "",
+    "friday": "",
+    "saturday": "",
+    "sunday": ""
+  },
+  "specialInstructions": "",
+  "types": [],
+  "services": [],
+  "eligibility": {
+    "serviceArea": [
+      "NC_SURRY"
+    ],
+    "documents": [],
+    "frequency": {
+      "increment": "",
+      "period": ""
+    }
+  }
+}

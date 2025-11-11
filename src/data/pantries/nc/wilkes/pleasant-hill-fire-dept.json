@@ -1,0 +1,38 @@
+{
+  "claimed": false,
+  "name": "Pleasant Hill Fire Dept",
+  "logo": "",
+  "location": {
+    "physical": "1069 Austin Traphill Rd, Elkin, NC 28621",
+    "mailing": "1069 Austin Traphill Rd, Elkin, NC 28621",
+    "latitude": 36.259579,
+    "longitude": -80.891509
+  },
+  "contact": {
+    "website": "",
+    "phone": "(336) 835-1353",
+    "email": ""
+  },
+  "hours": {
+    "monday": "",
+    "tuesday": "",
+    "wednesday": "",
+    "thursday": "",
+    "friday": "",
+    "saturday": "",
+    "sunday": ""
+  },
+  "specialInstructions": "",
+  "types": [],
+  "services": [],
+  "eligibility": {
+    "serviceArea": [
+      "NC_WILKES"
+    ],
+    "documents": [],
+    "frequency": {
+      "increment": "",
+      "period": ""
+    }
+  }
+}

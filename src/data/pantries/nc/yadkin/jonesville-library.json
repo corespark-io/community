@@ -1,0 +1,38 @@
+{
+  "claimed": false,
+  "name": "Jonesville Library",
+  "logo": "",
+  "location": {
+    "physical": "112 N Swaim St, Jonesville, NC 28642",
+    "mailing": "112 N Swaim St, Jonesville, NC 28642",
+    "latitude": 36.23524675,
+    "longitude": -80.84420316
+  },
+  "contact": {
+    "website": "https://nwrl.org/jonesville/",
+    "phone": "(336) 835-7604",
+    "email": ""
+  },
+  "hours": {
+    "monday": "",
+    "tuesday": "",
+    "wednesday": "",
+    "thursday": "",
+    "friday": "",
+    "saturday": "",
+    "sunday": ""
+  },
+  "specialInstructions": "",
+  "types": [],
+  "services": [],
+  "eligibility": {
+    "serviceArea": [
+      "NC_YADKIN"
+    ],
+    "documents": [],
+    "frequency": {
+      "increment": "",
+      "period": ""
+    }
+  }
+}

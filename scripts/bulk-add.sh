@@ -77,7 +77,7 @@ except Exception as e:
 ' "$CSV_FILE" | tee "$DEBUG_OUTPUT_FILE" | \
 # The 'while' loop now reads the clean TSV data.
 # IFS=$'\t' sets the separator to a Tab character.
-while IFS=$'\t' read -r pantry_name pantry_logo_url pantry_physical_address pantry_latitude pantry_longitude pantry_website pantry_phone_number pantry_email pantry_service_area
+while IFS=$'\t' read -r pantry_name pantry_service_area pantry_physical_address pantry_latitude pantry_longitude pantry_website pantry_phone_number pantry_email pantry_logo_url
 do
     # --- 4. PROCESSING EACH ROW ---
 
@@ -105,7 +105,7 @@ do
         --arg longitude "$pantry_longitude" \
         --arg website "$pantry_website" \
         --arg phone "$pantry_phone_number" \
-        --arg email "$pentry_email" \
+        --arg email "$pantry_email" \
         --arg service_area_raw "$pantry_service_area" \
         '
         # jq comment: Clean the service area (remove \r)

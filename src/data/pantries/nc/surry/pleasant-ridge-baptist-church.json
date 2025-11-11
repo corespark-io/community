@@ -1,0 +1,38 @@
+{
+  "claimed": false,
+  "name": "Pleasant Ridge Baptist Church",
+  "logo": "",
+  "location": {
+    "physical": "1997 Pleasant Ridge Rd, State Road, NC 28676",
+    "mailing": "1997 Pleasant Ridge Rd, State Road, NC 28676",
+    "latitude": 36.30711267,
+    "longitude": -80.88212645
+  },
+  "contact": {
+    "website": "https://prbc.churchtrac.com/",
+    "phone": "(336) 874-2875",
+    "email": ""
+  },
+  "hours": {
+    "monday": "",
+    "tuesday": "",
+    "wednesday": "",
+    "thursday": "",
+    "friday": "",
+    "saturday": "",
+    "sunday": ""
+  },
+  "specialInstructions": "",
+  "types": [],
+  "services": [],
+  "eligibility": {
+    "serviceArea": [
+      "NC_SURRY"
+    ],
+    "documents": [],
+    "frequency": {
+      "increment": "",
+      "period": ""
+    }
+  }
+}

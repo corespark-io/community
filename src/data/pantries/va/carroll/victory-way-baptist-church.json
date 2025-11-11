@@ -1,0 +1,38 @@
+{
+  "claimed": false,
+  "name": "Victory Way Baptist Church",
+  "logo": "",
+  "location": {
+    "physical": "500 S Main St, Hillsville, VA 24343",
+    "mailing": "500 S Main St, Hillsville, VA 24343",
+    "latitude": 36.75656746,
+    "longitude": -80.73335668
+  },
+  "contact": {
+    "website": "https://victorywaybaptist.com/",
+    "phone": "(276) 728-2651",
+    "email": ""
+  },
+  "hours": {
+    "monday": "",
+    "tuesday": "",
+    "wednesday": "",
+    "thursday": "",
+    "friday": "",
+    "saturday": "",
+    "sunday": ""
+  },
+  "specialInstructions": "",
+  "types": [],
+  "services": [],
+  "eligibility": {
+    "serviceArea": [
+      "VA_CARROLL"
+    ],
+    "documents": [],
+    "frequency": {
+      "increment": "",
+      "period": ""
+    }
+  }
+}

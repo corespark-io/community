@@ -1,0 +1,38 @@
+{
+  "claimed": false,
+  "name": "Feeding SWVA Mobile Food Pantry",
+  "logo": "",
+  "location": {
+    "physical": "231 Flower Gap Rd, Cana, VA 24317",
+    "mailing": "231 Flower Gap Rd, Cana, VA 24317",
+    "latitude": 36.60467241,
+    "longitude": -80.68977037
+  },
+  "contact": {
+    "website": "https://feedingswva.org/",
+    "phone": "(276) 628-9266",
+    "email": ""
+  },
+  "hours": {
+    "monday": "",
+    "tuesday": "",
+    "wednesday": "",
+    "thursday": "",
+    "friday": "",
+    "saturday": "",
+    "sunday": ""
+  },
+  "specialInstructions": "",
+  "types": [],
+  "services": [],
+  "eligibility": {
+    "serviceArea": [
+      "VA_CARROLL"
+    ],
+    "documents": [],
+    "frequency": {
+      "increment": "",
+      "period": ""
+    }
+  }
+}

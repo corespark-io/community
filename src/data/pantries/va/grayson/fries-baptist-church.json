@@ -1,0 +1,38 @@
+{
+  "claimed": false,
+  "name": "Fries Baptist Church",
+  "logo": "",
+  "location": {
+    "physical": "111 E Main St, Fries, VA 24330",
+    "mailing": "111 E Main St, Fries, VA 24330",
+    "latitude": 36.71543899,
+    "longitude": -80.9734773
+  },
+  "contact": {
+    "website": "https://friesbaptist.com/",
+    "phone": "(276) 744-2711",
+    "email": ""
+  },
+  "hours": {
+    "monday": "",
+    "tuesday": "",
+    "wednesday": "",
+    "thursday": "",
+    "friday": "",
+    "saturday": "",
+    "sunday": ""
+  },
+  "specialInstructions": "",
+  "types": [],
+  "services": [],
+  "eligibility": {
+    "serviceArea": [
+      "VA_GRAYSON"
+    ],
+    "documents": [],
+    "frequency": {
+      "increment": "",
+      "period": ""
+    }
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "claimed": false,
+  "name": "Hands of Grace",
+  "logo": "",
+  "location": {
+    "physical": "57 School Ln, Elk Creek, VA 24326",
+    "mailing": "57 School Ln, Elk Creek, VA 24326",
+    "latitude": 36.72107477,
+    "longitude": -81.1778246
+  },
+  "contact": {
+    "website": "",
+    "phone": "",
+    "email": ""
+  },
+  "hours": {
+    "monday": "",
+    "tuesday": "",
+    "wednesday": "",
+    "thursday": "",
+    "friday": "",
+    "saturday": "",
+    "sunday": ""
+  },
+  "specialInstructions": "",
+  "types": [],
+  "services": [],
+  "eligibility": {
+    "serviceArea": [
+      "VA_GRAYSON"
+    ],
+    "documents": [],
+    "frequency": {
+      "increment": "",
+      "period": ""
+    }
+  }
+}

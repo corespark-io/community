@@ -1,0 +1,38 @@
+{
+  "claimed": false,
+  "name": "Ronda Clingman Elementary",
+  "logo": "",
+  "location": {
+    "physical": "316 Ronda Clingman School Road, Ronda, NC 28670",
+    "mailing": "316 Ronda Clingman School Road, Ronda, NC 28670",
+    "latitude": 36.20476095,
+    "longitude": -80.93954373
+  },
+  "contact": {
+    "website": "https://rces.wilkescountyschools.org/",
+    "phone": "(336) 651-4200",
+    "email": ""
+  },
+  "hours": {
+    "monday": "",
+    "tuesday": "",
+    "wednesday": "",
+    "thursday": "",
+    "friday": "",
+    "saturday": "",
+    "sunday": ""
+  },
+  "specialInstructions": "",
+  "types": [],
+  "services": [],
+  "eligibility": {
+    "serviceArea": [
+      "NC_WILKES"
+    ],
+    "documents": [],
+    "frequency": {
+      "increment": "",
+      "period": ""
+    }
+  }
+}

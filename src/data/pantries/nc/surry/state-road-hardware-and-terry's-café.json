@@ -1,0 +1,38 @@
+{
+  "claimed": false,
+  "name": "State Road Hardware and Terry's Café",
+  "logo": "",
+  "location": {
+    "physical": "1020 US 21, State Road",
+    "mailing": "1020 US 21, State Road",
+    "latitude": 36.31870518,
+    "longitude": -80.86090276
+  },
+  "contact": {
+    "website": "https://www.stateroadhardwareco.com/",
+    "phone": "(336) 874-2307",
+    "email": ""
+  },
+  "hours": {
+    "monday": "",
+    "tuesday": "",
+    "wednesday": "",
+    "thursday": "",
+    "friday": "",
+    "saturday": "",
+    "sunday": ""
+  },
+  "specialInstructions": "",
+  "types": [],
+  "services": [],
+  "eligibility": {
+    "serviceArea": [
+      "NC_SURRY"
+    ],
+    "documents": [],
+    "frequency": {
+      "increment": "",
+      "period": ""
+    }
+  }
+}

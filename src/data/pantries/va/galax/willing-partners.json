@@ -1,0 +1,38 @@
+{
+  "claimed": false,
+  "name": "Willing Partners",
+  "logo": "",
+  "location": {
+    "physical": "972 E Stuart Dr, Galax, VA 24333",
+    "mailing": "972 E Stuart Dr, Galax, VA 24333",
+    "latitude": 36.68162584,
+    "longitude": -80.89492785
+  },
+  "contact": {
+    "website": "https://willingpartners.org/",
+    "phone": "(276) 238-5500",
+    "email": ""
+  },
+  "hours": {
+    "monday": "",
+    "tuesday": "",
+    "wednesday": "",
+    "thursday": "",
+    "friday": "",
+    "saturday": "",
+    "sunday": ""
+  },
+  "specialInstructions": "",
+  "types": [],
+  "services": [],
+  "eligibility": {
+    "serviceArea": [
+      "VA_GALAX"
+    ],
+    "documents": [],
+    "frequency": {
+      "increment": "",
+      "period": ""
+    }
+  }
+}
