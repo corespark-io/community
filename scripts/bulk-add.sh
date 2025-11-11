@@ -105,7 +105,7 @@ do
         --arg longitude "$pantry_longitude" \
         --arg website "$pantry_website" \
         --arg phone "$pantry_phone_number" \
-        --arg email "$pentry_email" \
+        --arg email "$pantry_email" \
         --arg service_area_raw "$pantry_service_area" \
         '
         # jq comment: Clean the service area (remove \r)
