@@ -1,6 +1,6 @@
 {
-  "claimed": false,
-  "name": "Fries Community Food Pantry",
+  "claimed": true,
+  "name": "Fries Community Center",
   "logo": "",
   "location": {
     "physical": "316 W Main St, Fries, VA 24330",
@@ -9,30 +9,39 @@
     "longitude": -80.97858695259755
   },
   "contact": {
-    "website": "https://www.facebook.com/FriesFoodPantry/",
-    "phone": "(276) 744-2404",
-    "email": ""
+    "website": "https://www.facebook.com/FriesCommunityCenter",
+    "phone": "",
+    "email": "friescommunitycenter.va@gmail.com"
   },
   "hours": {
-    "monday": "",
+    "monday": "09:00 - 17:00",
     "tuesday": "",
-    "wednesday": "",
+    "wednesday": "09:00 - 17:00",
     "thursday": "",
-    "friday": "",
+    "friday": "09:00 - 17:00",
     "saturday": "",
     "sunday": ""
   },
-  "specialInstructions": "",
-  "types": [],
-  "services": [],
+  "specialInstructions": "Our food pantry is located straight through the dining hall doors and then directly to the left inside the gym.\nWe offer hot meals once a month. Check our Facebook page for dates and times.",
+  "types": [
+    "WALK_IN"
+  ],
+  "services": [
+    "CLIENT_CHOICE",
+    "CANNED_BOXED_GOODS",
+    "HOT_MEALS",
+    "BABY_PRODUCTS"
+  ],
   "eligibility": {
     "serviceArea": [
       "VA_GRAYSON"
     ],
-    "documents": [],
+    "documents": [
+      "NO_DOCUMENTATION"
+    ],
     "frequency": {
       "increment": "",
-      "period": ""
+      "period": "AS_NEEDED"
     }
   }
 }

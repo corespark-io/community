@@ -1,0 +1,44 @@
+{
+  "claimed": false,
+  "name": "Staples Food Pantry",
+  "logo": "",
+  "location": {
+    "physical": "472 N Main St, Mt Airy, NC 27030",
+    "mailing": "472 N Main St, Mt Airy, NC 27030",
+    "latitude": 36.50337857,
+    "longitude": -80.60876812
+  },
+  "contact": {
+    "website": "https://trinitymtairy.com/staples-food-pantry/",
+    "phone": "(336) 786-6067",
+    "email": "info@trinitymtairy.com"
+  },
+  "hours": {
+    "monday": "",
+    "tuesday": "",
+    "wednesday": "",
+    "thursday": "08:30 - 09:30",
+    "friday": "",
+    "saturday": "",
+    "sunday": ""
+  },
+  "specialInstructions": "",
+  "types": [
+    "DRIVE_THRU"
+  ],
+  "services": [
+    "PRE_PACKAGED_FOOD",
+    "FRESH_PRODUCE",
+    "HYGIENE_PRODUCTS"
+  ],
+  "eligibility": {
+    "serviceArea": [
+      "NC_SURRY"
+    ],
+    "documents": [],
+    "frequency": {
+      "increment": "1",
+      "period": "MONTH"
+    }
+  }
+}

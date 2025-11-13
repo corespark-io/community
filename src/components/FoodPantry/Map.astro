@@ -56,7 +56,7 @@ const allPantries = Object.entries(pantryModules).map(([path, data]) => {
       target="_blank"
       rel="noopener noreferrer">Submit or Update Your Pantry Info</a
     >.
-    <br>
+    <br />
     Have multiple pantries? Email us at
     <a
       class="org-link"
@@ -67,323 +67,333 @@ const allPantries = Object.entries(pantryModules).map(([path, data]) => {
     for bulk submissions.
   </p>
 
-  <p
-    style="margin: 0 0 10px 0;color:var(--text-disclaimer); opacity: 0.9;font-style: italic;
+  <p style="margin: 0 0 10px 0;">
+    Have feedback or found an issue? <a
+      class="org-link"
+      href="https://github.com/corespark-io/community/issues/new/choose"
+      target="_blank"
+      >Submit ideas or bug reports on GitHub</a
+    >.
+  </p>
+
+    <p
+      style="margin: 0 0 10px 0;color:var(--text-disclaimer); opacity: 0.9;font-style: italic;
                   "
-  >
-    <span style="font-weight: bold;">Disclaimer:</span>
-    Information on <span style="font-weight: bold;">unclaimed pantries</span> are
-    gathered from public sources on a <span
-    style="font-weight: 500;"
-    >best effort</span> basis and may not
-    reflect the most current details or may be inaccurate. Please contact the
-    unclaimed pantry directly to confirm hours, services, and requirements.
-  </p>
+    >
+      <span style="font-weight: bold;">Disclaimer:</span>
+      Information on <span style="font-weight: bold;">unclaimed pantries</span> are
+      gathered from public sources on a <span style="font-weight: 500;"
+        >best effort</span
+      > basis and may not reflect the most current details or may be inaccurate.
+      Please contact the unclaimed pantry directly to confirm hours, services, and
+      requirements.
+    </p>
 
-  <form id="search-and-filter-form" onsubmit="return false;">
-    <div class="search-inline">
-      <label for="search-input" class="visually-hidden"
-        >Search food pantries</label
-      >
-      <input
-        type="text"
-        id="search-input"
-        placeholder="Search by name, city, or zip..."
-        aria-label="Search food pantries"
-        autocomplete="off"
-      />
-    </div>
-
-    <details class="filter-accordion">
-      <summary>Filter Options</summary>
-      <div class="filter-groups-container">
-        <fieldset class="filter-group">
-          <legend>Services Offered</legend>
-          <div class="checkbox-container">
-            {
-              Object.entries(SERVICES_OFFERED).map(([key, label]) => (
-                <div class="checkbox-wrapper">
-                  <>
-                    <input
-                      type="checkbox"
-                      id={key}
-                      name="servicesOffered"
-                      value={key}
-                    />
-                    <label for={key}>{label}</label>
-                  </>
-                </div>
-              ))
-            }
-          </div>
-        </fieldset>
-        <fieldset class="filter-group">
-          <legend>Service Type</legend>
-          <div class="checkbox-container">
-            {
-              Object.entries(SERVICE_TYPES).map(([key, label]) => (
-                <div class="checkbox-wrapper">
-                  <>
-                    <input
-                      type="checkbox"
-                      id={key}
-                      name="serviceTypes"
-                      value={key}
-                    />
-                    <label for={key}>{label}</label>
-                  </>
-                </div>
-              ))
-            }
-          </div>
-        </fieldset>
-        <fieldset class="filter-group">
-          <legend>Service Area</legend>
-          <div class="checkbox-container">
-            {
-              Object.entries(SERVICE_AREAS).map(([key, label]) => (
-                <div class="checkbox-wrapper">
-                  <>
-                    <input
-                      type="checkbox"
-                      id={key}
-                      name="serviceAreas"
-                      value={key}
-                    />
-                    <label for={key}>{label}</label>
-                  </>
-                </div>
-              ))
-            }
-          </div>
-        </fieldset>
-        <fieldset class="filter-group">
-          <legend>Required Documentation</legend>
-          <div class="checkbox-container">
-            {
-              Object.entries(REQUIRED_DOCUMENTATION).map(([key, label]) => (
-                <div class="checkbox-wrapper">
-                  <>
-                    <input
-                      type="checkbox"
-                      id={key}
-                      name="requiredDocs"
-                      value={key}
-                    />
-                    <label for={key}>{label}</label>
-                  </>
-                </div>
-              ))
-            }
-          </div>
-        </fieldset>
+    <form id="search-and-filter-form" onsubmit="return false;">
+      <div class="search-inline">
+        <label for="search-input" class="visually-hidden"
+          >Search food pantries</label
+        >
+        <input
+          type="text"
+          id="search-input"
+          placeholder="Search by name, city, or zip..."
+          aria-label="Search food pantries"
+          autocomplete="off"
+        />
       </div>
-    </details>
-  </form>
-  <p id="no-results-message" style="display: none;">
-    No pantries found matching your criteria.
+
+      <details class="filter-accordion">
+        <summary>Filter Options</summary>
+        <div class="filter-groups-container">
+          <fieldset class="filter-group">
+            <legend>Services Offered</legend>
+            <div class="checkbox-container">
+              {
+                Object.entries(SERVICES_OFFERED).map(([key, label]) => (
+                  <div class="checkbox-wrapper">
+                    <>
+                      <input
+                        type="checkbox"
+                        id={key}
+                        name="servicesOffered"
+                        value={key}
+                      />
+                      <label for={key}>{label}</label>
+                    </>
+                  </div>
+                ))
+              }
+            </div>
+          </fieldset>
+          <fieldset class="filter-group">
+            <legend>Service Type</legend>
+            <div class="checkbox-container">
+              {
+                Object.entries(SERVICE_TYPES).map(([key, label]) => (
+                  <div class="checkbox-wrapper">
+                    <>
+                      <input
+                        type="checkbox"
+                        id={key}
+                        name="serviceTypes"
+                        value={key}
+                      />
+                      <label for={key}>{label}</label>
+                    </>
+                  </div>
+                ))
+              }
+            </div>
+          </fieldset>
+          <fieldset class="filter-group">
+            <legend>Service Area</legend>
+            <div class="checkbox-container">
+              {
+                Object.entries(SERVICE_AREAS).map(([key, label]) => (
+                  <div class="checkbox-wrapper">
+                    <>
+                      <input
+                        type="checkbox"
+                        id={key}
+                        name="serviceAreas"
+                        value={key}
+                      />
+                      <label for={key}>{label}</label>
+                    </>
+                  </div>
+                ))
+              }
+            </div>
+          </fieldset>
+          <fieldset class="filter-group">
+            <legend>Required Documentation</legend>
+            <div class="checkbox-container">
+              {
+                Object.entries(REQUIRED_DOCUMENTATION).map(([key, label]) => (
+                  <div class="checkbox-wrapper">
+                    <>
+                      <input
+                        type="checkbox"
+                        id={key}
+                        name="requiredDocs"
+                        value={key}
+                      />
+                      <label for={key}>{label}</label>
+                    </>
+                  </div>
+                ))
+              }
+            </div>
+          </fieldset>
+        </div>
+      </details>
+    </form>
+    <p id="no-results-message" style="display: none;">
+      No pantries found matching your criteria.
+    </p>
+
+    <Download />
+
+    <div id="map" class="map"></div>
   </p>
 
-  <Download />
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    crossorigin=""
+  />
+  <script
+    is:inline
+    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    crossorigin=""></script>
 
-  <div id="map" class="map"></div>
-</div>
+  <script
+    define:vars={{
+      allPantries, // This now passes the new [{id, data}] array
+      SERVICE_TYPES,
+      SERVICES_OFFERED,
+      SERVICE_AREAS,
+      REQUIRED_DOCUMENTATION,
+      FREQUENCY_OF_SERVICE,
+    }}
+  >
+    document.addEventListener("DOMContentLoaded", () => {
+      setTimeout(() => {
+        let map;
+        let markers = []; // This will store the Leaflet marker objects
 
-<link
-  rel="stylesheet"
-  href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-  crossorigin=""
-/>
-<script
-  is:inline
-  src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-  crossorigin=""></script>
+        // This variable will hold the ID from the URL search parameter
+        let pantryIdToOpen = null;
 
-<script
-  define:vars={{
-    allPantries, // This now passes the new [{id, data}] array
-    SERVICE_TYPES,
-    SERVICES_OFFERED,
-    SERVICE_AREAS,
-    REQUIRED_DOCUMENTATION,
-    FREQUENCY_OF_SERVICE,
-  }}
->
-  document.addEventListener("DOMContentLoaded", () => {
-    setTimeout(() => {
-      let map;
-      let markers = []; // This will store the Leaflet marker objects
+        // Get references to DOM elements
+        const mapElement = document.getElementById("map");
+        const form = document.getElementById("search-and-filter-form");
+        const input = document.getElementById("search-input");
+        const noResultsMessage = document.getElementById("no-results-message");
 
-      // This variable will hold the ID from the URL search parameter
-      let pantryIdToOpen = null;
+        // Main function to set up the map
+        const initializeMap = (center, zoom) => {
+          if (map) return; // Prevent re-initialization
 
-      // Get references to DOM elements
-      const mapElement = document.getElementById("map");
-      const form = document.getElementById("search-and-filter-form");
-      const input = document.getElementById("search-input");
-      const noResultsMessage = document.getElementById("no-results-message");
-
-      // Main function to set up the map
-      const initializeMap = (center, zoom) => {
-        if (map) return; // Prevent re-initialization
-
-        // Read the URL for a 'pantry' parameter to deep-link
-        try {
-          const urlParams = new URLSearchParams(window.location.search);
-          pantryIdToOpen = urlParams.get("pantry");
-        } catch (e) {
-          console.error("Could not read URL params", e);
-        }
-
-        // ================================
-        // == HELPER: Format 12-hour time
-        // ================================
-        const formatSingleTime = (time) => {
-          if (!time) return "";
-          const [hour, minute] = time.split(":");
-          const hourNum = parseInt(hour, 10);
-          const ampm = hourNum >= 12 ? "PM" : "AM";
-          const displayHour = hourNum % 12 === 0 ? 12 : hourNum % 12;
-          return `${displayHour}:${minute} ${ampm}`;
-        };
-
-        // ================================
-        // == HELPER: Format Time Range
-        // ================================
-        const formatTimeRange = (range) => {
-          if (!range || range.toLowerCase() === "closed") {
-            return "Closed";
+          // Read the URL for a 'pantry' parameter to deep-link
+          try {
+            const urlParams = new URLSearchParams(window.location.search);
+            pantryIdToOpen = urlParams.get("pantry");
+          } catch (e) {
+            console.error("Could not read URL params", e);
           }
-          if (range.toUpperCase() === "24_HOURS") {
-            return "Open 24 Hours";
-          }
-          const ranges = range.split(",");
-          const formattedRanges = ranges.map((r) => {
-            const trimmedRange = r.trim();
-            const [start, end] = trimmedRange.split("-");
-            if (!start || !end) {
-              return trimmedRange;
+
+          // ================================
+          // == HELPER: Format 12-hour time
+          // ================================
+          const formatSingleTime = (time) => {
+            if (!time) return "";
+            const [hour, minute] = time.split(":");
+            const hourNum = parseInt(hour, 10);
+            const ampm = hourNum >= 12 ? "PM" : "AM";
+            const displayHour = hourNum % 12 === 0 ? 12 : hourNum % 12;
+            return `${displayHour}:${minute} ${ampm}`;
+          };
+
+          // ================================
+          // == HELPER: Format Time Range
+          // ================================
+          const formatTimeRange = (range) => {
+            if (!range || range.toLowerCase() === "closed") {
+              return "Closed";
             }
-            return `${formatSingleTime(start)} - ${formatSingleTime(end)}`;
-          });
-          return formattedRanges.join(", ");
-        };
+            if (range.toUpperCase() === "24_HOURS") {
+              return "Open 24 Hours";
+            }
+            const ranges = range.split(",");
+            const formattedRanges = ranges.map((r) => {
+              const trimmedRange = r.trim();
+              const [start, end] = trimmedRange.split("-");
+              if (!start || !end) {
+                return trimmedRange;
+              }
+              return `${formatSingleTime(start)} - ${formatSingleTime(end)}`;
+            });
+            return formattedRanges.join(", ");
+          };
 
-        // ================================
-        // == HELPER: Format Hours Object
-        // ================================
-        const formatHours = (hours) => {
-          if (!hours) return "<span class='popup-no-info'>Not specified</span>";
-          const dayOrder = [
-            "monday",
-            "tuesday",
-            "wednesday",
-            "thursday",
-            "friday",
-            "saturday",
-            "sunday",
-          ];
-          const listItems = dayOrder
-            .map((day) => {
-              const label = day.charAt(0).toUpperCase() + day.slice(1);
-              const range = hours[day];
-              return `<li style='color:var(--text-color)'><strong>${label}:</strong> ${formatTimeRange(
-                range
-              )}</li>`;
-            })
-            .join("");
-          return `<ul style='margin: 4px 0 10px 0; padding: 0; list-style-type: none;'>${listItems}</ul>`;
-        };
+          // ================================
+          // == HELPER: Format Hours Object
+          // ================================
+          const formatHours = (hours) => {
+            if (!hours)
+              return "<span class='popup-no-info'>Not specified</span>";
+            const dayOrder = [
+              "monday",
+              "tuesday",
+              "wednesday",
+              "thursday",
+              "friday",
+              "saturday",
+              "sunday",
+            ];
+            const listItems = dayOrder
+              .map((day) => {
+                const label = day.charAt(0).toUpperCase() + day.slice(1);
+                const range = hours[day];
+                return `<li style='color:var(--text-color)'><strong>${label}:</strong> ${formatTimeRange(
+                  range
+                )}</li>`;
+              })
+              .join("");
+            return `<ul style='margin: 4px 0 10px 0; padding: 0; list-style-type: none;'>${listItems}</ul>`;
+          };
 
-        // ================================
-        // == HELPER: Format Frequency
-        // ================================
-        const formatFrequency = (freq, labelMap) => {
-          if (!freq || !freq.period || !labelMap)
-            return "<span class='popup-no-info'>Not specified</span>";
-          const periodLabel = labelMap[freq.period] || freq.period;
-          if (freq.period === "AS_NEEDED") {
+          // ================================
+          // == HELPER: Format Frequency
+          // ================================
+          const formatFrequency = (freq, labelMap) => {
+            if (!freq || !freq.period || !labelMap)
+              return "<span class='popup-no-info'>Not specified</span>";
+            const periodLabel = labelMap[freq.period] || freq.period;
+            if (freq.period === "AS_NEEDED") {
+              return periodLabel;
+            }
+            if (freq.increment && parseInt(freq.increment, 10) > 0) {
+              const times =
+                freq.increment === "1" ? "1 time" : `${freq.increment} times`;
+              return `${times} per ${periodLabel.toLowerCase()}`;
+            }
             return periodLabel;
-          }
-          if (freq.increment && parseInt(freq.increment, 10) > 0) {
-            const times =
-              freq.increment === "1" ? "1 time" : `${freq.increment} times`;
-            return `${times} per ${periodLabel.toLowerCase()}`;
-          }
-          return periodLabel;
-        };
+          };
 
-        // ================================
-        // == HELPER: Create List from Keys
-        // ================================
-        const createListFromKeys = (keys, labelMap) => {
-          if (!keys || keys.length === 0) {
-            return "<span class='popup-no-info' style='color:var(--text-color); opacity: 0.7;'>Not specified</span>";
-          }
-          const listItems = keys
-            .map(
-              (key) =>
-                `<li style='color:var(--text-color)'>${
-                  labelMap[key] || key
-                }</li>`
-            )
-            .join("");
-          return `<ul style='margin: 4px 0 10px 20px; padding: 0;'>${listItems}</ul>`;
-        };
+          // ================================
+          // == HELPER: Create List from Keys
+          // ================================
+          const createListFromKeys = (keys, labelMap) => {
+            if (!keys || keys.length === 0) {
+              return "<span class='popup-no-info' style='color:var(--text-color); opacity: 0.7;'>Not specified</span>";
+            }
+            const listItems = keys
+              .map(
+                (key) =>
+                  `<li style='color:var(--text-color)'>${
+                    labelMap[key] || key
+                  }</li>`
+              )
+              .join("");
+            return `<ul style='margin: 4px 0 10px 20px; padding: 0;'>${listItems}</ul>`;
+          };
 
-        // ================================
-        // == HELPER: Format Instructions
-        // ================================
-        const formatSpecialInstructions = (instructions) => {
-          if (!instructions) return "";
-          const listItems = instructions
-            .split("\n")
-            .map(
-              (item) =>
-                `<li style="color:var(--text-color); font-style: italic; font-size: 0.9em;">${item}</li>`
-            )
-            .join("");
-          // Use padding-left to show bullets
-          return `<b style="color:var(--text-color); display: block; margin-top: 10px;">Special Instructions:</b><ul style="margin: 4px 0 10px 0; padding-left: 20px;">${listItems}</ul>`;
-        };
+          // ================================
+          // == HELPER: Format Instructions
+          // ================================
+          const formatSpecialInstructions = (instructions) => {
+            if (!instructions) return "";
+            const listItems = instructions
+              .split("\n")
+              .map(
+                (item) =>
+                  `<li style="color:var(--text-color); font-style: italic; font-size: 0.9em;">${item}</li>`
+              )
+              .join("");
+            // Use padding-left to show bullets
+            return `<b style="color:var(--text-color); display: block; margin-top: 10px;">Special Instructions:</b><ul style="margin: 4px 0 10px 0; padding-left: 20px;">${listItems}</ul>`;
+          };
 
-        // ===========================================
-        // == MARKER UPDATE FUNCTION
-        // ===========================================
-        function updateMarkers(pantriesToDisplay) {
-          if (!map) return;
+          // ===========================================
+          // == MARKER UPDATE FUNCTION
+          // ===========================================
+          function updateMarkers(pantriesToDisplay) {
+            if (!map) return;
 
-          let markerToOpen = null; // Will hold the marker if it matches the URL ID
+            let markerToOpen = null; // Will hold the marker if it matches the URL ID
 
-          markers.forEach((marker) => marker.remove());
-          markers = [];
-          noResultsMessage.style.display =
-            pantriesToDisplay.length === 0 ? "block" : "none";
+            markers.forEach((marker) => marker.remove());
+            markers = [];
+            noResultsMessage.style.display =
+              pantriesToDisplay.length === 0 ? "block" : "none";
 
-          pantriesToDisplay.forEach((pantry) => {
-            // Data is now nested under the 'data' key
-            const pantryData = pantry.data;
+            pantriesToDisplay.forEach((pantry) => {
+              // Data is now nested under the 'data' key
+              const pantryData = pantry.data;
 
-            if (
-              typeof pantryData.location.latitude !== "number" ||
-              typeof pantryData.location.longitude !== "number"
-            )
-              return;
+              if (
+                typeof pantryData.location.latitude !== "number" ||
+                typeof pantryData.location.longitude !== "number"
+              )
+                return;
 
-            // This variable will hold the HTML for the popup
-            let popupContent = "";
+              // This variable will hold the HTML for the popup
+              let popupContent = "";
 
-            // Check if the pantry is claimed.
-            // We also check for 'undefined' to safely handle older
-            // data that doesn't have this property yet.
-            if (
-              pantryData.claimed === true ||
-              pantryData.claimed === undefined
-            ) {
-              // ================================
-              // == 1. BUILD FULL POPUP (CLAIMED)
-              // ================================
-              popupContent = `
+              // Check if the pantry is claimed.
+              // We also check for 'undefined' to safely handle older
+              // data that doesn't have this property yet.
+              if (
+                pantryData.claimed === true ||
+                pantryData.claimed === undefined
+              ) {
+                // ================================
+                // == 1. BUILD FULL POPUP (CLAIMED)
+                // ================================
+                popupContent = `
                 ${
                   pantryData.logo
                     ? `<img src="${pantryData.logo}" alt="${pantryData.name} logo" style="width: 100%; height: auto; border-radius: 4px; margin-bottom: 10px;">`
@@ -449,11 +459,11 @@ const allPantries = Object.entries(pantryModules).map(([path, data]) => {
                   )}
                 </div>
               `;
-            } else {
-              // ===================================
-              // == 2. BUILD LIMITED POPUP (UNCLAIMED)
-              // ===================================
-              popupContent = `
+              } else {
+                // ===================================
+                // == 2. BUILD LIMITED POPUP (UNCLAIMED)
+                // ===================================
+                popupContent = `
                 ${
                   pantryData.logo
                     ? `<img src="${pantryData.logo}" alt="${pantryData.name} logo" style="width: 100%; height: auto; border-radius: 4px; margin-bottom: 10px;">`
@@ -508,368 +518,369 @@ const allPantries = Object.entries(pantryModules).map(([path, data]) => {
                   </p>
                 </div>
               `;
+              }
+
+              // --- The rest of the function continues as normal ---
+
+              const popupOptions = {
+                className: "custom-pantry-popup",
+                maxWidth: 300, // Keeps it from getting too wide
+              };
+
+              const marker = L.marker([
+                pantryData.location.latitude,
+                pantryData.location.longitude,
+              ])
+                .addTo(map)
+                .bindPopup(popupContent, popupOptions);
+
+              // Make marker accessible
+              const markerElement = marker.getElement();
+              if (markerElement) {
+                markerElement.setAttribute("role", "button");
+                markerElement.setAttribute("tabindex", "0");
+                markerElement.setAttribute(
+                  "aria-label",
+                  `Food Pantry: ${pantryData.name}`
+                );
+
+                markerElement.addEventListener("keydown", (e) => {
+                  if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault();
+                    marker.openPopup();
+                  }
+                });
+              }
+
+              markers.push(marker);
+
+              // Check if this marker is the one from the share link
+              if (pantry.id === pantryIdToOpen) {
+                markerToOpen = marker;
+              }
+            });
+
+            // Logic to open the correct popup or set map bounds
+            if (markerToOpen) {
+              // If a pantry ID was in the URL, open it
+              map.setView(markerToOpen.getLatLng(), 15);
+              markerToOpen.openPopup();
+              pantryIdToOpen = null; // Clear ID so it doesn't re-open
+            } else if (markers.length === 1) {
+              // Default behavior: zoom to single marker
+              map.setView(markers[0].getLatLng(), 15);
+            } else if (markers.length > 1) {
+              // Default behavior: fit all markers
+              const group = L.featureGroup(markers);
+              map.fitBounds(group.getBounds().pad(0.2));
             }
+          }
 
-            // --- The rest of the function continues as normal ---
+          // ============================================
+          // == FILTER FUNCTION
+          // ============================================
+          function handleSearchAndFilter() {
+            const query = input.value.toLowerCase().trim();
 
-            const popupOptions = {
-              className: "custom-pantry-popup",
-              maxWidth: 300, // Keeps it from getting too wide
+            const getSelectedValues = (name) =>
+              Array.from(
+                form.querySelectorAll(`input[name="${name}"]:checked`)
+              ).map((el) => el.value);
+
+            const selected = {
+              services: getSelectedValues("servicesOffered"),
+              types: getSelectedValues("serviceTypes"),
+              areas: getSelectedValues("serviceAreas"),
+              docs: getSelectedValues("requiredDocs"),
             };
 
-            const marker = L.marker([
-              pantryData.location.latitude,
-              pantryData.location.longitude,
-            ])
-              .addTo(map)
-              .bindPopup(popupContent, popupOptions);
+            const filteredPantries = allPantries.filter((pantry) => {
+              // Data is now nested
+              const pantryData = pantry.data;
 
-            // Make marker accessible
-            const markerElement = marker.getElement();
-            if (markerElement) {
-              markerElement.setAttribute("role", "button");
-              markerElement.setAttribute("tabindex", "0");
-              markerElement.setAttribute(
-                "aria-label",
-                `Food Pantry: ${pantryData.name}`
+              const textMatch =
+                query === "" ||
+                pantryData.name.toLowerCase().includes(query) ||
+                pantryData.location.physical.toLowerCase().includes(query);
+              const servicesMatch =
+                selected.services.length === 0 ||
+                selected.services.every((service) =>
+                  pantryData.services?.includes(service)
+                );
+              const typesMatch =
+                selected.types.length === 0 ||
+                selected.types.some((type) => pantryData.types?.includes(type));
+              const areasMatch =
+                selected.areas.length === 0 ||
+                selected.areas.some((area) =>
+                  pantryData.eligibility?.serviceArea?.includes(area)
+                );
+              const docsMatch =
+                selected.docs.length === 0 ||
+                selected.docs.some((doc) =>
+                  pantryData.eligibility?.documents?.includes(doc)
+                );
+              return (
+                textMatch &&
+                servicesMatch &&
+                typesMatch &&
+                areasMatch &&
+                docsMatch
               );
+            });
 
-              markerElement.addEventListener("keydown", (e) => {
-                if (e.key === "Enter" || e.key === " ") {
-                  e.preventDefault();
-                  marker.openPopup();
-                }
-              });
+            updateMarkers(filteredPantries);
+          } // --- End of handleSearchAndFilter ---
+
+          // --- MAP INITIALIZATION ---
+
+          let tileLayer; // 👈 Store the tile layer
+          const lightTiles =
+            "https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}.png";
+          const darkTiles =
+            "https://{s}.basemaps.cartocdn.com/rastertiles/dark_all/{z}/{x}/{y}.png";
+          const cartoAttribution =
+            '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>';
+
+          map = L.map(mapElement).setView(center, zoom);
+
+          // This function switches the theme
+          const setMapTheme = (isDark) => {
+            const newUrl = isDark ? darkTiles : lightTiles;
+            if (!tileLayer) {
+              // On first load, create the layer
+              tileLayer = L.tileLayer(newUrl, {
+                attribution: cartoAttribution,
+              }).addTo(map);
+            } else {
+              // On theme change, just update the URL
+              tileLayer.setUrl(newUrl);
             }
-
-            markers.push(marker);
-
-            // Check if this marker is the one from the share link
-            if (pantry.id === pantryIdToOpen) {
-              markerToOpen = marker;
-            }
-          });
-
-          // Logic to open the correct popup or set map bounds
-          if (markerToOpen) {
-            // If a pantry ID was in the URL, open it
-            map.setView(markerToOpen.getLatLng(), 15);
-            markerToOpen.openPopup();
-            pantryIdToOpen = null; // Clear ID so it doesn't re-open
-          } else if (markers.length === 1) {
-            // Default behavior: zoom to single marker
-            map.setView(markers[0].getLatLng(), 15);
-          } else if (markers.length > 1) {
-            // Default behavior: fit all markers
-            const group = L.featureGroup(markers);
-            map.fitBounds(group.getBounds().pad(0.2));
-          }
-        }
-
-        // ============================================
-        // == FILTER FUNCTION
-        // ============================================
-        function handleSearchAndFilter() {
-          const query = input.value.toLowerCase().trim();
-
-          const getSelectedValues = (name) =>
-            Array.from(
-              form.querySelectorAll(`input[name="${name}"]:checked`)
-            ).map((el) => el.value);
-
-          const selected = {
-            services: getSelectedValues("servicesOffered"),
-            types: getSelectedValues("serviceTypes"),
-            areas: getSelectedValues("serviceAreas"),
-            docs: getSelectedValues("requiredDocs"),
+            // Also toggle a class on the map div for CSS
+            mapElement.classList.toggle("map-dark-mode", isDark);
           };
 
-          const filteredPantries = allPantries.filter((pantry) => {
-            // Data is now nested
-            const pantryData = pantry.data;
+          // Listen for system theme changes
+          const matcher = window.matchMedia("(prefers-color-scheme: dark)");
+          matcher.addEventListener("change", (e) => setMapTheme(e.matches));
 
-            const textMatch =
-              query === "" ||
-              pantryData.name.toLowerCase().includes(query) ||
-              pantryData.location.physical.toLowerCase().includes(query);
-            const servicesMatch =
-              selected.services.length === 0 ||
-              selected.services.every((service) =>
-                pantryData.services?.includes(service)
+          // Set the initial theme
+          setMapTheme(matcher.matches);
+
+          // This listener handles the Share Button functionality
+          map.on("popupopen", (e) => {
+            // Find the button inside the popup that just opened
+            const shareBtn = e.popup.getElement().querySelector(".share-btn");
+            if (!shareBtn) return;
+
+            const originalText = shareBtn.textContent;
+            shareBtn.addEventListener("click", () => {
+              const pantryId = shareBtn.dataset.pantryId;
+              const url = new URL(
+                window.location.origin + window.location.pathname
               );
-            const typesMatch =
-              selected.types.length === 0 ||
-              selected.types.some((type) => pantryData.types?.includes(type));
-            const areasMatch =
-              selected.areas.length === 0 ||
-              selected.areas.some((area) =>
-                pantryData.eligibility?.serviceArea?.includes(area)
-              );
-            const docsMatch =
-              selected.docs.length === 0 ||
-              selected.docs.some((doc) =>
-                pantryData.eligibility?.documents?.includes(doc)
-              );
-            return (
-              textMatch &&
-              servicesMatch &&
-              typesMatch &&
-              areasMatch &&
-              docsMatch
-            );
+              url.searchParams.set("pantry", pantryId);
+
+              // Use the Clipboard API to copy the link
+              navigator.clipboard
+                .writeText(url.href)
+                .then(() => {
+                  shareBtn.textContent = "Copied!";
+                  shareBtn.disabled = true;
+                  // Reset after 2 seconds
+                  setTimeout(() => {
+                    shareBtn.textContent = originalText;
+                    shareBtn.disabled = false;
+                  }, 2000);
+                })
+                .catch((err) => {
+                  console.error("Failed to copy link: ", err);
+                  shareBtn.textContent = "Failed to copy";
+                });
+            });
           });
 
-          updateMarkers(filteredPantries);
-        } // --- End of handleSearchAndFilter ---
+          // This is the main filter listener for "search as you type"
+          form.addEventListener("input", handleSearchAndFilter);
+          handleSearchAndFilter(); // Initial load
+        };
+        // --- End of initializeMap ---
 
-        // --- MAP INITIALIZATION ---
-
-        let tileLayer; // 👈 Store the tile layer
-        const lightTiles =
-          "https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}.png";
-        const darkTiles =
-          "https://{s}.basemaps.cartocdn.com/rastertiles/dark_all/{z}/{x}/{y}.png";
-        const cartoAttribution =
-          '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>';
-
-        map = L.map(mapElement).setView(center, zoom);
-
-        // This function switches the theme
-        const setMapTheme = (isDark) => {
-          const newUrl = isDark ? darkTiles : lightTiles;
-          if (!tileLayer) {
-            // On first load, create the layer
-            tileLayer = L.tileLayer(newUrl, {
-              attribution: cartoAttribution,
-            }).addTo(map);
-          } else {
-            // On theme change, just update the URL
-            tileLayer.setUrl(newUrl);
-          }
-          // Also toggle a class on the map div for CSS
-          mapElement.classList.toggle("map-dark-mode", isDark);
+        // --- Geolocation ---
+        const onGeoSuccess = (position) => {
+          initializeMap(
+            [position.coords.latitude, position.coords.longitude],
+            13
+          );
         };
 
-        // Listen for system theme changes
-        const matcher = window.matchMedia("(prefers-color-scheme: dark)");
-        matcher.addEventListener("change", (e) => setMapTheme(e.matches));
+        const onGeoError = () => {
+          initializeMap([36.5, -80.5], 9);
+        };
 
-        // Set the initial theme
-        setMapTheme(matcher.matches);
+        if ("geolocation" in navigator) {
+          navigator.geolocation.getCurrentPosition(onGeoSuccess, onGeoError);
+        } else {
+          onGeoError();
+        }
+      }, 0);
+    });
+  </script>
 
-        // This listener handles the Share Button functionality
-        map.on("popupopen", (e) => {
-          // Find the button inside the popup that just opened
-          const shareBtn = e.popup.getElement().querySelector(".share-btn");
-          if (!shareBtn) return;
-
-          const originalText = shareBtn.textContent;
-          shareBtn.addEventListener("click", () => {
-            const pantryId = shareBtn.dataset.pantryId;
-            const url = new URL(
-              window.location.origin + window.location.pathname
-            );
-            url.searchParams.set("pantry", pantryId);
-
-            // Use the Clipboard API to copy the link
-            navigator.clipboard
-              .writeText(url.href)
-              .then(() => {
-                shareBtn.textContent = "Copied!";
-                shareBtn.disabled = true;
-                // Reset after 2 seconds
-                setTimeout(() => {
-                  shareBtn.textContent = originalText;
-                  shareBtn.disabled = false;
-                }, 2000);
-              })
-              .catch((err) => {
-                console.error("Failed to copy link: ", err);
-                shareBtn.textContent = "Failed to copy";
-              });
-          });
-        });
-
-        // This is the main filter listener for "search as you type"
-        form.addEventListener("input", handleSearchAndFilter);
-        handleSearchAndFilter(); // Initial load
-      };
-      // --- End of initializeMap ---
-
-      // --- Geolocation ---
-      const onGeoSuccess = (position) => {
-        initializeMap(
-          [position.coords.latitude, position.coords.longitude],
-          13
-        );
-      };
-
-      const onGeoError = () => {
-        initializeMap([36.5, -80.5], 9);
-      };
-
-      if ("geolocation" in navigator) {
-        navigator.geolocation.getCurrentPosition(onGeoSuccess, onGeoError);
-      } else {
-        onGeoError();
-      }
-    }, 0);
-  });
-</script>
-
-<style>
-  /* All styles are now in one place */
-  .container {
-    max-width: 900px;
-    margin: 2rem auto;
-    padding: 1rem;
-  }
-  .gradient-text {
-    text-align: center;
-    margin-bottom: 2rem;
-  }
-  .map {
-    background: var(--color-background);
-    height: 500px;
-    width: 100%;
-    border-radius: 12px;
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
-    margin-top: 1.5rem;
-  }
-  .org-link {
-    color: var(--accent-color);
-    text-decoration: none;
-    font-weight: bold;
-  }
-  .org-link:hover {
-    text-decoration: underline;
-  }
-
-  .search-inline {
-    display: flex;
-  }
-  .search-inline input {
-    flex-grow: 1;
-    padding: 0.75rem;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-  }
-  .filter-accordion {
-    border: 1px solid #eee;
-    border-radius: 8px;
-    margin-top: 1rem;
-  }
-  .filter-accordion summary {
-    font-weight: bold;
-    padding: 1rem;
-    cursor: pointer;
-  }
-  .filter-groups-container {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
-    padding: 1rem;
-    border-top: 1px solid #eee;
-  }
-  @media (min-width: 768px) {
-    .filter-groups-container {
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  <style>
+    /* All styles are now in one place */
+    .container {
+      max-width: 900px;
+      margin: 2rem auto;
+      padding: 1rem;
     }
-  }
-  .filter-group {
-    border: none;
-    padding: 0;
-    margin: 0;
-  }
-  .filter-group legend {
-    font-weight: bold;
-    padding-bottom: 0.5rem;
-  }
-  .checkbox-container {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-  }
-  .checkbox-wrapper {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
+    .gradient-text {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    .map {
+      background: var(--color-background);
+      height: 500px;
+      width: 100%;
+      border-radius: 12px;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+      margin-top: 1.5rem;
+    }
+    .org-link {
+      color: var(--accent-color);
+      text-decoration: none;
+      font-weight: bold;
+    }
+    .org-link:hover {
+      text-decoration: underline;
+    }
 
-  /*
+    .search-inline {
+      display: flex;
+    }
+    .search-inline input {
+      flex-grow: 1;
+      padding: 0.75rem;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+    .filter-accordion {
+      border: 1px solid #eee;
+      border-radius: 8px;
+      margin-top: 1rem;
+    }
+    .filter-accordion summary {
+      font-weight: bold;
+      padding: 1rem;
+      cursor: pointer;
+    }
+    .filter-groups-container {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+      padding: 1rem;
+      border-top: 1px solid #eee;
+    }
+    @media (min-width: 768px) {
+      .filter-groups-container {
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      }
+    }
+    .filter-group {
+      border: none;
+      padding: 0;
+      margin: 0;
+    }
+    .filter-group legend {
+      font-weight: bold;
+      padding-bottom: 0.5rem;
+    }
+    .checkbox-container {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .checkbox-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    /*
   == LEAFLET POPUP CUSTOMIZATION ==
   */
-  :global(.leaflet-popup-content-wrapper) {
-    background: var(--color-background) !important;
-  }
+    :global(.leaflet-popup-content-wrapper) {
+      background: var(--color-background) !important;
+    }
 
-  :global(.leaflet-popup-tip) {
-    background: var(--color-background) !important;
-  }
+    :global(.leaflet-popup-tip) {
+      background: var(--color-background) !important;
+    }
 
-  :global(.leaflet-popup-content) {
-    max-height: 250px; /* Constrains the height */
-    overflow-y: auto; /* Adds a scrollbar if needed */
-    margin: 15px 24px 15px 20px !important; /* Fixes padding */
-  }
+    :global(.leaflet-popup-content) {
+      max-height: 250px; /* Constrains the height */
+      overflow-y: auto; /* Adds a scrollbar if needed */
+      margin: 15px 24px 15px 20px !important; /* Fixes padding */
+    }
 
-  :global(.custom-pantry-popup .popup-header) {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 10px;
-  }
+    :global(.custom-pantry-popup .popup-header) {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
 
-  /*
+    /*
   == PANTRY NAME TITLE STYLES ==
   */
 
-  :global(.custom-pantry-popup .pantry-name-title) {
-    color: var(--accent-color);
-    margin: 0;
-    flex-grow: 1;
-  }
+    :global(.custom-pantry-popup .pantry-name-title) {
+      color: var(--accent-color);
+      margin: 0;
+      flex-grow: 1;
+    }
 
-  /*
+    /*
 == SHARE BUTTON STYLES ==
 */
-  :global(.custom-pantry-popup .share-btn) {
-    display: block;
-    width: 3.5rem;
-    text-align: center;
-    padding: 10px;
-    margin-top: 0;
-    background-color: var(--accent-color);
-    color: var(--text-color);
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    font-weight: bold;
-    font-size: 0.9em;
-    flex-shrink: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  :global(.custom-pantry-popup .share-btn:hover) {
-    opacity: 0.8;
-  }
-  :global(.custom-pantry-popup .share-btn:disabled) {
-    background-color: #aaa;
-    cursor: default;
-    opacity: 0.7;
-  }
+    :global(.custom-pantry-popup .share-btn) {
+      display: block;
+      width: 3.5rem;
+      text-align: center;
+      padding: 10px;
+      margin-top: 0;
+      background-color: var(--accent-color);
+      color: var(--text-color);
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 0.9em;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    :global(.custom-pantry-popup .share-btn:hover) {
+      opacity: 0.8;
+    }
+    :global(.custom-pantry-popup .share-btn:disabled) {
+      background-color: #aaa;
+      cursor: default;
+      opacity: 0.7;
+    }
 
-  .visually-hidden {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    white-space: nowrap;
-    border: 0;
-  }
-</style>
+    .visually-hidden {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+  </style>
+</div>
