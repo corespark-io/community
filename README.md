@@ -224,7 +224,7 @@ The Member JSON schema is simply but intended to provide authoritative informati
   * **verified_by**: The name of the person who verified the member.
   * **verification_expiry**: The date the verification expires (MM/DD/YYYY). This should match exactly the expiration date in the `Community Members List` spreadsheet.
 * **status**: The current status of the member.
-  * **code**: The status code of the member. See [const.ts](./src/consts.ts) (`MEMBERSHIP_STATUSES`) for valid codes.
+  * **code**: The status code of the member. See [consts.ts](./src/consts.ts) (`MEMBERSHIP_STATUSES`) for valid codes.
   * **message**: If this is not set, `Status Details` will not be shown. This is intended to provide context on the status code. It is required for all statuses except `ACTIVE` and `EXPIRED`.
   * **updated_by**: The name of the person who last updated the member's status.
   * **updated_on**: The date the status was last updated (MM/DD/YYYY).
