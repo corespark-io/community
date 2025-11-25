@@ -1,0 +1,15 @@
+{
+    "name": "Burkett Box",
+    "id": "fp.nc-ashe-001",
+    "verification": {
+        "verified_on": "11/11/2025",
+        "verified_by": "Mitchell Stanton",
+        "verification_expiry": "11/11/2028"
+    },
+    "status": {
+        "code": "ACTIVE",
+        "message": "Member is active and in good standing.",
+        "updated_by": "Mitchell Stanton",
+        "updated_on": "11/11/2025"
+    }
+}
