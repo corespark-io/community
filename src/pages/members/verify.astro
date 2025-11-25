@@ -272,7 +272,19 @@ if (Astro.request.method === "GET" && memberIdFromQuery) {
                         size="16"
                         style="vertical-align: text-bottom; margin-right: 4px;"
                     />
-                    <a href="mailto:community-member-reports@corespark.io?subject=Member%20Report&body=Member%20ID:%20{memberData.id}%0AVerification%20Link:%20https://community.corespark.io/members/verify?id={memberData.id}" target="_blank" rel="noopener noreferrer">
+                    <a href={`mailto:community-member-reports@corespark.io?subject=[Member%20Report]:%20${memberData.name}&body=${encodeURIComponent(`Hello Community Team,
+
+I Am Submitting A Report for ${memberData.name}. Please find the relevant details below.
+
+- Member ID: ${memberData.id}
+- Verification Link: https://community.corespark.io/members/verify?id=${memberData.id}
+- This is a : Commendation/Complaint (Please Delete As Applicable)
+- I would like to remain anonymous: Yes/No (Please Delete As Applicable)
+
+
+Report Reason: 
+[Provide Reason Here]
+`)}`} target="_blank" rel="noopener noreferrer">
                       Email
                     </a>
                   </li>
