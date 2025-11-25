@@ -393,42 +393,22 @@ const allPantries = Object.entries(pantryModules).map(
             return `<b style="color:var(--text-color); display: block; margin-top: 10px;">Special Instructions:</b><ul style="margin: 4px 0 10px 0; padding-left: 20px;">${listItems}</ul>`;
           };
 
-        // ===========================================
-        // == MARKER UPDATE FUNCTION
-        // ===========================================
-        function updateMarkers(pantriesToDisplay) {
-          if (!map) return;
+          // ===========================================
+          // == MARKER UPDATE FUNCTION
+          // ===========================================
+          function updateMarkers(pantriesToDisplay) {
+            if (!map) return;
 
-          let markerToOpen = null; // Will hold the marker if it matches the URL ID
+            let markerToOpen = null; // Will hold the marker if it matches the URL ID
 
-          markers.forEach((marker) => marker.remove());
-          markers = [];
-          noResultsMessage.style.display =
-            pantriesToDisplay.length === 0 ? "block" : "none";
+            markers.forEach((marker) => marker.remove());
+            markers = [];
+            noResultsMessage.style.display =
+              pantriesToDisplay.length === 0 ? "block" : "none";
 
-          pantriesToDisplay.forEach((pantry) => {
-            // Data is now nested under the 'data' key
-            const pantryData = pantry.data;
-
-            if (
-              typeof pantryData.location.latitude !== "number" ||
-              typeof pantryData.location.longitude !== "number"
-            )
-              return;
-
-            // This variable will hold the HTML for the popup
-            let popupContent = "";
-
-            // Helper to check if all hours are closed
-            const allHoursClosed = (hours) => {
-              if (!hours) return true;
-              return Object.values(hours).every(
-                (val) =>
-                  !val ||
-                  val.toLowerCase() === "closed" ||
-                  val.toUpperCase() === "CLOSED"
-              );
-            };
+            pantriesToDisplay.forEach((pantry) => {
+              // Data is now nested under the 'data' key
+              const pantryData = pantry.data;
 
               if (
                 typeof pantryData.location.latitude !== "number" ||
