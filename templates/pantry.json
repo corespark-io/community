@@ -1,7 +1,7 @@
 {
     "claimed": false,
     "name": "PLACEHOLDER_NAME",
-    "logo": "PLACEHOLDER_LOGO_URL",
+    "id": "PLACEHOLDER_LOGO_URL",
     "location": {
         "physical": "PLACEHOLDER_PHYSICAL",
         "mailing": "PLACEHOLDER_MAILING",
