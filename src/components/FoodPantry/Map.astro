@@ -137,15 +137,13 @@ const allPantries = Object.entries(pantryModules).map(
               {
                 Object.entries(SERVICES_OFFERED).map(([key, label]) => (
                   <div class="checkbox-wrapper">
-                    <div>
-                      <input
-                        type="checkbox"
-                        id={key}
-                        name="servicesOffered"
-                        value={key}
-                      />
-                      <label for={key}>{label}</label>
-                    </div>
+                    <input
+                      type="checkbox"
+                      id={key}
+                      name="servicesOffered"
+                      value={key}
+                    />
+                    <label for={key}>{label}</label>
                   </div>
                 ))
               }
@@ -388,7 +386,7 @@ const allPantries = Object.entries(pantryModules).map(
               .split("\n")
               .map(
                 (item) =>
-                  `<li style="color:var(--text-color); font-style: italic; font-size: 0.9em;">${item}</li>`
+                  `<li style="color:var(--text-color); font-style: italic; font-size: 1em;">${item}</li>`
               )
               .join("");
             // Use padding-left to show bullets
