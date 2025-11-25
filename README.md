@@ -85,7 +85,7 @@ Our first major resource is the Food Pantry Locator. To make contributing data a
 {  
   "claimed": false,  
   "name": "Pantry Name",  
-  "logo": "[https://url-to-logo.png](https://url-to-logo.png)",  
+  "id": "<prefix>.<unique-id>",  
   "location": {  
     "physical": "123 Main St, City, ST 12345",  
     "mailing": "123 Main St, City, ST 12345",  
@@ -93,7 +93,7 @@ Our first major resource is the Food Pantry Locator. To make contributing data a
     "longitude": -81.12345  
   },  
   "contact": {  
-    "website": "[https://www.pantry-website.com](https://www.pantry-website.com)",  
+    "website": "https://www.pantry-website.com",  
     "phone": "555-555-5555",  
     "email": "contact@pantry-website.com"  
   },  
@@ -121,9 +121,128 @@ Our first major resource is the Food Pantry Locator. To make contributing data a
 ```
 
 * **claimed**: (`true`/`false`) Whether this data has been verified by the pantry owner.  
+* **id**: The unique member ID created for the pantry. It can be found in the `Community Members List`. Use the format `<prefix>.<unique-id>`, where `<prefix>` is `fp` for food pantries.
 * **hours**: Use `"09:00-12:00"` for times, `"Closed"`, `"24_HOURS"`, or comma-separate for split hours.  
 * **specialInstructions**: Use `n` for line breaks, which will become bullet points.  
 * **types, services, serviceArea, documents**: These all use keys from the `/src/consts.ts` file.
+
+## **Community Membership**
+
+The Corespark community offers free memberships to individuals and organizations who wish to participate in and contribute to our shared resources. This can be in the form of listing your organization (such as a food pantry) or signing up as a volunteer. Memberships help us maintain accurate records and ensure we have a method of verification.
+
+### Obtaining Membership
+
+Community Membership is automatically granted to organizations that submit their information through our resource submission forms. (Such as the Food Pantry Claim Form) 
+
+#### Cost of Membership
+
+This Membership is **free of charge**.
+
+#### Requirements
+
+The membership does not require anything from you beyond:
+- Making sure that your membership doesn't expire
+- Ensuring that you maintain a good standing within the community.
+
+### Verification
+
+In the Corespark Community, we want to ensure that trustworthiness and reliability are upheld for all members. Therefore, we have a simple verification process in place to maintain the integrity of our community.
+
+Anybody has the ability to verify the membership status of an organization or individual by using our [Community Member Verification Tool](https://community.corespark.io/members/verify). This tool allows you to enter a member ID and see the current status of that member. 
+
+### Membership Expiration
+
+To keep our community active and engaged, memberships have an expiration date. Members will receive notifications as their expiration date approaches, prompting them to renew their membership. Expiration of membership can be found via the [Community Member Verification Tool](https://community.corespark.io/members/verify).
+
+### Reporting Members
+
+If you encounter any issues or have concerns about a community member's behavior or actions, we encourage you to report them for review. We take all reports seriously and will investigate them thoroughly.
+
+Additionally, if you feel that a member has positively contributed to the community, we welcome positive reports as well!
+
+#### Appealing a report
+
+Any member is able to appeal a report against them. To do so, please email [community-member-reports@corespark.io](community-member-reports@corespark.io) with your appeal using this template:
+
+* Subject: `Appeal of Member Report - [Your Member Name or ID] - [Report ID]`
+* Body:
+  ```
+  Dear Corespark Community Team,
+  
+  I am writing to formally appeal the report filed against my membership in the Corespark Community. Below are the details of my membership and the report in question:
+  
+  - Member Name: [Your Member Name]
+  - Member ID: [Your Member ID]
+  - Report ID: [Report ID]
+  
+  I believe that the report was made in error and would like to provide the following information to support my appeal:
+  
+  <!-- Provide your explanation and any supporting evidence here -->
+  
+  I kindly request a thorough review of my case and the opportunity to discuss this matter further. Please let me know if there are any additional steps I need to take or information I need to provide.
+  
+  Thank you for your attention to this matter. I look forward to your response.
+  
+  Sincerely,
+  [Your Name]
+  ```
+
+### **Onboarding/Updating Members**
+
+The membership system is as follows:
+
+1. Update the `Community Members List` spreadsheet with the new or updated member information.
+2. Create a new JSON file, using the [Member JSON Schema](#member-json-schema), in the `/src/data/members/<level>` directory using the member's unique ID as the filename (e.g., `fp.nc-county-000.json` for a food pantry).
+  - `<level>` Should be the membership level, such as `pantry`, `volunteer`, etc.
+
+### **Member JSON Schema**
+
+The Member JSON schema is simply but intended to provide authoritative information.
+
+```json
+{
+    "name": "Member Name",
+    "id": "id.unique-id-000",
+    "verification": {
+        "verified_on": "01/01/2025",
+        "verified_by": "Your Name",
+        "verification_expiry": "01/01/2999"
+    },
+    "status": {
+        "code": "ACTIVE",
+        "message": "This is required, except for active or expired statuses. We always recommend providing context.",
+        "updated_by": "Your Name",
+        "updated_on": "01/01/2025"
+    }
+}
+```
+
+* **name**: The official name of the member (individual or organization).
+* **id**: The unique member ID created for the member. Use the format `id.unique-id-000`.
+* **verification**: Information about when and by whom the member was verified, along with the verification expiry date.
+  * **verified_on**: The date the member was verified (MM/DD/YYYY).
+  * **verified_by**: The name of the person who verified the member.
+  * **verification_expiry**: The date the verification expires (MM/DD/YYYY). This should match exactly the expiration date in the `Community Members List` spreadsheet.
+* **status**: The current status of the member.
+  * **code**: The status code of the member. See [const.ts](./src/consts.ts) (`MEMBERSHIP_STATUSES`) for valid codes.
+  * **message**: If this is not set, `Status Details` will not be shown. This is intended to provide context on the status code. It is required for all statuses except `ACTIVE` and `EXPIRED`.
+  * **updated_by**: The name of the person who last updated the member's status.
+  * **updated_on**: The date the status was last updated (MM/DD/YYYY).
+
+### Renewal
+
+The renewal process is quite simple. When a member's verification expiry date is approaching, they simply need to email [community@corespark.io](mailto:community@corespark.io) to request a renewal. 
+
+> [!IMPORTANT]
+> You should include any details that you'd like updated in this request to ensure that your information is accurate.
+
+The community team will then review the member's information and update their verification and expiration date accordingly.
+
+#### Expired Status
+
+If a member's status is set to `EXPIRED`, their status will forever be `EXPIRED` no matter what status code is set. This is to ensure that expired members cannot be accidentally reactivated without going through the full verification process again.
+
+
 
 ## **License**
 
