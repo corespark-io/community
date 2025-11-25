@@ -197,7 +197,7 @@ The membership system is as follows:
 
 ### **Member JSON Schema**
 
-The Member JSON schema is simply but intended to provide authoritative information.
+The Member JSON schema is simple but intended to provide authoritative information.
 
 ```json
 {
