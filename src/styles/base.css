@@ -83,7 +83,6 @@ body {
   --primary-gradient: linear-gradient(to right, #03fff6, #00a1ff, #00ff8f);
   --dark-color: #111111;
   --light-color: #fcfafa;
-  --white-color: #fcfafa;
   --accent-color: #00a1ff;
   --card-bg: #ffffff;
   --text-color: #111111;
@@ -93,10 +92,6 @@ body {
   --shadow-color: rgba(0, 0, 0, 0.1);
   --marker-color: #00ff8f;
   --marker-shadow: 0 0 10px rgba(0, 161, 255, 0.7);
-  --positive-green: #74cc74;
-  --neutral-yellow: #efc384;
-  --error-color: #d9534f;
-  --error-color-soft: #f2dede;
 }
 
 /* Dark theme variables */
@@ -106,7 +101,6 @@ body {
     --light-color: #121212;
     --card-bg: #1e1e1e;
     --text-color: #f0f0f0;
-    --text-disclaimer: #aaaaaa;
     --input-bg: #2a2a2a;
     --input-border: #444;
     --shadow-color: rgba(0, 0, 0, 0.3);
@@ -237,17 +231,15 @@ section {
 }
 
 .required {
-  color: var(--error-color);
+  color: #d9534f;
 }
 
 .error {
-  border-color: var(--error-color);
-  color: var(--text-color);
-  font-weight: 500;
+  border-color: #d9534f;
 }
 
 .error-message {
-  color: var(--error-color);
+  color: #d9534f;
   font-size: 0.8rem;
   margin-top: 0.3rem;
   display: block;
@@ -262,8 +254,8 @@ section {
 }
 
 .form-error-message {
-  background-color: var(--error-color);
-  color: var(--light-color);
+  background-color: #f2dede;
+  color: #a94442;
   padding: 1rem;
   margin-bottom: 1rem;
   border-radius: 4px;
