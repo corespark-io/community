@@ -32,25 +32,36 @@ const today = new Date();
         </p>
       </div>
 
-      <!-- Site links -->
-      <div class="footer-links">
-        <h2>Site Links</h2>
-        <ul>
-          <li>
-            <a href="/contribute">Contribute</a>
-          </li>
-          <li>
-            <a href="/privacy-policy">Privacy Policy</a>
-          </li>
-        </ul>
-      </div>
-
       <!-- Services -->
       <div class="footer-services">
         <h2>Our Community Resources</h2>
         <ul>
           <li>
-            <a href="/food-pantries"> Food Pantry Map </a>
+            <a href="/food-pantries" class="scroll-to-top"> Food Pantry Map </a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Site links -->
+      <div class="footer-links">
+        <h2>Site Links</h2>
+        <ul>
+          <!-- General -->
+          <h3>General</h3>
+          <li>
+            <a href="/contribute" class="scroll-to-top">Contribute</a>
+          </li>
+          <!-- Member Services -->
+          <h3>Member Services</h3>
+          <li>
+            <a href="/members/verify" class="scroll-to-top">
+              Verify a member
+            </a>
+          </li>
+          <!-- Legal -->
+          <h3>Legal</h3>
+          <li>
+            <a href="/privacy-policy" class="scroll-to-top">Privacy Policy</a>
           </li>
         </ul>
       </div>
@@ -152,6 +163,16 @@ const today = new Date();
     </div>
   </div>
 </footer>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll(".scroll-to-top").forEach((link) => {
+      link.addEventListener("click", () => {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      });
+    });
+  });
+</script>
 
 <style>
   .site-footer {
