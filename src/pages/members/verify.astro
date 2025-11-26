@@ -1,0 +1,916 @@
+---
+export const prerender = false;
+import Layout from "../../layouts/Layout.astro";
+import { Icon } from 'astro-icon/components';
+import {
+  MEMBERSHIP_PREFIXES,
+  MEMBERSHIP_LEVEL_NAMES,
+  MEMBERSHIP_LEVEL_DESCRIPTIONS,
+  REPORT_TYPES,
+  REPORT_STATUSES
+ } from "../../consts";
+import "../../styles/base.css";
+
+const githubIssueBaseURL = "https://github.com/corespark-io/community/issues/"
+
+// --- Data Fetching Logic ---
+async function findMember(id: string) {
+  if (!id) {
+    return { data: null, error: "No Member ID provided." };
+  }
+
+  const prefix = id.split(".")[0];
+  const memberTypeDir = MEMBERSHIP_PREFIXES[prefix];
+
+  if (!memberTypeDir) {
+    return { data: null, error: `Invalid member ID prefix: '${prefix}'.` };
+  }
+
+  const path = `/src/data/members/${memberTypeDir}/${id}.json`;
+  const memberFiles = import.meta.glob("/src/data/members/**/*.json");
+
+  if (memberFiles[path]) {
+    const memberModule = await memberFiles[path]();
+    // The actual data is on the 'default' property for JSON imports
+    return { data: memberModule.default, error: null };
+  } else {
+    return { data: null, error: `Member with ID '${id}' not found.` };
+  }
+}
+
+// --- Request Handling ---
+const url = Astro.url;
+const wantsJson = url.searchParams.get("json") === "true";
+let memberIdFromQuery = url.searchParams.get("id");
+
+// Handle JSON API request
+if (wantsJson) {
+  if (!memberIdFromQuery) {
+    return new Response(JSON.stringify({ error: "Member ID is required via the 'id' query parameter." }), {
+      status: 400,
+      headers: { "Content-Type": "application/json" },
+    });
+  }
+  const { data, error } = await findMember(memberIdFromQuery);
+
+  if (data) {
+    const isExpired =
+      new Date(data.verification.verification_expiry) < new Date();
+    if (isExpired) {
+      data.status = {
+        code: "Expired",
+        message: `Membership expired on ${new Date(
+          data.verification.verification_expiry
+        ).toLocaleDateString()}.`,
+        updated_by: "System",
+        updated_on: new Date().toISOString(),
+      };
+    }
+  }
+  const responseBody = error ? { error } : data;
+  const status = error ? 404 : 200;
+
+  return new Response(JSON.stringify(responseBody), {
+    status,
+    headers: { "Content-Type": "application/json" },
+  });
+}
+
+// --- Page Rendering Logic ---
+let memberData = null;
+let error = null;
+let memberId = memberIdFromQuery || "";
+
+if (Astro.request.method === "GET" && memberIdFromQuery) {
+  const { data: getData, error: getError } = await findMember(memberIdFromQuery);
+  memberData = getData;
+  error = getError;
+} else if (Astro.request.method === "POST") {
+  const contentType = Astro.request.headers.get("content-type");
+  if (
+    contentType === "application/x-www-form-urlencoded" ||
+    contentType === "multipart/form-data"
+  ) {
+    try {
+      const formData = await Astro.request.formData();
+      memberId = formData.get("memberId") as string;
+      const { data: postData, error: postError } = await findMember(memberId);
+      memberData = postData;
+      error = postError;
+    } catch (e) {
+      console.error(e);
+      error = "An error occurred while verifying the member.";
+    }
+  } else {
+    error = "Invalid request. Please try submitting the form again.";
+  }
+}
+---
+
+<Layout title="Verify Member">
+  <main class="container">
+    <h1>Member Verification</h1>
+    <div class="help-info">
+    <p>Enter a member ID to verify their status.</p>
+    <p>
+      You can find a member's ID on their membership certificate, or by one of the following methods:
+      <ul>
+        <li>If the member is a food pantry, click on the member status link on their pantry details card in the <a href="/food-pantries" target="_blank" rel="noopener noreferrer">Food Pantry Map</a>.</li>
+      </ul>
+    </p>
+    </div>
+
+    <form method="POST" data-astro-reload>
+      <label for="memberId">Member ID</label>
+      
+      <input
+        type="text"
+        id="memberId"
+        name="memberId"
+        value={memberId}
+        class="search-box"
+        required
+      />
+      <button type="submit">Verify</button>
+    </form>
+
+    {
+      error && (
+        <div class="error">
+          <p>{error}</p>
+        </div>
+      )
+    }
+
+    {
+      memberData &&
+        (() => {
+          const isExpired =
+            new Date(memberData.verification.verification_expiry) < new Date();
+          const statusText = isExpired ? "Expired" : memberData.status.code;
+
+          // Map status codes to CSS classes for styling
+          const statusClassMap = {
+            ACTIVE: "status-active",
+            PENDING: "status-pending",
+            FLAGGED: "status-flagged",
+            BANNED: "status-banned",
+            SUSPENDED: "status-suspended",
+            Expired: "status-expired",
+          };
+          const statusClass = statusClassMap[statusText] || "";
+
+          // Sort reports by date, latest first
+          if (memberData.reports && Array.isArray(memberData.reports)) {
+            memberData.reports.sort(
+              (a, b) =>
+                new Date(b.submitted_on).getTime() -
+                new Date(a.submitted_on).getTime()
+            );
+          }
+
+          // Use the MEMBERSHIP_LEVEL_NAMES map in consts to get the membership level name
+          const membershipLevelName =
+            MEMBERSHIP_LEVEL_NAMES[memberData.id.split(".")[0]] ||
+            "Unknown Membership Level";
+
+          // Calculate report counts
+          let positiveReportsCount = 0;
+          let negativeReportsCount = 0;
+              
+          if (memberData && memberData.reports && Array.isArray(memberData.reports)) {
+             const appealStatuses = ["APPEALED", "APPEAL_REVIEW"];
+                   
+             positiveReportsCount = memberData.reports.filter(
+               (report: any) => report.type === "POSITIVE" && !appealStatuses.includes(report.status)
+               && report.status !== "WITHDRAWN"
+             ).length;
+                   
+             negativeReportsCount = memberData.reports.filter(
+               (report: any) => report.type === "NEGATIVE" && !appealStatuses.includes(report.status)
+               && report.status !== "WITHDRAWN"
+             ).length;
+           }
+
+           // --- Calculate Meta Score ---
+          let score = 5 - (negativeReportsCount * 0.5) + (positiveReportsCount * 0.25);
+          score = Math.max(0, Math.min(5, score)); // Clamp score between 0 and 5
+
+          return (
+            <div class="card">
+              <h2>Verification Status for <span class="card-title"
+              >{memberData.name}
+              </span>
+              </h2>
+              {memberData.reports && (
+                <div class="meta-score-section">
+                  <div class="meta-score-header">
+                    <h4>Meta Score</h4>
+                    <details class="score-help-details">
+                      <summary aria-label="How the meta score is calculated">
+                        <Icon name="mdi:help-circle-outline" size={20} />
+                      </summary>
+                      <div class="score-explanation">
+                        <p>The Meta Score provides a quick overview of a member's reputation.</p>
+                        <ul>
+                          <li>All members start with a base score of <strong>5.0</strong>.</li>
+                          <li>Each negative report deducts <strong>0.5</strong> points.</li>
+                          <li>Each positive report adds <strong>0.25</strong> points.</li>
+                          <li>Appealed and withdrawn reports do not affect the score.</li>
+                          <li>The score is capped between 0.0 and 5.0.</li>
+                        </ul>
+                      </div>
+                    </details>
+                  </div>
+                  <span class:list={[
+                    "meta-score",
+                    { "score-good": score >= 4.0 },
+                    { "score-average": score < 4.0 && score >= 2.5 },
+                    { "score-bad": score < 2.5 },
+                  ]}>
+                    {score.toFixed(1)}
+                  </span>
+                </div>
+              )}
+              <p>
+                <strong>ID:</strong> 
+                <span
+                    class="card-member-id"
+                >
+                    {memberData.id}
+                    </span>
+              </p>
+              <p>
+                <strong>Membership Type:</strong> 
+                <span
+                    class="card-membership-type"
+                >
+                    {membershipLevelName}
+                    </span>
+              </p>
+              <p>
+                <strong>Membership Description:</strong>
+                <span
+                    class="card-membership-description"
+                >{" "}
+                {
+                  MEMBERSHIP_LEVEL_DESCRIPTIONS[
+                    memberData.id.split(".")[0]
+                  ] || "No description available."
+                }
+                </span>
+              <p>
+                <strong>Status:</strong>
+                <span class:list={["status-badge", statusClass]}>
+                  {statusText}
+                </span>
+              </p>
+
+              {memberData.status && memberData.status.message && (
+                <details class="status-details">
+                  <summary>Show Status Details</summary>
+                  <div class="details-content">
+                    <h4>Status Message</h4>
+                    <p>{memberData.status.message}</p>
+                    <h4>Last Updated By</h4>
+                    <p>
+                      {memberData.status.updated_by} on{" "}
+                      {new Date(
+                        memberData.status.updated_on
+                      ).toLocaleDateString()}
+                    </p>
+                  </div>
+                </details>
+              )}
+
+              {memberData.reports && (
+                <details class="details-dropdown">
+                  <summary>
+                    Reports (<span class="positive-count">{positiveReportsCount}</span> / <span class="negative-count">{negativeReportsCount}</span>)
+                  </summary>
+              <div>
+                {memberData.reports.length > 0 ? (
+                <>
+                <div class="report-info">
+                    <h4>About Reports</h4>
+                    <p>
+                      Reports are submitted by community members and reviewed by administrators. The color codes indicate the report's status:
+                    </p>
+                    <ul> 
+                      <li><span class="positive-count">Green (+1):</span> A positive commendation.</li>
+                      <li><span class="negative-count">Red (-1):</span> A negative complaint.</li> 
+                      <li><span class="neutral-count">Yellow (0):</span> A report that is currently under appeal or has been appealed.</li>
+                      <li><span class="withdrawn-count">Gray (0):</span> A report that was withdrawn by the submitter.</li>
+                    </ul>
+                  </div>
+                  <ul class="reports-list details-content">
+                    {memberData.reports.map((report: any, index: number) => {
+                      const isAppealed =
+                        report.status === "APPEALED" ||
+                        report.status === "APPEAL_REVIEW";
+                      return (
+                      <li class:list={["report-item", { "report-hidden": index >= 3 }]}>
+                        <div class="report-header">
+                          <span>
+                            Report ID: {report.id}
+                          </span>
+                          <span
+                            >
+                                Status: {REPORT_STATUSES[report.status]}
+                            </span>
+                            <span
+                            class:list={[
+                              "report-type",
+                              { "report-type-positive": report.type === "POSITIVE" && !isAppealed && report.status !== "WITHDRAWN" },
+                              { "report-type-negative": report.type === "NEGATIVE" && !isAppealed && report.status !== "WITHDRAWN" },
+                              { "report-type-appealed": isAppealed && report.status !== "WITHDRAWN" },
+                              { "report-type-withdrawn": report.status === "WITHDRAWN"},
+                            ]}
+                          >
+                            {
+                            isAppealed || report.status === "WITHDRAWN"
+                                ? REPORT_TYPES.NEUTRAL
+                                : REPORT_TYPES[report.type] || "Unknown Type"
+                            }
+                          </span>
+                        </div>
+                        <p class="report-details">{report.details}</p>
+                        {report.issue && (
+                          <small class="report-github-issue">
+                            GitHub Issue: <a
+                            href=`${githubIssueBaseURL}${report.issue}`
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            >#{report.issue}</a>
+                          </small>
+                        )}
+                        <br>
+                        {report.notes && (
+                          <small class="report-admin-notes">
+                            Admin Notes: {report.notes}
+                          </small>
+                        )}
+                        <small class="report-submitter">
+                          Submitted by: {report.submitted_by} on{" "}
+                            {new Date(report.submitted_on).toDateString()}
+                        </small>
+                      </li>
+                      );
+                    })}
+                  </ul>
+                  {memberData.reports.length > 3 && (
+                      <button
+                        type="button"
+                        id="show-more-reports"
+                        class="show-more-btn"
+                      >
+                        Show More
+                      </button>
+                    )}
+                  </>
+                ) : (
+                  <p
+                  class="details-content reports-no-data"
+                  >No reports have been submitted for this member.</p>
+                )}
+              </div>
+            </details>
+          )}
+
+              <p>
+                <strong>Verified By:</strong>
+                <span
+                    class="card-admin"
+                    >{" "}
+                {memberData.verification.verified_by}
+                </span>
+              </p>
+              <p>
+                <strong>Verified On:</strong>
+                <span
+                    class="card-admin"
+                    >{" "}
+                {new Date(
+                  memberData.verification.verified_on
+                ).toLocaleDateString()}
+                </span>
+              </p>
+              <p>
+                <strong>Verification Expires:</strong>
+                <span
+                    class={isExpired ? "status-badge card-admin-expired" : "card-admin"}
+                >{" "}
+                {new Date(
+                  memberData.verification.verification_expiry
+                ).toLocaleDateString()}
+                </span>
+              </p>
+
+              <div class="report-member">
+                <h3>
+                    <Icon
+                        name="mdi:badge-account-alert"
+                        size="20"
+                        style="vertical-align: text-bottom; margin-right: 4px;"
+                    />
+                    Report Member</h3>
+                <p>
+                  If you believe this member is violating community guidelines, or, you would like to give them a commendation,
+                  you can report them using one of the following methods:
+                <ul>
+                  <li>
+                    <Icon
+                        name="mdi:github"
+                        size="16"
+                        style="vertical-align: text-bottom; margin-right: 4px;"
+                    />
+                    <a
+                      href={`https://github.com/corespark-io/community/issues/new?template=member_report.md&title=[MEMBER REPORT] ${encodeURIComponent(memberData.name)}&body=Member%20ID:%20${encodeURIComponent(memberData.id)}%0AVerification%20Link:%20https://community.corespark.io/members/verify?id=${encodeURIComponent(memberData.id)}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      GitHub Issue
+                    </a>
+                  </li>
+                  <li>
+                    <Icon
+                        name="mdi:email"
+                        size="16"
+                        style="vertical-align: text-bottom; margin-right: 4px;"
+                    />
+                    <a href={`mailto:community-member-reports@corespark.io?subject=[Member%20Report]:%20${memberData.name}&body=${encodeURIComponent(`Hello Community Team,
+
+I Am Submitting A Report for ${memberData.name}. Please find the relevant details below.
+
+- Member ID: ${memberData.id}
+- Verification Link: https://community.corespark.io/members/verify?id=${memberData.id}
+- This is a : Commendation/Complaint (Please Delete As Applicable)
+- I would like to remain anonymous: Yes/No (Please Delete As Applicable)
+
+
+Report Reason: 
+[Provide Reason Here]
+`)}`} target="_blank" rel="noopener noreferrer">
+                      Email
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          );
+        })()
+    }
+  </main>
+</Layout>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const showMoreBtn = document.getElementById("show-more-reports");
+    if (!showMoreBtn) return;
+
+    const reportList = document.querySelector(".reports-list");
+    if (!reportList) return;
+
+    let hiddenReports = Array.from(
+      reportList.querySelectorAll(".report-item.report-hidden")
+    );
+
+    showMoreBtn.addEventListener("click", () => {
+      const toShow = hiddenReports.slice(0, 3);
+      toShow.forEach((item) => item.classList.remove("report-hidden"));
+
+      hiddenReports = hiddenReports.slice(3);
+
+      if (hiddenReports.length === 0) {
+        showMoreBtn.style.display = "none";
+      }
+    });
+  });
+</script>
+
+<style>
+  .container {
+    max-width: 600px;
+    margin: 0.15rem auto;
+    padding: 1rem;
+  }
+  .help-info {
+    margin-bottom: 0.8rem;
+    font-size: 0.95rem;
+    color: var(--text-disclaimer);
+  }
+  .help-info p {
+    margin-bottom: 0.35rem;
+  }
+  .help-info ul {
+    padding-left: 1.5rem;
+
+  }
+  .help-info a {
+    color: var(--accent-color);
+    text-decoration: none;
+  }
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+  label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 700;
+  }
+  .search-box {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid var(--color-border);
+    background: var(--color-background);
+    color: var(--color-text);
+    border-radius: 5px;
+    transition: border-color 0.3s;
+  }
+  .search-box:focus {
+    outline: none;
+    border-color: var(--accent-color);
+  }
+  button {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 5px;
+    background: var(--accent-color);
+    color: var(--light-color);
+    font-weight: 700;
+    cursor: pointer;
+    transition: opacity 0.2s;
+  }
+  button:hover {
+    opacity: 0.9;
+  }
+  .error {
+    background-color: var(--error-color-soft);
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border: 1px solid var(--error-color);
+    border-radius: 4px;
+  }
+  .error p {
+    color: var(--text-color);
+    margin: 0;
+  }
+  .card {
+    border-radius: 10px;
+    padding: 2rem;
+    border: 1px solid var(--input-border);
+  }
+  .card h2 {
+    text-align: left;
+    margin-bottom: 1.5rem;
+    font-size: 1.8rem;
+  }
+  .card p {
+    margin-bottom: 1rem;
+    font-size: 1rem;
+  }
+    .card-title {
+        font-weight: 600;
+        color: var(--accent-color);
+    }
+    .card-member-id {
+        padding: 0.2rem 0.4rem;
+        border-radius: 4px;
+        color: var(--text-disclaimer);
+    }
+    .card-membership-type {
+        font-weight: 500;
+        color: var(--text-disclaimer);
+    }
+    .card-membership-description {
+        font-style: italic;
+        color: var(--text-disclaimer);
+    }
+    .card-admin {
+        font-weight: 500;
+        color: var(--text-disclaimer);
+    }
+    .card-admin-expired {
+        font-weight: 500;
+        color: var(--error-color);
+    }
+  .status-details {
+    margin: 1rem 0;
+  }
+  .status-details summary {
+    cursor: pointer;
+    font-weight: bold;
+    color: var(--text-disclaimer);
+  }
+  .details-content {
+    border-left: 2px solid var(--input-border);
+    padding-left: 1rem;
+    margin-top: 0.5rem;
+  }
+  .details-content p {
+    margin: 0;
+    line-height: 1.6;
+  }
+
+  .details-dropdown {
+    margin: 1.5rem 0;
+  }
+
+  .reports-no-data {
+    font-style: italic;
+    font-weight: 400;
+    color: var(--text-disclaimer);
+    border-top: 2px solid var(--input-border);
+  }
+
+  .report-info ul {
+    padding-left: 1.5rem;
+    list-style: none;
+  }
+  .report-info li {
+    font-size: 0.95rem;
+    color: var(--text-color);
+    margin-bottom: 0.25rem;
+  }
+
+  .nested-details {
+    margin-top: 1rem;
+    background-color: var(--color-background-soft);
+    border-radius: 4px;
+    padding: 0.5rem 1rem;
+  }
+
+  .nested-details summary {
+    font-weight: bold;
+    cursor: pointer;
+    color: var(--text-disclaimer);
+  }
+
+  .score-explanation {
+    padding-top: 0.5rem;
+    font-size: 0.9rem;
+  }
+
+  .score-explanation ul {
+    list-style-type: disc;
+    padding-left: 1.5rem;
+    margin: 0.5rem 0;
+  }
+
+  .details-dropdown summary {
+      cursor: pointer;
+      font-weight: bold;
+      color: var(--text-disclaimer);
+  }
+
+  .meta-score-section {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 1rem;
+    background-color: var(--color-background-soft);
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    margin: 1.5rem 0; 
+    border: 1px solid var(--color-border);
+    width: fit-content;
+  }
+
+  .meta-score-header {
+    display: flex;
+    align-items: center;
+    gap: 0.15rem;
+    position: relative;
+  }
+
+  .meta-score-header h4 {
+    margin: 0;
+    font-size: 1.1rem;
+  }
+
+  .score-help-details {
+    display: inline-block;
+    position: relative;
+  }
+
+  .score-help-details summary {
+    list-style: none;
+    cursor: pointer;
+    color: var(--text-disclaimer);
+  }
+  .score-help-details summary::-webkit-details-marker {
+    display: none; /* Hide the default triangle in Chrome/Safari */
+  }
+
+.score-explanation {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+    background-color: var(--color-background);
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    padding: 1rem;
+    width: 280px;
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    max-width: 280px;
+    width: calc(100vw - 48px);
+}
+
+  .score-explanation p, .score-explanation ul {
+    margin: 0;
+  }
+  .score-explanation ul {
+    list-style-position: inside;
+    padding-left: 0;
+    margin-top: 0.5rem;
+  }
+
+  .meta-score {
+    font-weight: bold;
+    padding: 0.3rem 0.8rem;
+    border-radius: 6px;
+    font-size: 1.2rem;
+    color: white;
+    align-self: center;
+    width: fit-content;
+  }
+
+  .score-good {
+    background-color: var(--positive-green);
+  }
+
+  .score-average {
+    background-color: var(--neutral-yellow);
+    color: #212529;
+  }
+
+  .score-bad {
+    background-color: var(--error-color);
+  }
+
+  .positive-count {
+    color: var(--positive-green);
+    font-weight: bold;
+  }
+
+  .negative-count {
+    color: var(--error-color);
+    font-weight: bold;
+  }
+    .neutral-count {
+        color: var(--neutral-yellow);
+        font-weight: bold;
+    }
+    .withdrawn-count {
+        color: var(--text-disclaimer);
+        font-weight: bold;
+    }
+
+  .reports-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .report-item {
+    background: var(--color-background);
+    padding: 1rem;
+    border-radius: 6px;
+    border: 1px solid var(--color-border);
+  }
+
+  .report-item.report-hidden {
+    display: none;
+  }
+
+  .show-more-btn {
+    display: block;
+    width: 100%;
+    margin-top: 1rem;
+    padding: 0.5rem;
+    font-weight: bold;
+    color: var(--accent-color);
+    background-color: transparent;
+    border: 1px solid var(--accent-color);
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .show-more-btn:hover {
+    background-color: var(--accent-color);
+    color: var(--light-color);
+  }
+
+  .report-header {
+    font-size: 0.9rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .report-type {
+    font-weight: bold;
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    color: white;
+  }
+
+  .report-type-withdrawn {
+    background-color: var(--text-disclaimer);
+  }
+
+  .report-type-positive {
+    background-color: var(--positive-green);
+  }
+
+  .report-type-appealed {
+    background-color: var(--neutral-yellow);
+    color: #212529; 
+  }
+
+  .report-type-negative {
+    background-color: var(--error-color);
+  }
+
+  .report-date {
+    font-size: 0.8rem;
+    color: var(--color-text-soft);
+    text-align: right;
+  }
+
+  .report-admin-notes {
+    display: block;
+    margin-top: 0.5rem;
+    font-size: 0.85rem;
+    color: var(--text-disclaimer);
+    font-style: italic;
+  }
+
+  .report-details {
+    margin: 0 0 0.5rem;
+  }
+
+  .report-submitter {
+    font-size: 0.8rem;
+    color: var(--color-text-soft);
+    font-style: italic;
+  }
+  .report-member {
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--input-border);
+  }
+  .report-member ul {
+    padding: 0;
+    list-style-type: none;
+  }
+  .report-member a {
+    color: var(--accent-color);
+    text-decoration: none;
+  }
+  .status-badge {
+    display: inline-block;
+    padding: 0.25em 0.6em;
+    font-size: 0.85em;
+    font-weight: 700;
+    line-height: 1;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: 0.25rem;
+    margin-left: 0.5rem;
+  }
+  .status-active {
+    color: #fff;
+    background-color: var(--positive-green);
+  }
+  .status-pending {
+      color: #fff;
+      background-color: #17a2b8;
+  }
+  .status-flagged {
+    color: #212529;
+    background-color: #ffc107;
+  }
+  .status-banned,
+  .status-suspended,
+  .status-expired {
+    color: #fff;
+    background-color: var(--error-color);
+  }
+</style>
