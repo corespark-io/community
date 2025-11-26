@@ -93,6 +93,8 @@ body {
   --shadow-color: rgba(0, 0, 0, 0.1);
   --marker-color: #00ff8f;
   --marker-shadow: 0 0 10px rgba(0, 161, 255, 0.7);
+  --positive-green: #74cc74;
+  --neutral-yellow: #efc384;
   --error-color: #d9534f;
   --error-color-soft: #f2dede;
 }
