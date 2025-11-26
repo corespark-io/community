@@ -1,214 +1,268 @@
 ---
-export const prerender = false;
 import Layout from "../../layouts/Layout.astro";
-import { Icon } from 'astro-icon/components';
+import { Icon } from "astro-icon/components";
 import {
   MEMBERSHIP_PREFIXES,
   MEMBERSHIP_LEVEL_NAMES,
   MEMBERSHIP_LEVEL_DESCRIPTIONS,
   REPORT_TYPES,
-  REPORT_STATUSES
- } from "../../consts";
+  REPORT_STATUSES,
+} from "../../consts";
 import "../../styles/base.css";
 
-const githubIssueBaseURL = "https://github.com/corespark-io/community/issues/"
+const memberFiles = import.meta.glob("/src/data/members/**/*.json", {
+  eager: true,
+});
 
-// --- Data Fetching Logic ---
-async function findMember(id: string) {
-  if (!id) {
-    return { data: null, error: "No Member ID provided." };
+// Convert the glob object into a Lookup Map (Key = ID, Value = Data)
+const memberMap = {};
+Object.values(memberFiles).forEach((mod: any) => {
+  const member = mod.default;
+  if (member && member.id) {
+    memberMap[member.id] = member;
   }
+});
 
-  const prefix = id.split(".")[0];
-  const memberTypeDir = MEMBERSHIP_PREFIXES[prefix];
-
-  if (!memberTypeDir) {
-    return { data: null, error: `Invalid member ID prefix: '${prefix}'.` };
-  }
-
-  const path = `/src/data/members/${memberTypeDir}/${id}.json`;
-  const memberFiles = import.meta.glob("/src/data/members/**/*.json");
-
-  if (memberFiles[path]) {
-    const memberModule = await memberFiles[path]();
-    // The actual data is on the 'default' property for JSON imports
-    return { data: memberModule.default, error: null };
-  } else {
-    return { data: null, error: `Member with ID '${id}' not found.` };
-  }
-}
-
-// --- Request Handling ---
-const url = Astro.url;
-const wantsJson = url.searchParams.get("json") === "true";
-let memberIdFromQuery = url.searchParams.get("id");
-
-// Handle JSON API request
-if (wantsJson) {
-  if (!memberIdFromQuery) {
-    return new Response(JSON.stringify({ error: "Member ID is required via the 'id' query parameter." }), {
-      status: 400,
-      headers: { "Content-Type": "application/json" },
-    });
-  }
-  const { data, error } = await findMember(memberIdFromQuery);
-
-  if (data) {
-    const isExpired =
-      new Date(data.verification.verification_expiry) < new Date();
-    if (isExpired) {
-      data.status = {
-        code: "Expired",
-        message: `Membership expired on ${new Date(
-          data.verification.verification_expiry
-        ).toLocaleDateString()}.`,
-        updated_by: "System",
-        updated_on: new Date().toISOString(),
-      };
-    }
-  }
-  const responseBody = error ? { error } : data;
-  const status = error ? 404 : 200;
-
-  return new Response(JSON.stringify(responseBody), {
-    status,
-    headers: { "Content-Type": "application/json" },
-  });
-}
-
-// --- Page Rendering Logic ---
-let memberData = null;
-let error = null;
-let memberId = memberIdFromQuery || "";
-
-if (Astro.request.method === "GET" && memberIdFromQuery) {
-  const { data: getData, error: getError } = await findMember(memberIdFromQuery);
-  memberData = getData;
-  error = getError;
-} else if (Astro.request.method === "POST") {
-  const contentType = Astro.request.headers.get("content-type");
-  if (
-    contentType === "application/x-www-form-urlencoded" ||
-    contentType === "multipart/form-data"
-  ) {
-    try {
-      const formData = await Astro.request.formData();
-      memberId = formData.get("memberId") as string;
-      const { data: postData, error: postError } = await findMember(memberId);
-      memberData = postData;
-      error = postError;
-    } catch (e) {
-      console.error(e);
-      error = "An error occurred while verifying the member.";
-    }
-  } else {
-    error = "Invalid request. Please try submitting the form again.";
-  }
-}
+// Pass these constants to the client-side script
+const clientData = {
+  memberMap,
+  MEMBERSHIP_LEVEL_NAMES,
+  MEMBERSHIP_LEVEL_DESCRIPTIONS,
+  REPORT_TYPES,
+  REPORT_STATUSES,
+};
 ---
 
 <Layout title="Verify Member">
   <main class="container">
     <h1>Member Verification</h1>
     <div class="help-info">
-    <p>Enter a member ID to verify their status.</p>
-    <p>
-      You can find a member's ID on their membership certificate, or by one of the following methods:
-      <ul>
-        <li>If the member is a food pantry, click on the member status link on their pantry details card in the <a href="/food-pantries" target="_blank" rel="noopener noreferrer">Food Pantry Map</a>.</li>
-      </ul>
-    </p>
+      <p>Enter a member ID to verify their status.</p>
+      <p>
+        You can find a member's ID on their membership certificate, or by one of
+        the following methods:
+        <ul>
+          <li>
+            If the member is a food pantry, click on the member status link on
+            their pantry details card in the <a
+              href="/food-pantries"
+              target="_blank"
+              rel="noopener noreferrer">Food Pantry Map</a
+            >.
+          </li>
+        </ul>
+      </p>
     </div>
 
-    <form method="POST" data-astro-reload>
+    <form method="GET" action="" id="verify-form">
       <label for="memberId">Member ID</label>
-      
-      <input
-        type="text"
-        id="memberId"
-        name="memberId"
-        value={memberId}
-        class="search-box"
-        required
-      />
+      <input type="text" id="memberId" name="id" class="search-box" required />
       <button type="submit">Verify</button>
     </form>
 
-    {
-      error && (
-        <div class="error">
-          <p>{error}</p>
-        </div>
-      )
+    <!-- Container for Error Messages -->
+    <div id="error-container" class="error" style="display: none;">
+      <p id="error-message"></p>
+    </div>
+
+    <!-- Container for The Result Card (Populated by JS) -->
+    <div id="result-container"></div>
+  </main>
+</Layout>
+
+<script define:vars={{ clientData }}>
+  const githubIssueBaseURL =
+    "https://github.com/corespark-io/community/issues/";
+
+  function getQueryParam(param) {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get(param);
+  }
+
+  // --- Main Logic on Load ---
+  document.addEventListener("DOMContentLoaded", () => {
+    const memberId = getQueryParam("id");
+    const input = document.getElementById("memberId");
+
+    // Fill input if ID exists
+    if (memberId) {
+      input.value = memberId;
+      verifyMember(memberId);
+    }
+  });
+
+  function verifyMember(id) {
+    const errorContainer = document.getElementById("error-container");
+    const resultContainer = document.getElementById("result-container");
+    const errorMsg = document.getElementById("error-message");
+
+    // Reset UI
+    errorContainer.style.display = "none";
+    resultContainer.innerHTML = "";
+
+    // LOOKUP: Check the map we generated at build time
+    const data = clientData.memberMap[id];
+
+    if (!data) {
+      errorMsg.textContent = `Member with ID '${id}' not found.`;
+      errorContainer.style.display = "block";
+      return;
     }
 
-    {
-      memberData &&
-        (() => {
-          const isExpired =
-            new Date(memberData.verification.verification_expiry) < new Date();
-          const statusText = isExpired ? "Expired" : memberData.status.code;
+    // Process Expiry Logic
+    const isExpired =
+      new Date(data.verification.verification_expiry) < new Date();
 
-          // Map status codes to CSS classes for styling
-          const statusClassMap = {
-            ACTIVE: "status-active",
-            PENDING: "status-pending",
-            FLAGGED: "status-flagged",
-            BANNED: "status-banned",
-            SUSPENDED: "status-suspended",
-            Expired: "status-expired",
-          };
-          const statusClass = statusClassMap[statusText] || "";
+    // Inject dynamic Status if expired
+    if (isExpired) {
+      data.status = {
+        ...data.status,
+        code: "Expired",
+        message: `Membership expired on ${new Date(data.verification.verification_expiry).toLocaleDateString()}.`,
+        updated_by: "System",
+        updated_on: new Date().toISOString(),
+      };
+    }
 
-          // Sort reports by date, latest first
-          if (memberData.reports && Array.isArray(memberData.reports)) {
-            memberData.reports.sort(
-              (a, b) =>
-                new Date(b.submitted_on).getTime() -
-                new Date(a.submitted_on).getTime()
-            );
-          }
+    const statusText = isExpired ? "Expired" : data.status.code;
 
-          // Use the MEMBERSHIP_LEVEL_NAMES map in consts to get the membership level name
-          const membershipLevelName =
-            MEMBERSHIP_LEVEL_NAMES[memberData.id.split(".")[0]] ||
-            "Unknown Membership Level";
+    // Calculate Score
+    let positiveReportsCount = 0;
+    let negativeReportsCount = 0;
+    const appealStatuses = ["APPEALED", "APPEAL_REVIEW"];
 
-          // Calculate report counts
-          let positiveReportsCount = 0;
-          let negativeReportsCount = 0;
-              
-          if (memberData && memberData.reports && Array.isArray(memberData.reports)) {
-             const appealStatuses = ["APPEALED", "APPEAL_REVIEW"];
-                   
-             positiveReportsCount = memberData.reports.filter(
-               (report: any) => report.type === "POSITIVE" && !appealStatuses.includes(report.status)
-               && report.status !== "WITHDRAWN"
-             ).length;
-                   
-             negativeReportsCount = memberData.reports.filter(
-               (report: any) => report.type === "NEGATIVE" && !appealStatuses.includes(report.status)
-               && report.status !== "WITHDRAWN"
-             ).length;
-           }
+    if (data.reports && Array.isArray(data.reports)) {
+      // Sort reports
+      data.reports.sort(
+        (a, b) =>
+          new Date(b.submitted_on).getTime() -
+          new Date(a.submitted_on).getTime()
+      );
 
-           // --- Calculate Meta Score ---
-          let score = 5 - (negativeReportsCount * 0.5) + (positiveReportsCount * 0.25);
-          score = Math.max(0, Math.min(5, score)); // Clamp score between 0 and 5
+      positiveReportsCount = data.reports.filter(
+        (r) =>
+          r.type === "POSITIVE" &&
+          !appealStatuses.includes(r.status) &&
+          r.status !== "WITHDRAWN"
+      ).length;
 
-          return (
-            <div class="card">
-              <h2>Verification Status for <span class="card-title"
-              >{memberData.name}
-              </span>
-              </h2>
-              {memberData.reports && (
-                <div class="meta-score-section">
-                  <div class="meta-score-header">
+      negativeReportsCount = data.reports.filter(
+        (r) =>
+          r.type === "NEGATIVE" &&
+          !appealStatuses.includes(r.status) &&
+          r.status !== "WITHDRAWN"
+      ).length;
+    }
+
+    let score = 5 - negativeReportsCount * 0.5 + positiveReportsCount * 0.25;
+    score = Math.max(0, Math.min(5, score));
+
+    // --- RENDER HTML ---
+    // Since we are not in Astro JSX anymore, we build the HTML string
+    // This allows the page to be static, but the content dynamic.
+
+    const statusClassMap = {
+      ACTIVE: "status-active",
+      PENDING: "status-pending",
+      FLAGGED: "status-flagged",
+      BANNED: "status-banned",
+      SUSPENDED: "status-suspended",
+      Expired: "status-expired",
+    };
+    const statusClass = statusClassMap[statusText] || "";
+    const membershipLevelName =
+      clientData.MEMBERSHIP_LEVEL_NAMES[data.id.split(".")[0]] ||
+      "Unknown Membership Level";
+    const membershipDesc =
+      clientData.MEMBERSHIP_LEVEL_DESCRIPTIONS[data.id.split(".")[0]] ||
+      "No description available.";
+
+    // Helper for Report Items
+    const renderReports = () => {
+      if (!data.reports || data.reports.length === 0) {
+        return `<p class="details-content reports-no-data">No reports have been submitted for this member.</p>`;
+      }
+
+      const reportItems = data.reports
+        .map((report, index) => {
+          const isAppealed =
+            report.status === "APPEALED" || report.status === "APPEAL_REVIEW";
+          const hiddenClass = index >= 3 ? "report-hidden" : "";
+
+          let typeClass = "";
+          if (
+            report.type === "POSITIVE" &&
+            !isAppealed &&
+            report.status !== "WITHDRAWN"
+          )
+            typeClass = "report-type-positive";
+          else if (
+            report.type === "NEGATIVE" &&
+            !isAppealed &&
+            report.status !== "WITHDRAWN"
+          )
+            typeClass = "report-type-negative";
+          else if (isAppealed && report.status !== "WITHDRAWN")
+            typeClass = "report-type-appealed";
+          else if (report.status === "WITHDRAWN")
+            typeClass = "report-type-withdrawn";
+
+          const displayType =
+            isAppealed || report.status === "WITHDRAWN"
+              ? clientData.REPORT_TYPES.NEUTRAL
+              : clientData.REPORT_TYPES[report.type] || "Unknown Type";
+
+          return `
+            <li class="report-item ${hiddenClass}">
+                <div class="report-header">
+                    <span>Report ID: ${report.id}</span>
+                    <span>Status: ${clientData.REPORT_STATUSES[report.status]}</span>
+                    <span class="report-type ${typeClass}">${displayType}</span>
+                </div>
+                <p class="report-details">${report.details}</p>
+                ${report.issue ? `<small class="report-github-issue">GitHub Issue: <a href="${githubIssueBaseURL}${report.issue}" target="_blank">#${report.issue}</a></small><br>` : ""}
+                ${report.notes ? `<small class="report-admin-notes">Admin Notes: ${report.notes}</small>` : ""}
+                <small class="report-submitter">Submitted by: ${report.submitted_by} on ${new Date(report.submitted_on).toDateString()}</small>
+            </li>`;
+        })
+        .join("");
+
+      const showMoreBtn =
+        data.reports.length > 3
+          ? `<button type="button" id="js-show-more-reports" class="show-more-btn">Show More</button>`
+          : "";
+
+      return `
+            <div class="report-info">
+                <h4>About Reports</h4>
+                <p>Reports are submitted by community members and reviewed by administrators.</p>
+                <ul> 
+                    <li><span class="positive-count">Green (+1):</span> A positive commendation.</li>
+                    <li><span class="negative-count">Red (-1):</span> A negative complaint.</li> 
+                    <li><span class="neutral-count">Yellow (0):</span> A report that is currently under appeal.</li>
+                    <li><span class="withdrawn-count">Gray (0):</span> A report that was withdrawn.</li>
+                </ul>
+            </div>
+            <ul class="reports-list details-content">${reportItems}</ul>
+            ${showMoreBtn}
+        `;
+    };
+
+    // Construct the HTML
+    const html = `
+        <div class="card">
+            <h2>Verification Status for <span class="card-title">${data.name}</span></h2>
+            
+            ${
+              data.reports
+                ? `
+            <div class="meta-score-section">
+                <div class="meta-score-header">
                     <h4>Meta Score</h4>
                     <details class="score-help-details">
                       <summary aria-label="How the meta score is calculated">
-                        <Icon name="mdi:help-circle-outline" size={20} />
+                        <!-- Simplified SVG icon for JS injection -->
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="currentColor" d="M11 18h2v-2h-2v2m1-16C6.48 2 2 6.48 2 12s4.48 10 10 10s10-4.48 10-10S17.52 2 12 2m0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8s8 3.59 8 8s-3.59 8-8 8m0-14c-2.21 0-4 1.79-4 4h2c0-1.1.9-2 2-2s2 .9 2 2c0 2-3 1.75-3 5h2c0-2.25 3-2.5 3-5c0-2.21-1.79-4-4-4Z"/></svg>
                       </summary>
                       <div class="score-explanation">
                         <p>The Meta Score provides a quick overview of a member's reputation.</p>
@@ -216,276 +270,81 @@ if (Astro.request.method === "GET" && memberIdFromQuery) {
                           <li>All members start with a base score of <strong>5.0</strong>.</li>
                           <li>Each negative report deducts <strong>0.5</strong> points.</li>
                           <li>Each positive report adds <strong>0.25</strong> points.</li>
-                          <li>Appealed and withdrawn reports do not affect the score.</li>
-                          <li>The score is capped between 0.0 and 5.0.</li>
                         </ul>
                       </div>
                     </details>
-                  </div>
-                  <span class:list={[
-                    "meta-score",
-                    { "score-good": score >= 4.0 },
-                    { "score-average": score < 4.0 && score >= 2.5 },
-                    { "score-bad": score < 2.5 },
-                  ]}>
-                    {score.toFixed(1)}
-                  </span>
                 </div>
-              )}
-              <p>
-                <strong>ID:</strong> 
-                <span
-                    class="card-member-id"
-                >
-                    {memberData.id}
-                    </span>
-              </p>
-              <p>
-                <strong>Membership Type:</strong> 
-                <span
-                    class="card-membership-type"
-                >
-                    {membershipLevelName}
-                    </span>
-              </p>
-              <p>
-                <strong>Membership Description:</strong>
-                <span
-                    class="card-membership-description"
-                >{" "}
-                {
-                  MEMBERSHIP_LEVEL_DESCRIPTIONS[
-                    memberData.id.split(".")[0]
-                  ] || "No description available."
-                }
+                <span class="meta-score ${score >= 4.0 ? "score-good" : score < 2.5 ? "score-bad" : "score-average"}">
+                    ${score.toFixed(1)}
                 </span>
-              <p>
-                <strong>Status:</strong>
-                <span class:list={["status-badge", statusClass]}>
-                  {statusText}
-                </span>
-              </p>
+            </div>`
+                : ""
+            }
 
-              {memberData.status && memberData.status.message && (
-                <details class="status-details">
-                  <summary>Show Status Details</summary>
-                  <div class="details-content">
+            <p><strong>ID:</strong> <span class="card-member-id">${data.id}</span></p>
+            <p><strong>Membership Type:</strong> <span class="card-membership-type">${membershipLevelName}</span></p>
+            <p><strong>Membership Description:</strong> <span class="card-membership-description">${membershipDesc}</span></p>
+            <p><strong>Status:</strong> <span class="status-badge ${statusClass}">${statusText}</span></p>
+
+            ${
+              data.status && data.status.message
+                ? `
+            <details class="status-details">
+                <summary>Show Status Details</summary>
+                <div class="details-content">
                     <h4>Status Message</h4>
-                    <p>{memberData.status.message}</p>
+                    <p>${data.status.message}</p>
                     <h4>Last Updated By</h4>
-                    <p>
-                      {memberData.status.updated_by} on{" "}
-                      {new Date(
-                        memberData.status.updated_on
-                      ).toLocaleDateString()}
-                    </p>
-                  </div>
-                </details>
-              )}
+                    <p>${data.status.updated_by} on ${new Date(data.status.updated_on).toLocaleDateString()}</p>
+                </div>
+            </details>`
+                : ""
+            }
 
-              {memberData.reports && (
-                <details class="details-dropdown">
-                  <summary>
-                    Reports (<span class="positive-count">{positiveReportsCount}</span> / <span class="negative-count">{negativeReportsCount}</span>)
-                  </summary>
-              <div>
-                {memberData.reports.length > 0 ? (
-                <>
-                <div class="report-info">
-                    <h4>About Reports</h4>
-                    <p>
-                      Reports are submitted by community members and reviewed by administrators. The color codes indicate the report's status:
-                    </p>
-                    <ul> 
-                      <li><span class="positive-count">Green (+1):</span> A positive commendation.</li>
-                      <li><span class="negative-count">Red (-1):</span> A negative complaint.</li> 
-                      <li><span class="neutral-count">Yellow (0):</span> A report that is currently under appeal or has been appealed.</li>
-                      <li><span class="withdrawn-count">Gray (0):</span> A report that was withdrawn by the submitter.</li>
-                    </ul>
-                  </div>
-                  <ul class="reports-list details-content">
-                    {memberData.reports.map((report: any, index: number) => {
-                      const isAppealed =
-                        report.status === "APPEALED" ||
-                        report.status === "APPEAL_REVIEW";
-                      return (
-                      <li class:list={["report-item", { "report-hidden": index >= 3 }]}>
-                        <div class="report-header">
-                          <span>
-                            Report ID: {report.id}
-                          </span>
-                          <span
-                            >
-                                Status: {REPORT_STATUSES[report.status]}
-                            </span>
-                            <span
-                            class:list={[
-                              "report-type",
-                              { "report-type-positive": report.type === "POSITIVE" && !isAppealed && report.status !== "WITHDRAWN" },
-                              { "report-type-negative": report.type === "NEGATIVE" && !isAppealed && report.status !== "WITHDRAWN" },
-                              { "report-type-appealed": isAppealed && report.status !== "WITHDRAWN" },
-                              { "report-type-withdrawn": report.status === "WITHDRAWN"},
-                            ]}
-                          >
-                            {
-                            isAppealed || report.status === "WITHDRAWN"
-                                ? REPORT_TYPES.NEUTRAL
-                                : REPORT_TYPES[report.type] || "Unknown Type"
-                            }
-                          </span>
-                        </div>
-                        <p class="report-details">{report.details}</p>
-                        {report.issue && (
-                          <small class="report-github-issue">
-                            GitHub Issue: <a
-                            href=`${githubIssueBaseURL}${report.issue}`
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            >#{report.issue}</a>
-                          </small>
-                        )}
-                        <br>
-                        {report.notes && (
-                          <small class="report-admin-notes">
-                            Admin Notes: {report.notes}
-                          </small>
-                        )}
-                        <small class="report-submitter">
-                          Submitted by: {report.submitted_by} on{" "}
-                            {new Date(report.submitted_on).toDateString()}
-                        </small>
-                      </li>
-                      );
-                    })}
-                  </ul>
-                  {memberData.reports.length > 3 && (
-                      <button
-                        type="button"
-                        id="show-more-reports"
-                        class="show-more-btn"
-                      >
-                        Show More
-                      </button>
-                    )}
-                  </>
-                ) : (
-                  <p
-                  class="details-content reports-no-data"
-                  >No reports have been submitted for this member.</p>
-                )}
-              </div>
-            </details>
-          )}
+            ${
+              data.reports
+                ? `
+            <details class="details-dropdown">
+                <summary>Reports (<span class="positive-count">${positiveReportsCount}</span> / <span class="negative-count">${negativeReportsCount}</span>)</summary>
+                <div>${renderReports()}</div>
+            </details>`
+                : ""
+            }
 
-              <p>
-                <strong>Verified By:</strong>
-                <span
-                    class="card-admin"
-                    >{" "}
-                {memberData.verification.verified_by}
-                </span>
-              </p>
-              <p>
-                <strong>Verified On:</strong>
-                <span
-                    class="card-admin"
-                    >{" "}
-                {new Date(
-                  memberData.verification.verified_on
-                ).toLocaleDateString()}
-                </span>
-              </p>
-              <p>
-                <strong>Verification Expires:</strong>
-                <span
-                    class={isExpired ? "status-badge card-admin-expired" : "card-admin"}
-                >{" "}
-                {new Date(
-                  memberData.verification.verification_expiry
-                ).toLocaleDateString()}
-                </span>
-              </p>
-
-              <div class="report-member">
-                <h3>
-                    <Icon
-                        name="mdi:badge-account-alert"
-                        size="20"
-                        style="vertical-align: text-bottom; margin-right: 4px;"
-                    />
-                    Report Member</h3>
-                <p>
-                  If you believe this member is violating community guidelines, or, you would like to give them a commendation,
-                  you can report them using one of the following methods:
-                <ul>
-                  <li>
-                    <Icon
-                        name="mdi:github"
-                        size="16"
-                        style="vertical-align: text-bottom; margin-right: 4px;"
-                    />
-                    <a
-                      href={`https://github.com/corespark-io/community/issues/new?template=member_report.md&title=[MEMBER REPORT] ${encodeURIComponent(memberData.name)}&body=Member%20ID:%20${encodeURIComponent(memberData.id)}%0AVerification%20Link:%20https://community.corespark.io/members/verify?id=${encodeURIComponent(memberData.id)}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      GitHub Issue
-                    </a>
-                  </li>
-                  <li>
-                    <Icon
-                        name="mdi:email"
-                        size="16"
-                        style="vertical-align: text-bottom; margin-right: 4px;"
-                    />
-                    <a href={`mailto:community-member-reports@corespark.io?subject=[Member%20Report]:%20${memberData.name}&body=${encodeURIComponent(`Hello Community Team,
-
-I Am Submitting A Report for ${memberData.name}. Please find the relevant details below.
-
-- Member ID: ${memberData.id}
-- Verification Link: https://community.corespark.io/members/verify?id=${memberData.id}
-- This is a : Commendation/Complaint (Please Delete As Applicable)
-- I would like to remain anonymous: Yes/No (Please Delete As Applicable)
-
-
-Report Reason: 
-[Provide Reason Here]
-`)}`} target="_blank" rel="noopener noreferrer">
-                      Email
-                    </a>
-                  </li>
-                </ul>
-              </div>
+            <p><strong>Verified By:</strong> <span class="card-admin">${data.verification.verified_by}</span></p>
+            <p><strong>Verified On:</strong> <span class="card-admin">${new Date(data.verification.verified_on).toLocaleDateString()}</span></p>
+            <p><strong>Verification Expires:</strong> <span class="${isExpired ? "status-badge card-admin-expired" : "card-admin"}">${new Date(data.verification.verification_expiry).toLocaleDateString()}</span></p>
+            
+            <div class="report-member">
+                 <h3>Report Member</h3>
+                 <p>If you believe this member is violating community guidelines, report them below:</p>
+                 <ul>
+                    <li><a href="https://github.com/corespark-io/community/issues/new?template=member_report.md&title=[MEMBER REPORT] ${encodeURIComponent(data.name)}&body=Member%20ID:%20${encodeURIComponent(data.id)}" target="_blank">GitHub Issue</a></li>
+                    <li><a href="mailto:community-member-reports@corespark.io?subject=[Member%20Report]:%20${data.name}" target="_blank">Email</a></li>
+                 </ul>
             </div>
-          );
-        })()
+        </div>
+    `;
+
+    resultContainer.innerHTML = html;
+
+    // Re-attach listener for Show More button
+    const newShowMore = document.getElementById("js-show-more-reports");
+    if (newShowMore) {
+      newShowMore.addEventListener("click", () => {
+        document
+          .querySelectorAll(".report-item.report-hidden")
+          .forEach((el, i) => {
+            if (i < 3) el.classList.remove("report-hidden");
+          });
+        if (
+          document.querySelectorAll(".report-item.report-hidden").length === 0
+        ) {
+          newShowMore.style.display = "none";
+        }
+      });
     }
-  </main>
-</Layout>
-
-<script>
-  document.addEventListener("DOMContentLoaded", () => {
-    const showMoreBtn = document.getElementById("show-more-reports");
-    if (!showMoreBtn) return;
-
-    const reportList = document.querySelector(".reports-list");
-    if (!reportList) return;
-
-    let hiddenReports = Array.from(
-      reportList.querySelectorAll(".report-item.report-hidden")
-    );
-
-    showMoreBtn.addEventListener("click", () => {
-      const toShow = hiddenReports.slice(0, 3);
-      toShow.forEach((item) => item.classList.remove("report-hidden"));
-
-      hiddenReports = hiddenReports.slice(3);
-
-      if (hiddenReports.length === 0) {
-        showMoreBtn.style.display = "none";
-      }
-    });
-  });
+  }
 </script>
 
 <style>
@@ -504,7 +363,6 @@ Report Reason:
   }
   .help-info ul {
     padding-left: 1.5rem;
-
   }
   .help-info a {
     color: var(--accent-color);
@@ -555,118 +413,119 @@ Report Reason:
     border-radius: 4px;
   }
   .error p {
-    color: var(--text-color);
+    color: var(--black-color);
     margin: 0;
   }
-  .card {
+  /* Force styling for dynamic JS inserted elements */
+  :global(.card) {
     border-radius: 10px;
     padding: 2rem;
     border: 1px solid var(--input-border);
   }
-  .card h2 {
+  :global(.card h2) {
     text-align: left;
     margin-bottom: 1.5rem;
     font-size: 1.8rem;
   }
-  .card p {
+  :global(.card p) {
     margin-bottom: 1rem;
     font-size: 1rem;
   }
-    .card-title {
-        font-weight: 600;
-        color: var(--accent-color);
-    }
-    .card-member-id {
-        padding: 0.2rem 0.4rem;
-        border-radius: 4px;
-        color: var(--text-disclaimer);
-    }
-    .card-membership-type {
-        font-weight: 500;
-        color: var(--text-disclaimer);
-    }
-    .card-membership-description {
-        font-style: italic;
-        color: var(--text-disclaimer);
-    }
-    .card-admin {
-        font-weight: 500;
-        color: var(--text-disclaimer);
-    }
-    .card-admin-expired {
-        font-weight: 500;
-        color: var(--error-color);
-    }
-  .status-details {
+  :global(.card-title) {
+    font-weight: 600;
+    color: var(--accent-color);
+  }
+  :global(.card-member-id) {
+    padding: 0.2rem 0.4rem;
+    border-radius: 4px;
+    color: var(--text-disclaimer);
+  }
+  :global(.card-membership-type) {
+    font-weight: 500;
+    color: var(--text-disclaimer);
+  }
+  :global(.card-membership-description) {
+    font-style: italic;
+    color: var(--text-disclaimer);
+  }
+  :global(.card-admin) {
+    font-weight: 500;
+    color: var(--text-disclaimer);
+  }
+  :global(.card-admin-expired) {
+    font-weight: 500;
+    color: var(--error-color);
+  }
+  :global(.status-details) {
     margin: 1rem 0;
   }
-  .status-details summary {
+  :global(.status-details summary) {
     cursor: pointer;
     font-weight: bold;
     color: var(--text-disclaimer);
   }
-  .details-content {
+  :global(.details-content) {
     border-left: 2px solid var(--input-border);
     padding-left: 1rem;
     margin-top: 0.5rem;
   }
-  .details-content p {
+  :global(.details-content p) {
     margin: 0;
     line-height: 1.6;
   }
 
-  .details-dropdown {
+  :global(.details-dropdown) {
     margin: 1.5rem 0;
   }
 
-  .reports-no-data {
+  :global(.reports-no-data) {
     font-style: italic;
     font-weight: 400;
     color: var(--text-disclaimer);
     border-top: 2px solid var(--input-border);
   }
 
-  .report-info ul {
+  :global(.report-info ul) {
     padding-left: 1.5rem;
     list-style: none;
   }
-  .report-info li {
+  :global(.report-info li) {
     font-size: 0.95rem;
     color: var(--text-color);
     margin-bottom: 0.25rem;
   }
 
-  .nested-details {
+  :global(.nested-details) {
     margin-top: 1rem;
     background-color: var(--color-background-soft);
     border-radius: 4px;
     padding: 0.5rem 1rem;
   }
 
-  .nested-details summary {
+  :global(.nested-details summary) {
     font-weight: bold;
     cursor: pointer;
     color: var(--text-disclaimer);
   }
 
-  .score-explanation {
+  :global(.score-explanation) {
     padding-top: 0.5rem;
     font-size: 0.9rem;
   }
 
-  .score-explanation ul {
+  :global(.score-explanation ul) {
     list-style-type: disc;
     padding-left: 1.5rem;
     margin: 0.5rem 0;
   }
 
-  .details-dropdown summary {
-      cursor: pointer;
-      font-weight: bold;
-      color: var(--text-disclaimer);
+  :global(.details-dropdown summary) {
+    cursor: pointer;
+    font-weight: bold;
+    color: var(--text-disclaimer);
   }
 
-  .meta-score-section {
+  :global(.meta-score-section) {
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -674,38 +533,38 @@ Report Reason:
     background-color: var(--color-background-soft);
     padding: 0.75rem 1.5rem;
     border-radius: 8px;
-    margin: 1.5rem 0; 
+    margin: 1.5rem 0;
     border: 1px solid var(--color-border);
     width: fit-content;
   }
 
-  .meta-score-header {
+  :global(.meta-score-header) {
     display: flex;
     align-items: center;
     gap: 0.15rem;
     position: relative;
   }
 
-  .meta-score-header h4 {
+  :global(.meta-score-header h4) {
     margin: 0;
     font-size: 1.1rem;
   }
 
-  .score-help-details {
+  :global(.score-help-details) {
     display: inline-block;
     position: relative;
   }
 
-  .score-help-details summary {
+  :global(.score-help-details summary) {
     list-style: none;
     cursor: pointer;
     color: var(--text-disclaimer);
   }
-  .score-help-details summary::-webkit-details-marker {
-    display: none; /* Hide the default triangle in Chrome/Safari */
+  :global(.score-help-details summary::-webkit-details-marker) {
+    display: none;
   }
 
-.score-explanation {
+  :global(.score-explanation) {
     position: absolute;
     top: 100%;
     left: 50%;
@@ -721,18 +580,19 @@ Report Reason:
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     max-width: 280px;
     width: calc(100vw - 48px);
-}
+  }
 
-  .score-explanation p, .score-explanation ul {
+  :global(.score-explanation p),
+  :global(.score-explanation ul) {
     margin: 0;
   }
-  .score-explanation ul {
+  :global(.score-explanation ul) {
     list-style-position: inside;
     padding-left: 0;
     margin-top: 0.5rem;
   }
 
-  .meta-score {
+  :global(.meta-score) {
     font-weight: bold;
     padding: 0.3rem 0.8rem;
     border-radius: 6px;
@@ -742,38 +602,38 @@ Report Reason:
     width: fit-content;
   }
 
-  .score-good {
+  :global(.score-good) {
     background-color: var(--positive-green);
   }
 
-  .score-average {
+  :global(.score-average) {
     background-color: var(--neutral-yellow);
     color: #212529;
   }
 
-  .score-bad {
+  :global(.score-bad) {
     background-color: var(--error-color);
   }
 
-  .positive-count {
+  :global(.positive-count) {
     color: var(--positive-green);
     font-weight: bold;
   }
 
-  .negative-count {
+  :global(.negative-count) {
     color: var(--error-color);
     font-weight: bold;
   }
-    .neutral-count {
-        color: var(--neutral-yellow);
-        font-weight: bold;
-    }
-    .withdrawn-count {
-        color: var(--text-disclaimer);
-        font-weight: bold;
-    }
+  :global(.neutral-count) {
+    color: var(--neutral-yellow);
+    font-weight: bold;
+  }
+  :global(.withdrawn-count) {
+    color: var(--text-disclaimer);
+    font-weight: bold;
+  }
 
-  .reports-list {
+  :global(.reports-list) {
     list-style: none;
     padding: 0;
     margin: 0;
@@ -782,18 +642,18 @@ Report Reason:
     gap: 1rem;
   }
 
-  .report-item {
+  :global(.report-item) {
     background: var(--color-background);
     padding: 1rem;
     border-radius: 6px;
     border: 1px solid var(--color-border);
   }
 
-  .report-item.report-hidden {
+  :global(.report-item.report-hidden) {
     display: none;
   }
 
-  .show-more-btn {
+  :global(.show-more-btn) {
     display: block;
     width: 100%;
     margin-top: 1rem;
@@ -807,12 +667,12 @@ Report Reason:
     transition: all 0.2s ease;
   }
 
-  .show-more-btn:hover {
+  :global(.show-more-btn:hover) {
     background-color: var(--accent-color);
     color: var(--light-color);
   }
 
-  .report-header {
+  :global(.report-header) {
     font-size: 0.9rem;
     display: flex;
     justify-content: space-between;
@@ -822,7 +682,7 @@ Report Reason:
     margin-bottom: 0.5rem;
   }
 
-  .report-type {
+  :global(.report-type) {
     font-weight: bold;
     padding: 0.2rem 0.5rem;
     border-radius: 4px;
@@ -830,30 +690,30 @@ Report Reason:
     color: white;
   }
 
-  .report-type-withdrawn {
+  :global(.report-type-withdrawn) {
     background-color: var(--text-disclaimer);
   }
 
-  .report-type-positive {
+  :global(.report-type-positive) {
     background-color: var(--positive-green);
   }
 
-  .report-type-appealed {
+  :global(.report-type-appealed) {
     background-color: var(--neutral-yellow);
-    color: #212529; 
+    color: #212529;
   }
 
-  .report-type-negative {
+  :global(.report-type-negative) {
     background-color: var(--error-color);
   }
 
-  .report-date {
+  :global(.report-date) {
     font-size: 0.8rem;
     color: var(--color-text-soft);
     text-align: right;
   }
 
-  .report-admin-notes {
+  :global(.report-admin-notes) {
     display: block;
     margin-top: 0.5rem;
     font-size: 0.85rem;
@@ -861,29 +721,29 @@ Report Reason:
     font-style: italic;
   }
 
-  .report-details {
+  :global(.report-details) {
     margin: 0 0 0.5rem;
   }
 
-  .report-submitter {
+  :global(.report-submitter) {
     font-size: 0.8rem;
     color: var(--color-text-soft);
     font-style: italic;
   }
-  .report-member {
+  :global(.report-member) {
     margin-top: 2rem;
     padding-top: 1rem;
     border-top: 1px solid var(--input-border);
   }
-  .report-member ul {
+  :global(.report-member ul) {
     padding: 0;
     list-style-type: none;
   }
-  .report-member a {
+  :global(.report-member a) {
     color: var(--accent-color);
     text-decoration: none;
   }
-  .status-badge {
+  :global(.status-badge) {
     display: inline-block;
     padding: 0.25em 0.6em;
     font-size: 0.85em;
@@ -895,21 +755,21 @@ Report Reason:
     border-radius: 0.25rem;
     margin-left: 0.5rem;
   }
-  .status-active {
+  :global(.status-active) {
     color: #fff;
     background-color: var(--positive-green);
   }
-  .status-pending {
-      color: #fff;
-      background-color: #17a2b8;
+  :global(.status-pending) {
+    color: #fff;
+    background-color: #17a2b8;
   }
-  .status-flagged {
+  :global(.status-flagged) {
     color: #212529;
     background-color: #ffc107;
   }
-  .status-banned,
-  .status-suspended,
-  .status-expired {
+  :global(.status-banned),
+  :global(.status-suspended),
+  :global(.status-expired) {
     color: #fff;
     background-color: var(--error-color);
   }
