@@ -47,6 +47,24 @@ export const MEMBERSHIP_STATUSES: Record<string, string> = {
   SUSPENDED: "Suspended",
 };
 
+// Report statuses
+export const REPORT_STATUSES: Record<string, string> = {
+  OPEN: "Open", // Use when the report is first created
+  IN_REVIEW: "In Review", // Use when the report is being investigated
+  WIP: "Member is addressing", // Use when the reported member is addressing the issue
+  RESOLVED: "Resolved", // Use when the report has been addressed
+  WITHDRAWN: "Withdrawn", // Use when the reporter withdraws the report
+  APPEAL_REVIEW: "In Appeal Review", // Use when the reported member has appealed and is under review
+  APPEALED: "Appealed", // Use when the reported member has appealed the decision
+};
+
+// Report types
+export const REPORT_TYPES: Record<string, string> = {
+  POSITIVE: "+1",
+  NEUTRAL: "0",
+  NEGATIVE: "-1",
+};
+
 /*
   FOOD PANTRY
 */
