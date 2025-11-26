@@ -160,6 +160,25 @@ If you encounter any issues or have concerns about a community member's behavior
 
 Additionally, if you feel that a member has positively contributed to the community, we welcome positive reports as well!
 
+### Administration of Reports
+
+When a report is submitted via GitHub or email, the administration process remains the same.
+
+1. Make sure that we have enough information to investigate the report. For a report to be sufficient, we should be able to fill out the [Report JSON Schema](#report-json-schema), at a minimum. 
+  - If the report was submitted via email you do not need a corresponding `issue` number.
+  - Admin notes are not required for these statuses:
+    - `OPEN`
+    - `IN_REVIEW`
+    - `RESOLVED`
+2. File the report in the `Reports` tab of the `Community Members List` spreadsheet.
+3. Update the member's JSON file to include the report in the `reports` array, following the [Report JSON Schema](#report-json-schema) ensuring that the information matches exactly with the spreadsheet.
+
+#### Additional notes
+
+- We should be setting the status to "Open" when we first receive the report. If you are actively investigating it, you can set it to "In Review". 
+- The statuses in the spreadsheet will always have a corresponding status in the [consts.ts](./src/consts.ts) file (`REPORT_STATUSES`). This also applies to the report `type` (`REPORT_TYPES`).
+- 
+
 #### Appealing a report
 
 Any member is able to appeal a report against them. To do so, please email [community-member-reports@corespark.io](community-member-reports@corespark.io) with your appeal using this template:
@@ -213,7 +232,8 @@ The Member JSON schema is simple but intended to provide authoritative informati
         "message": "This is required, except for active or expired statuses. We always recommend providing context.",
         "updated_by": "Your Name",
         "updated_on": "01/01/2025"
-    }
+    },
+    "reports": []
 }
 ```
 
@@ -228,6 +248,7 @@ The Member JSON schema is simple but intended to provide authoritative informati
   * **message**: If this is not set, `Status Details` will not be shown. This is intended to provide context on the status code. It is required for all statuses except `ACTIVE` and `EXPIRED`.
   * **updated_by**: The name of the person who last updated the member's status.
   * **updated_on**: The date the status was last updated (MM/DD/YYYY).
+  * **reports**: An array of reports associated with this member. See [Report JSON Schema](#report-json-schema) for details.
 
 ### Renewal
 
@@ -242,7 +263,31 @@ The community team will then review the member's information and update their ve
 
 If a member's status is set to `EXPIRED`, their status will forever be `EXPIRED` no matter what status code is set. This is to ensure that expired members cannot be accidentally reactivated without going through the full verification process again.
 
+### Report JSON Schema
 
+Each report added to a member's `reports` array should follow this schema:
+
+```json
+{
+    "id": "2025-12-01.1",
+    "status": "RESOLVED",
+    "submitted_on": "2025-12-01",
+    "submitted_by": "Jane Smith",
+    "type": "POSITIVE",
+    "details": "The organization provided exceptional service to us.",
+    "issue": "2",
+    "notes": ""
+}
+```
+
+* **id**: A unique identifier for the report, this is automatically generated.
+* **status**: The current status of the report. See [consts.ts](./src/consts.ts) (`REPORT_STATUSES`) for valid codes.
+* **submitted_on**: The date the report was submitted (`YYYY-MM-DD`).
+* **submitted_by**: The name of the person who submitted the report. (Use `Anonymous User` if they wish to remain anonymous.)
+* **type**: The type of report. See [consts.ts](./src/consts.ts) (`REPORT_TYPES`) for valid codes.
+* **details**: The details to which the user provided when submitting the report.
+* **issue**: The GitHub Issue number created for this report, if applicable. This is only required if a GitHub Issue was created for the report.
+* **notes**: Admin notes regarding the report.
 
 ## **License**
 
