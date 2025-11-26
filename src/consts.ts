@@ -17,6 +17,55 @@ export const SOCIAL_LINKS = {
 };
 
 /*
+  MEMBERSHIP
+*/
+
+// Membership Levels Names
+export const MEMBERSHIP_LEVEL_NAMES: Record<string, string> = {
+  fp: "Food Pantry",
+  vol: "Volunteer",
+};
+
+// Membership Level Descriptions
+export const MEMBERSHIP_LEVEL_DESCRIPTIONS: Record<string, string> = {
+  fp: "Provides a vital service to the community by offering free food to those in need.",
+  vol: "Dedicated individuals who generously give their time and effort to support community initiatives.",
+};
+
+// Membership Prefixes (Makes searching easier)
+export const MEMBERSHIP_PREFIXES: Record<string, string> = {
+  fp: "pantry",
+  vol: "volunteers",
+};
+
+// Membership statuses (Non-expired)
+export const MEMBERSHIP_STATUSES: Record<string, string> = {
+  ACTIVE: "Active",
+  PENDING: "Pending",
+  FLAGGED: "Flagged",
+  BANNED: "Banned",
+  SUSPENDED: "Suspended",
+};
+
+// Report statuses
+export const REPORT_STATUSES: Record<string, string> = {
+  OPEN: "Open", // Use when the report is first created
+  IN_REVIEW: "In Review", // Use when the report is being investigated
+  WIP: "Member is addressing", // Use when the reported member is addressing the issue
+  RESOLVED: "Resolved", // Use when the report has been addressed
+  WITHDRAWN: "Withdrawn", // Use when the reporter withdraws the report
+  APPEAL_REVIEW: "In Appeal Review", // Use when the reported member has appealed and is under review
+  APPEALED: "Appealed", // Use when the reported member has appealed the decision
+};
+
+// Report types
+export const REPORT_TYPES: Record<string, string> = {
+  POSITIVE: "+1",
+  NEUTRAL: "0",
+  NEGATIVE: "-1",
+};
+
+/*
   FOOD PANTRY
 */
 

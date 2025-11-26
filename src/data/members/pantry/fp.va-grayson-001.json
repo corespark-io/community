@@ -1,0 +1,16 @@
+{
+    "name": "Fries Community Center",
+    "id": "fp.va-grayson-001",
+    "verification": {
+        "verified_on": "11/12/2025",
+        "verified_by": "Mitchell Stanton",
+        "verification_expiry": "11/12/2028"
+    },
+    "status": {
+        "code": "ACTIVE",
+        "message": "Member is active and in good standing.",
+        "updated_by": "Mitchell Stanton",
+        "updated_on": "11/12/2025"
+    },
+    "reports": []
+}
