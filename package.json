@@ -1,7 +1,7 @@
 {
   "name": "corespark-community",
   "version": "1.0.0",
-  "description": "A project to provide Northwest North Carolina and South West virgina with community reasources through accessable technology.",
+  "description": "A project to provide Northwest North Carolina and South West Virginia with community reasources through accessable technology.",
   "main": "src/pages/index.astro",
   "scripts": {
     "dev": "astro dev",
