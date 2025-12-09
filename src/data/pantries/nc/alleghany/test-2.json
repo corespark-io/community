@@ -1,0 +1,40 @@
+{
+  "claimed": true,
+  "name": "Test 2",
+  "id": "fp.nc-alleghany-002",
+  "location": {
+    "physical": "432 East Street, Sparta NC 28675",
+    "mailing": "PO Box 123 Sparta NC 28675",
+    "latitude": 0,
+    "longitude": 0
+  },
+  "contact": {
+    "website": "",
+    "phone": "555-555-5432 ",
+    "email": "someone2@gmail.com"
+  },
+  "hours": {
+    "monday": "",
+    "tuesday": "",
+    "wednesday": "",
+    "thursday": "",
+    "friday": "",
+    "saturday": "",
+    "sunday": ""
+  },
+  "specialInstructions": "Call for appointment ",
+  "types": [
+  ],
+  "services": [
+  ],
+  "eligibility": {
+    "serviceArea": [
+    ],
+    "documents": [
+    ],
+    "frequency": {
+      "increment": "",
+      "period": ""
+    }
+  }
+}
