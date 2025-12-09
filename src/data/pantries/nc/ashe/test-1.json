@@ -1,0 +1,40 @@
+{
+  "claimed": true,
+  "name": "Test 1",
+  "id": "fp.nc-ashe-002",
+  "location": {
+    "physical": "123 Main Street, West Jefferson NC ",
+    "mailing": "123 Main Street, West Jefferson NC ",
+    "latitude": 0,
+    "longitude": 0
+  },
+  "contact": {
+    "website": "",
+    "phone": "(555) 555-5555",
+    "email": "someone@gmail.com"
+  },
+  "hours": {
+    "monday": "",
+    "tuesday": "",
+    "wednesday": "",
+    "thursday": "",
+    "friday": "",
+    "saturday": "",
+    "sunday": ""
+  },
+  "specialInstructions": "Driveway little free pantry. Take what you need, leave what you can. Open 24/7",
+  "types": [
+  ],
+  "services": [
+  ],
+  "eligibility": {
+    "serviceArea": [
+    ],
+    "documents": [
+    ],
+    "frequency": {
+      "increment": "",
+      "period": ""
+    }
+  }
+}
