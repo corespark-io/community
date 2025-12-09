@@ -1,0 +1,16 @@
+{
+    "name": "Test 1",
+    "id": "fp.nc-ashe-002",
+    "verification": {
+        "verified_on": "",
+        "verified_by": "",
+        "verification_expiry": ""
+    },
+    "status": {
+        "code": "ACTIVE",
+        "message": "Member is active and in good standing.",
+        "updated_by": "",
+        "updated_on": ""
+    },
+    "reports": []
+}
