@@ -245,6 +245,7 @@ const allPantries = Object.entries(pantryModules).map(
       setTimeout(() => {
         let map;
         let markers = []; // This will store the Leaflet marker objects
+        let locationTimeout;
 
         // This variable will hold the ID from the URL search parameter
         let pantryIdToOpen = null;
@@ -257,7 +258,9 @@ const allPantries = Object.entries(pantryModules).map(
 
         // Main function to set up the map
         const initializeMap = (center, zoom) => {
-          if (map) return; // Prevent re-initialization
+          if (map) {
+            return;
+          }
 
           // Read the URL for a 'pantry' parameter to deep-link
           try {
@@ -405,6 +408,14 @@ const allPantries = Object.entries(pantryModules).map(
             markers = [];
             noResultsMessage.style.display =
               pantriesToDisplay.length === 0 ? "block" : "none";
+
+            const pantryIcon = L.icon({
+              iconUrl: "/assets/icons/markers/food-pantry.webp", // Path to the custom icon
+              iconSize: [41, 41], // Size of the icon
+              iconAnchor: [12, 41], // Anchor point of the icon
+              popupAnchor: [1, -34], // Position of the popup relative to the icon
+              shadowSize: [41, 41], // Size of the shadow
+            });
 
             pantriesToDisplay.forEach((pantry) => {
               // Data is now nested under the 'data' key
@@ -621,10 +632,10 @@ const allPantries = Object.entries(pantryModules).map(
                 maxWidth: 300, // Keeps it from getting too wide
               };
 
-              const marker = L.marker([
-                pantryData.location.latitude,
-                pantryData.location.longitude,
-              ])
+              const marker = L.marker(
+                [pantryData.location.latitude, pantryData.location.longitude],
+                { icon: pantryIcon }
+              )
                 .addTo(map)
                 .bindPopup(popupContent, popupOptions);
 
@@ -802,20 +813,54 @@ const allPantries = Object.entries(pantryModules).map(
 
         // --- Geolocation ---
         const onGeoSuccess = (position) => {
+          clearTimeout(locationTimeout);
           initializeMap(
             [position.coords.latitude, position.coords.longitude],
             13
           );
+
+          const userIcon = L.icon({
+            iconUrl: "/assets/icons/markers/you-are-here.webp",
+            iconSize: [42, 42], // Size of the icon
+            iconAnchor: [12, 42], // Anchor point of the icon
+            popupAnchor: [1, -34], // Position of the popup relative to the icon
+            shadowSize: [41, 41], // Size of the shadow
+          });
+
+          // Add the marker to the map
+          const userMarker = L.marker(
+            [position.coords.latitude, position.coords.longitude],
+            {
+              icon: userIcon,
+            }
+          ).addTo(map);
         };
 
-        const onGeoError = () => {
+        const onGeoError = (error) => {
+          clearTimeout(locationTimeout);
+          console.error("Geolocation error:", error.message);
           initializeMap([36.5, -80.5], 9);
         };
 
+        // Set a timeout to initialize the map without the user marker
+        locationTimeout = setTimeout(() => {
+          console.warn(
+            "Geolocation timed out. Initializing map without user marker."
+          );
+          initializeMap([36.5, -80.5], 9); // Default location
+        }, 2000); // 2 seconds timeout
+
+        // Attempt to get the user's location
         if ("geolocation" in navigator) {
-          navigator.geolocation.getCurrentPosition(onGeoSuccess, onGeoError);
+          console.log("Geolocation is supported. Requesting location...");
+          navigator.geolocation.getCurrentPosition(onGeoSuccess, onGeoError, {
+            enableHighAccuracy: true,
+            timeout: 10000, // 10 seconds for the geolocation API itself
+            maximumAge: 0,
+          });
         } else {
-          onGeoError();
+          console.error("Geolocation is not supported by this browser.");
+          initializeMap([36.5, -80.5], 9); // Default location
         }
       }, 0);
     });
