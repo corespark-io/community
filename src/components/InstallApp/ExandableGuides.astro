@@ -1,0 +1,161 @@
+<script>
+  function toggleTab(tabId) {
+    const tabs = document.querySelectorAll(".tab-content");
+    const tabButtons = document.querySelectorAll(".tab-button");
+
+    tabs.forEach((tab) => tab.classList.add("hidden"));
+    tabButtons.forEach((button) => button.classList.remove("active"));
+
+    document.getElementById(tabId).classList.remove("hidden");
+    document.querySelector(`[data-tab="${tabId}"]`).classList.add("active");
+  }
+
+  window.toggleTab = toggleTab;
+</script>
+
+<button
+  class="expand-button"
+  onclick="document.getElementById('expandable-guides').classList.toggle('hidden')"
+>
+  View All Device Installation Guides
+</button>
+<section id="expandable-guides" class="hidden">
+  <h3>All Device Installation Guides</h3>
+  <div class="tabs">
+    <button
+      class="tab-button active"
+      data-tab="ios-tab"
+      onclick="toggleTab('ios-tab')">iOS</button
+    >
+    <button
+      class="tab-button"
+      data-tab="android-tab"
+      onclick="toggleTab('android-tab')">Android</button
+    >
+    <button
+      class="tab-button"
+      data-tab="desktop-tab"
+      onclick="toggleTab('desktop-tab')">Desktop</button
+    >
+  </div>
+  <div id="ios-tab" class="tab-content guide-section">
+    <h4>iOS Installation Guide</h4>
+    <ol>
+      <li>Open Safari and go to our website.</li>
+      <li>
+        Tap the <strong>Share</strong> icon (the square with an arrow pointing up).
+      </li>
+      <li>
+        Scroll down (or tap "More") and tap <strong
+          >"Add to Home Screen."</strong
+        >
+      </li>
+    </ol>
+    <img
+      src="/assets/images/install/ios.webp"
+      loading="lazy"
+      alt="iOS Safari Share menu"
+    />
+  </div>
+  <div id="android-tab" class="tab-content guide-section hidden">
+    <h4>Android Installation Guide</h4>
+    <ol>
+      <li>Tap the <strong>three dots</strong> in the top-right corner.</li>
+      <li>Tap <strong>"Install app"</strong> or "Add to Home screen."</li>
+    </ol>
+    <img
+      src="/assets/images/install/android.webp"
+      loading="lazy"
+      alt="Android Chrome menu"
+    />
+  </div>
+  <div id="desktop-tab" class="tab-content guide-section hidden">
+    <h4>Desktop Installation Guide</h4>
+    <ol>
+      <li>Look at the address bar at the top of your browser.</li>
+      <li>
+        Click the <strong>Install</strong> icon (usually a computer screen with an
+        arrow).
+      </li>
+      <li>Follow the prompt to install.</li>
+    </ol>
+    <img
+      src="/assets/images/install/desktop.webp"
+      loading="lazy"
+      alt="Chrome desktop PWA install icon"
+    />
+  </div>
+
+  <style>
+    .guide-section {
+      margin: 1.5rem 0;
+      padding: 1rem;
+      background: var(--color-background);
+      border: 1px solid var(--color-border);
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .guide-section ol {
+      margin: 0;
+      padding-left: 1.5rem;
+    }
+
+    .guide-section li {
+      margin: 0.5rem 0;
+      padding: 0;
+      list-style-position: inside;
+      text-align: center;
+    }
+    
+    .expand-button {
+      margin: 1rem 0;
+      padding: 0.5rem 1rem;
+      background: var(--color-primary);
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    #expandable-guides {
+      margin-top: 1rem;
+      padding: 1rem;
+      background: var(--color-light-background);
+      border: 1px solid var(--color-border);
+      border-radius: 8px;
+    }
+
+    .tabs {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 1rem;
+    }
+
+    .tab-button {
+      margin: 0 0.5rem;
+      padding: 0.5rem 1rem;
+      background: var(--color-secondary);
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .tab-button.active {
+      background: var(--color-primary);
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content:not(.hidden) {
+      display: block;
+    }
+  </style>
+</section>

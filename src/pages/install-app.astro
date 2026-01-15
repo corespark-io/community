@@ -3,18 +3,14 @@ import Layout from "../layouts/Layout.astro";
 import "../styles/critical.css";
 import "../styles/global.css";
 import "../styles/base.css";
+import ExpandableGuides from "../components/InstallApp/ExandableGuides.astro";
 ---
 
 <script>
   function updateGuide() {
     const ua = navigator.userAgent;
-    // This is used to differentiate iPads from Macbooks
     const hasTouch = navigator.maxTouchPoints >= 1;
-    // UA for iPads and Macs contain "Macintosh"
     const isMacIdentity = ua.includes("Macintosh");
-
-    console.log("User Agent:", ua);
-    console.log("Has Touch:", navigator.maxTouchPoints);
 
     const isIOSMobile = /iPhone|iPod/.test(ua);
     const isiPad = isMacIdentity && hasTouch;
@@ -36,14 +32,19 @@ import "../styles/base.css";
     }
   }
 
-  // Ensure the DOM is fully loaded before running the script
+  // Attach functions to the global window object
+  window.updateGuide = updateGuide;
+
+  updateGuide();
+
   document.addEventListener("DOMContentLoaded", updateGuide);
 </script>
 
-<Layout title="How to Install This App">
+<Layout title="Install the App">
   <section class="install-guide">
-    <h2>How to Install This App</h2>
+    <h2 class="gradient-text">How to Install The Community Center App</h2>
 
+    <!-- Device-specific guides -->
     <section id="ios-guide" class="guide-section hidden">
       <h3>iPhone & iPad (Safari)</h3>
       <ol>
@@ -53,11 +54,13 @@ import "../styles/base.css";
         </li>
         <li>
           Scroll down (or tap "More") and tap <strong
-            >"Add to Home Screen."</strong>
+            >"Add to Home Screen."</strong
+          >
         </li>
       </ol>
       <img
-        src="/assets/images/install/ios.png"
+        src="/assets/images/install/ios.webp"
+        loading="lazy"
         alt="iOS Safari Share menu"
       />
     </section>
@@ -68,7 +71,11 @@ import "../styles/base.css";
         <li>Tap the <strong>three dots</strong> in the top-right corner.</li>
         <li>Tap <strong>"Install app"</strong> or "Add to Home screen."</li>
       </ol>
-      <img src="/assets/images/install/android.png" alt="Android Chrome menu" />
+      <img
+        src="/assets/images/install/android.webp"
+        loading="lazy"
+        alt="Android Chrome menu"
+      />
     </section>
 
     <section id="desktop-guide" class="guide-section">
@@ -83,55 +90,47 @@ import "../styles/base.css";
         <li>Follow the prompt to install.</li>
       </ol>
       <img
-        src="/assets/images/install/desktop.png"
+        src="/assets/images/install/desktop.webp"
+        loading="lazy"
         alt="Chrome desktop PWA install icon"
       />
     </section>
+
+    <!-- Expandable Section -->
+    <ExpandableGuides />
+
+    <style>
+      .install-guide {
+        margin: 1rem 0;
+        padding: 1rem;
+        padding-top: 4.5rem;
+        text-align: center;
+      }
+
+      .guide-section {
+        margin: 1.5rem 0;
+        padding: 1rem;
+        background: var(--color-background);
+        border: 1px solid var(--color-border);
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      .guide-section ol {
+        margin: 0;
+        padding-left: 1.5rem;
+      }
+
+      .guide-section li {
+        margin: 0.5rem 0;
+        padding: 0;
+        list-style-position: inside;
+        text-align: center;
+      }
+
+      .hidden {
+        display: none;
+      }
+    </style>
   </section>
-
-  <style>
-    .install-guide {
-      margin: 1rem 0;
-      padding: 1rem;
-      padding-top: 4.5rem;
-      text-align: center;
-    }
-
-    .guide-section {
-      margin: 1.5rem 0;
-      padding: 1rem;
-      background: var(--vt-c-white-soft);
-      border: 1px solid var(--vt-c-divider-light-1);
-      border-radius: 8px;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    }
-
-    .guide-section h3 {
-      font-size: 1.2em;
-      margin-bottom: 0.5rem;
-      color: var(--vt-c-black);
-    }
-
-    .guide-section ol {
-      padding-left: 1.5rem;
-      text-align: left;
-      color: var(--vt-c-black-soft);
-    }
-
-    .guide-section li {
-      margin-bottom: 0.75rem;
-    }
-
-    .guide-section img {
-      max-width: 100%;
-      height: auto;
-      margin-top: 1rem;
-      border-radius: 8px;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    }
-
-    .hidden {
-      display: none;
-    }
-  </style>
 </Layout>
