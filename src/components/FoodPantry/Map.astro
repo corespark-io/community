@@ -816,7 +816,7 @@ const allPantries = Object.entries(pantryModules).map(
                     userCircle = L.circle(userLatLng, circleOptions).addTo(map);
                   } else {
                     userCircle.setLatLng(userLatLng);
-                    userCircle.setRadius(USER_RADIUS_METERS);
+                    userCircle.setRadius(mapRadius);
                   }
                 } catch (e) {
                   // ignore if L isn't ready for some reason
