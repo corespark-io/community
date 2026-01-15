@@ -32,9 +32,6 @@ import ExpandableGuides from "../components/InstallApp/ExpandableGuides.astro";
     }
   }
 
-  // Attach functions to the global window object
-  window.updateGuide = updateGuide;
-
   updateGuide();
 
   document.addEventListener("DOMContentLoaded", updateGuide);
