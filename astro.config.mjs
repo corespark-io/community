@@ -46,6 +46,7 @@ export default defineConfig({
         /^\/members\/verify/, // Never fallback for the verify page
         /\?/,                 // Never fallback for ANY url with a query param
       ],
+      clientsClaim: false,
       globPatterns: ['**/*.{css,js,html,png,ico,txt,webp,json,woff,woff2}'],
       runtimeCaching: [
         {
