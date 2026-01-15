@@ -45,7 +45,7 @@ export default defineConfig({
       clientsClaim: true,
       runtimeCaching: [
         {
-          urlPattern: /^https:\/\/tile\.openstreetmap\.org\/.*/, // Cache map tiles
+          urlPattern: /^https:\/\/[a-z]\.basemaps\.cartocdn\.com\/.*/, // Cache map tiles from CartoDB
           handler: 'StaleWhileRevalidate',
           options: {
             cacheName: 'map-tiles',
