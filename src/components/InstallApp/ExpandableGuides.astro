@@ -1,16 +1,61 @@
-<script>
-  function toggleTab(tabId) {
-    const tabs = document.querySelectorAll(".tab-content");
-    const tabButtons = document.querySelectorAll(".tab-button");
+<script type="module" client:load>
+  const toggleTab = (id) => {
+    const buttons = document.querySelectorAll("[data-toggle-target]");
+    const panels = document.querySelectorAll("[data-toggle-panel]");
 
-    tabs.forEach((tab) => tab.classList.add("hidden"));
-    tabButtons.forEach((button) => button.classList.remove("active"));
+    buttons.forEach((btn) => {
+      const active = btn.dataset.toggleTarget === id;
+      btn.setAttribute("aria-expanded", String(active));
+      btn.classList.toggle("active", active);
+    });
 
-    document.getElementById(tabId).classList.remove("hidden");
-    document.querySelector(`[data-tab="${tabId}"]`).classList.add("active");
-  }
+    panels.forEach((panel) => {
+      const active = panel.id === id;
+      panel.hidden = !active;
+      panel.setAttribute("aria-hidden", String(!active));
+      panel.classList.toggle("hidden", !active);
+    });
+  };
 
-  window.toggleTab = toggleTab;
+  const bindButtons = (root = document) => {
+    root.querySelectorAll("[data-toggle-target]").forEach((btn) => {
+      if (btn.__toggleBound) return;
+      btn.__toggleBound = true;
+      btn.addEventListener("click", () => toggleTab(btn.dataset.toggleTarget));
+      btn.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          btn.click();
+        }
+      });
+    });
+  };
+
+  bindButtons();
+
+  // Initialize active tab from DOM (use .active or aria-expanded=true) or fallback to first
+  const initialize = () => {
+    const buttons = document.querySelectorAll("[data-toggle-target]");
+    const activeBtn =
+      [...buttons].find(
+        (b) =>
+          b.classList.contains("active") ||
+          b.getAttribute("aria-expanded") === "true"
+      ) || buttons[0];
+    if (activeBtn) toggleTab(activeBtn.dataset.toggleTarget);
+  };
+
+  initialize();
+
+  // Observe for dynamically inserted content
+  const mo = new MutationObserver((muts) => {
+    for (const m of muts) {
+      m.addedNodes.forEach((n) => {
+        if (n.nodeType === 1) bindButtons(n);
+      });
+    }
+  });
+  mo.observe(document.body, { childList: true, subtree: true });
 </script>
 
 <button
@@ -24,21 +69,29 @@
   <div class="tabs">
     <button
       class="tab-button active"
-      data-tab="ios-tab"
-      onclick="toggleTab('ios-tab')">iOS</button
+      data-toggle-target="ios-tab"
+      aria-controls="ios-tab"
+      aria-expanded="false">iOS</button
     >
     <button
       class="tab-button"
-      data-tab="android-tab"
-      onclick="toggleTab('android-tab')">Android</button
+      data-toggle-target="android-tab"
+      aria-controls="android-tab"
+      aria-expanded="false">Android</button
     >
     <button
       class="tab-button"
-      data-tab="desktop-tab"
-      onclick="toggleTab('desktop-tab')">Desktop</button
+      data-toggle-target="desktop-tab"
+      aria-controls="desktop-tab"
+      aria-expanded="false">Desktop</button
     >
   </div>
-  <div id="ios-tab" class="tab-content guide-section">
+  <div
+    id="ios-tab"
+    data-toggle-panel
+    aria-hidden="true"
+    class="tab-content guide-section"
+  >
     <h4>iOS Installation Guide</h4>
     <ol>
       <li>Open Safari and go to our website.</li>
@@ -57,7 +110,12 @@
       alt="iOS Safari Share menu"
     />
   </div>
-  <div id="android-tab" class="tab-content guide-section hidden">
+  <div
+    id="android-tab"
+    data-toggle-panel
+    aria-hidden="true"
+    class="tab-content guide-section hidden"
+  >
     <h4>Android Installation Guide</h4>
     <ol>
       <li>Tap the <strong>three dots</strong> in the top-right corner.</li>
@@ -69,7 +127,12 @@
       alt="Android Chrome menu"
     />
   </div>
-  <div id="desktop-tab" class="tab-content guide-section hidden">
+  <div
+    id="desktop-tab"
+    data-toggle-panel
+    aria-hidden="true"
+    class="tab-content guide-section hidden"
+  >
     <h4>Desktop Installation Guide</h4>
     <ol>
       <li>Look at the address bar at the top of your browser.</li>
@@ -117,7 +180,9 @@
       border-radius: 4px;
       cursor: pointer;
       font-size: 1.75rem;
-      transition: background 0.3s, color 0.3s;
+      transition:
+        background 0.3s,
+        color 0.3s;
     }
 
     .expand-button:hover {
