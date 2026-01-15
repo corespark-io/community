@@ -11,13 +11,15 @@ import { pwaConfig } from './src/pwa-config.ts';
 export default defineConfig({
   site: 'https://community.corespark.io',
   integrations: [mdx(), sitemap(), icon(), AstroPWA({
+    mode: 'production',
     base: '/',
     scope: '/',
-    includeAssets: ['favicon.ico', 'logo_w_text_white.webp', 'logo_w_text.webp', 'logo.webp', 'fonts/*'],
+    includeAssets: ['favicon.ico'],
     registerType: 'autoUpdate',
     manifest: {
       name: pwaConfig.name,
       short_name: pwaConfig.shortName,
+      description: pwaConfig.description,
       theme_color: pwaConfig.themeColor,
       background_color: pwaConfig.backgroundColor,
       display: 'standalone',
@@ -39,39 +41,35 @@ export default defineConfig({
       config: true,
     },
     workbox: {
-      navigateFallback: '/',
-      globPatterns: ['**/*.{css,js,html,svg,png,ico,txt,webp,json,woff,woff2}'],
-      skipWaiting: true,
-      clientsClaim: true,
+      navigateFallback: null,
+      navigateFallbackDenylist: [
+        /^\/members\/verify/, // Never fallback for the verify page
+        /\?/,                 // Never fallback for ANY url with a query param
+      ],
+      globPatterns: ['**/*.{css,js,html,png,ico,txt,webp,json,woff,woff2}'],
       runtimeCaching: [
         {
           urlPattern: /^https:\/\/[a-z]\.basemaps\.cartocdn\.com\/.*/, // Cache map tiles from CartoDB
           handler: 'StaleWhileRevalidate',
           options: {
             cacheName: 'map-tiles',
-            expiration: {
-              maxEntries: 100, // This should be sufficient for the coverage area
-              maxAgeSeconds: 30 * 24 * 60 * 60, // Cache set for 30 days
-            },
           },
         },
         {
-          urlPattern: /.*/, // Cache all other requests
+          urlPattern: ({ request }) => request.mode === 'navigate',
           handler: 'NetworkFirst',
           options: {
             cacheName: 'app-cache',
             expiration: {
-              maxEntries: 500, // Note: This should scale when necessary
-              maxAgeSeconds: 365 * 24 * 60 * 60, // Cache set for 1 year
+              maxEntries: 50,
+            },
+            cacheableResponse: {
+              statuses: [200],
             },
           },
         },
       ],
     },
-    devOptions: {
-      enabled: false,
-      navigateFallbackAllowlist: [/^\/$/],
-    }
   }),],
   base: '/',
   server: {
