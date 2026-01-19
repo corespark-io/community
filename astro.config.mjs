@@ -41,6 +41,7 @@ export default defineConfig({
       config: true,
     },
     workbox: {
+      cleanupOutdatedCaches: true,
       navigateFallback: null,
       navigateFallbackDenylist: [
         /^\/members\/verify/, // Never fallback for the verify page
