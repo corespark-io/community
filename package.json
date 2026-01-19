@@ -7,18 +7,22 @@
     "dev": "astro dev",
     "dev-host": "astro dev --host",
     "build": "astro build",
-    "preview": "astro preview"
+    "preview": "astro preview --host --port 4322"
   },
   "dependencies": {
-    "@astrojs/mdx": "^4.3.12",
-    "@astrojs/sitemap": "^3.6.0",
+    "@astrojs/mdx": "^4.3.13",
+    "@astrojs/sitemap": "^3.7.0",
     "@iconify-json/mdi": "^1.2.3",
-    "astro": "^5.16.4",
+    "@vite-pwa/assets-generator": "^1.0.2",
+    "@vite-pwa/astro": "^0.0.1",
+    "astro": "^5.16.11",
     "astro-icon": "^1.1.5",
-    "fuse.js": "^7.1.0"
+    "fuse.js": "^7.1.0",
+    "leaflet.awesome-markers": "^2.0.5"
   },
   "devDependencies": {
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "vite-plugin-pwa": "^1.2.0"
   },
   "keywords": [
     "food",

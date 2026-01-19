@@ -1,6 +1,10 @@
 ---
+import { pwaInfo } from "virtual:pwa-info";
+import { pwaConfig } from "../pwa-config";
+
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
+import MetaHelper from "../components/MetaHelper.astro";
 const { title } = Astro.props;
 ---
 
@@ -9,7 +13,22 @@ const { title } = Astro.props;
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta
+      name="apple-mobile-web-app-status-bar-style"
+      content="black-translucent"
+    />
+    <meta name="apple-mobile-web-app-title" content={pwaConfig.shortName} />
+    <meta name="theme-color" content={pwaConfig.themeColor} />
+    <link rel="apple-touch-icon" href="/logo-192x192.webp" />
+
+  <MetaHelper/>
+
     <title>{title} | Corespark Community Center</title>
+    <script src="/src/pwa.ts"></script>
+    {pwaInfo && <Fragment set:html={pwaInfo.webManifest.linkTag} />}
   </head>
   <body>
     <Header title={title} />

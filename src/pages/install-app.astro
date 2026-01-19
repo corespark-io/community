@@ -1,0 +1,150 @@
+---
+import Layout from "../layouts/Layout.astro";
+import "../styles/critical.css";
+import "../styles/global.css";
+import "../styles/base.css";
+import ExpandableGuides from "../components/InstallApp/ExpandableGuides.astro";
+---
+
+<script>
+  function updateGuide() {
+    const ua = navigator.userAgent;
+    const hasTouch = navigator.maxTouchPoints >= 1;
+    const isMacIdentity = ua.includes("Macintosh");
+
+    const isIOSMobile = /iPhone|iPod/.test(ua);
+    const isiPad = isMacIdentity && hasTouch;
+    const isAndroid = /Android/.test(ua);
+
+    const iosSection = document.getElementById("ios-guide");
+    const androidSection = document.getElementById("android-guide");
+    const desktopSection = document.getElementById("desktop-guide");
+
+    if (isIOSMobile || isiPad) {
+      iosSection?.classList.remove("hidden");
+      androidSection?.classList.add("hidden");
+      desktopSection?.classList.add("hidden");
+    } else if (isAndroid) {
+      androidSection?.classList.remove("hidden");
+      desktopSection?.classList.add("hidden");
+    } else {
+      desktopSection?.classList.remove("hidden");
+    }
+  }
+
+  updateGuide();
+
+  document.addEventListener("DOMContentLoaded", updateGuide);
+</script>
+
+<Layout title="Install the App">
+  <section class="install-guide">
+    <h2 class="gradient-text">How to Install The Community Center App</h2>
+    <section class="intro">
+      <h3>Install on Your Device</h3>
+      <p>
+        You can install this web app on your device for quick access, just like a
+        native app. Follow the instructions below based on your device type.
+      </p>
+      <h3>
+        What is a Progressive Web App (PWA)?
+      </h3>
+      <p>
+        In short, you can think of a PWA as a website that behaves like an app with limited capabilities. Installing the app allows you to access resources offline.
+      </p>
+    </section>
+
+    <!-- Device-specific guides -->
+    <section id="ios-guide" class="guide-section hidden">
+      <h3>iPhone & iPad (Safari)</h3>
+      <ol>
+        <li>Open Safari and go to our website.</li>
+        <li>
+          Tap the <strong>Share</strong> icon (the square with an arrow pointing up).
+        </li>
+        <li>
+          Scroll down (or tap "More") and tap <strong
+            >"Add to Home Screen."</strong
+          >
+        </li>
+      </ol>
+      <img
+        src="/assets/images/install/ios.webp"
+        loading="lazy"
+        alt="iOS Safari Share menu"
+      />
+    </section>
+
+    <section id="android-guide" class="guide-section hidden">
+      <h3>Android (Chrome)</h3>
+      <ol>
+        <li>Tap the <strong>three dots</strong> in the top-right corner.</li>
+        <li>Tap <strong>"Install app"</strong> or "Add to Home screen."</li>
+      </ol>
+      <img
+        src="/assets/images/install/android.webp"
+        loading="lazy"
+        alt="Android Chrome menu"
+      />
+    </section>
+
+    <section id="desktop-guide" class="guide-section">
+      <h3>Computers (Chrome/Edge)</h3>
+      <p>You can install this app on your computer for quick access.</p>
+      <ol>
+        <li>Look at the address bar at the top of your browser.</li>
+        <li>
+          Click the <strong>Install</strong> icon (usually a computer screen with
+          an arrow).
+        </li>
+        <li>Follow the prompt to install.</li>
+      </ol>
+      <img
+        src="/assets/images/install/desktop.webp"
+        loading="lazy"
+        alt="Chrome desktop PWA install icon"
+      />
+    </section>
+
+    <!-- Expandable Section -->
+    <ExpandableGuides />
+
+    <style>
+      .install-guide {
+        margin: 1rem 0;
+        padding: 1rem;
+        padding-top: 4.5rem;
+        text-align: center;
+      }
+
+      .intro {
+        padding: 1rem;
+      }
+
+      .guide-section {
+        margin: 1.5rem 0;
+        padding: 1rem;
+        background: var(--color-background);
+        border: 1px solid var(--color-border);
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      .guide-section ol {
+        margin: 0;
+        padding-left: 1.5rem;
+      }
+
+      .guide-section li {
+        margin: 0.5rem 0;
+        padding: 0;
+        list-style-position: inside;
+        text-align: center;
+      }
+
+      .hidden {
+        display: none;
+      }
+    </style>
+  </section>
+</Layout>

@@ -1,0 +1,235 @@
+<script type="module" client:load>
+  const toggleTab = (id) => {
+    const buttons = document.querySelectorAll("[data-toggle-target]");
+    const panels = document.querySelectorAll("[data-toggle-panel]");
+
+    buttons.forEach((btn) => {
+      const active = btn.dataset.toggleTarget === id;
+      btn.setAttribute("aria-expanded", String(active));
+      btn.classList.toggle("active", active);
+    });
+
+    panels.forEach((panel) => {
+      const active = panel.id === id;
+      panel.hidden = !active;
+      panel.setAttribute("aria-hidden", String(!active));
+      panel.classList.toggle("hidden", !active);
+    });
+  };
+
+  const bindButtons = (root = document) => {
+    root.querySelectorAll("[data-toggle-target]").forEach((btn) => {
+      if (btn.__toggleBound) return;
+      btn.__toggleBound = true;
+      btn.addEventListener("click", () => toggleTab(btn.dataset.toggleTarget));
+      btn.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          btn.click();
+        }
+      });
+    });
+  };
+
+  bindButtons();
+
+  // Initialize active tab from DOM (use .active or aria-expanded=true) or fallback to first
+  const initialize = () => {
+    const buttons = document.querySelectorAll("[data-toggle-target]");
+    const activeBtn =
+      [...buttons].find(
+        (b) =>
+          b.classList.contains("active") ||
+          b.getAttribute("aria-expanded") === "true"
+      ) || buttons[0];
+    if (activeBtn) toggleTab(activeBtn.dataset.toggleTarget);
+  };
+
+  initialize();
+
+  // Observe for dynamically inserted content
+  const mo = new MutationObserver((muts) => {
+    for (const m of muts) {
+      m.addedNodes.forEach((n) => {
+        if (n.nodeType === 1) bindButtons(n);
+      });
+    }
+  });
+  mo.observe(document.body, { childList: true, subtree: true });
+</script>
+
+<button
+  class="expand-button"
+  onclick="document.getElementById('expandable-guides').classList.toggle('hidden')"
+>
+  View All Device Installation Guides
+</button>
+<section id="expandable-guides" class="hidden">
+  <h3>All Device Installation Guides</h3>
+  <div class="tabs">
+    <button
+      class="tab-button active"
+      data-toggle-target="ios-tab"
+      aria-controls="ios-tab"
+      aria-expanded="false">iOS</button
+    >
+    <button
+      class="tab-button"
+      data-toggle-target="android-tab"
+      aria-controls="android-tab"
+      aria-expanded="false">Android</button
+    >
+    <button
+      class="tab-button"
+      data-toggle-target="desktop-tab"
+      aria-controls="desktop-tab"
+      aria-expanded="false">Desktop</button
+    >
+  </div>
+  <div
+    id="ios-tab"
+    data-toggle-panel
+    aria-hidden="true"
+    class="tab-content guide-section"
+  >
+    <h4>iOS Installation Guide</h4>
+    <ol>
+      <li>Open Safari and go to our website.</li>
+      <li>
+        Tap the <strong>Share</strong> icon (the square with an arrow pointing up).
+      </li>
+      <li>
+        Scroll down (or tap "More") and tap <strong
+          >"Add to Home Screen."</strong
+        >
+      </li>
+    </ol>
+    <img
+      src="/assets/images/install/ios.webp"
+      loading="lazy"
+      alt="iOS Safari Share menu"
+    />
+  </div>
+  <div
+    id="android-tab"
+    data-toggle-panel
+    aria-hidden="true"
+    class="tab-content guide-section hidden"
+  >
+    <h4>Android Installation Guide</h4>
+    <ol>
+      <li>Tap the <strong>three dots</strong> in the top-right corner.</li>
+      <li>Tap <strong>"Install app"</strong> or "Add to Home screen."</li>
+    </ol>
+    <img
+      src="/assets/images/install/android.webp"
+      loading="lazy"
+      alt="Android Chrome menu"
+    />
+  </div>
+  <div
+    id="desktop-tab"
+    data-toggle-panel
+    aria-hidden="true"
+    class="tab-content guide-section hidden"
+  >
+    <h4>Desktop Installation Guide</h4>
+    <ol>
+      <li>Look at the address bar at the top of your browser.</li>
+      <li>
+        Click the <strong>Install</strong> icon (usually a computer screen with an
+        arrow).
+      </li>
+      <li>Follow the prompt to install.</li>
+    </ol>
+    <img
+      src="/assets/images/install/desktop.webp"
+      loading="lazy"
+      alt="Chrome desktop PWA install icon"
+    />
+  </div>
+
+  <style>
+    .guide-section {
+      margin: 1.5rem 0;
+      padding: 1rem;
+      background: var(--color-background);
+      border: 1px solid var(--color-border);
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .guide-section ol {
+      margin: 0;
+      padding-left: 1.5rem;
+    }
+
+    .guide-section li {
+      margin: 0.5rem 0;
+      padding: 0;
+      list-style-position: inside;
+      text-align: center;
+    }
+
+    .expand-button {
+      margin: 1rem 0;
+      padding: 0.5rem 1rem;
+      background: transparent;
+      color: var(--accent-color);
+      border: var(--accent-color) 1px solid;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 1.75rem;
+      transition:
+        background 0.3s,
+        color 0.3s;
+    }
+
+    .expand-button:hover {
+      background: var(--accent-color);
+      color: var(--card-bg);
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    #expandable-guides {
+      margin-top: 1rem;
+      padding: 1rem;
+      background: var(--color-light-background);
+      border: 1px solid var(--color-border);
+      border-radius: 8px;
+    }
+
+    .tabs {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 1rem;
+    }
+
+    .tab-button {
+      margin: 0 0.5rem;
+      padding: 0.5rem 1rem;
+      border: var(--accent-color) 2px solid;
+      background: transparent;
+      color: var(--accent-color);
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .tab-button.active {
+      background: var(--accent-color);
+      color: var(--text-color);
+      border: none;
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content:not(.hidden) {
+      display: block;
+    }
+  </style>
+</section>
