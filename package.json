@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@astrojs/mdx": "^4.3.13",
-    "@astrojs/sitemap": "^3.6.1",
+    "@astrojs/sitemap": "^3.7.0",
     "@iconify-json/mdi": "^1.2.3",
     "@vite-pwa/assets-generator": "^1.0.2",
     "@vite-pwa/astro": "^0.0.1",
