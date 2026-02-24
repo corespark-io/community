@@ -105,7 +105,8 @@ export const SERVICE_AREAS: Record<string, string> = {
   // Virginia
   VA_GRAYSON: "Grayson County, VA",
   VA_CARROLL: "Carroll County, VA",
-  VA_GALAX: "Galax, VA"
+  VA_WYTHE: "Wythe County, VA",
+  VA_GALAX: "Galax, VA",
 };
 
 // Required Documentation
