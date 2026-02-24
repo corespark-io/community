@@ -1,38 +1,52 @@
 {
-  "claimed": false,
-  "name": "Willing Partners",
-  "id": "",
+  "claimed": true,
+  "name": "Willing Partners, Inc.",
+  "id": "fp.va-galax-001",
   "location": {
     "physical": "972 E Stuart Dr, Galax, VA 24333",
     "mailing": "972 E Stuart Dr, Galax, VA 24333",
-    "latitude": 36.68162584,
-    "longitude": -80.89492785
+    "latitude": 36.681496,
+    "longitude": -80.89487    
   },
   "contact": {
-    "website": "https://willingpartners.org/",
+    "website": "https://www.willingpartners.org",
     "phone": "(276) 238-5500",
-    "email": ""
+    "email": "bethanywillingpartners@gmail.com"
   },
   "hours": {
-    "monday": "",
-    "tuesday": "",
+    "monday": "11:00-15:30",
+    "tuesday": "11:00-15:30",
     "wednesday": "",
     "thursday": "",
-    "friday": "",
-    "saturday": "",
+    "friday": "11:00-15:30",
+    "saturday": "11:00-15:30",
     "sunday": ""
   },
-  "specialInstructions": "",
-  "types": [],
-  "services": [],
+  "specialInstructions": "Drive around the back of the building and park. Use the white door on the left hand side as you walk up to the building.\nWe are closed 3rd Friday of month\nWe are closed 3rd Saturday of month",
+  "types": [
+    "WALK_IN"
+  ],
+  "services": [
+    "CLIENT_CHOICE",
+    "CANNED_BOXED_GOODS",
+    "FRESH_PRODUCE",
+    "REFRIGERATED_PRODUCTS",
+    "FROZEN_PRODUCTS"
+
+  ],
   "eligibility": {
     "serviceArea": [
-      "VA_GALAX"
+      "VA_GALAX",
+      "VA_GRAYSON",
+      "VA_CARROLL",
+      "VA_WYTHE"
     ],
-    "documents": [],
+    "documents": [
+      "NO_DOCUMENTATION"
+    ],
     "frequency": {
-      "increment": "",
-      "period": ""
+      "increment": "1",
+      "period": "MONTH"
     }
   }
 }
