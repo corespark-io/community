@@ -32,7 +32,6 @@
     "FRESH_PRODUCE",
     "REFRIGERATED_PRODUCTS",
     "FROZEN_PRODUCTS"
-
   ],
   "eligibility": {
     "serviceArea": [
