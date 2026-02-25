@@ -6,7 +6,7 @@
     "physical": "972 E Stuart Dr, Galax, VA 24333",
     "mailing": "972 E Stuart Dr, Galax, VA 24333",
     "latitude": 36.681496,
-    "longitude": -80.89487    
+    "longitude": -80.89487
   },
   "contact": {
     "website": "https://www.willingpartners.org",
@@ -14,12 +14,12 @@
     "email": "bethanywillingpartners@gmail.com"
   },
   "hours": {
-    "monday": "11:00-15:30",
-    "tuesday": "11:00-15:30",
+    "monday": "11:00 - 15:30",
+    "tuesday": "11:00 - 15:30",
     "wednesday": "",
     "thursday": "",
-    "friday": "11:00-15:30",
-    "saturday": "11:00-15:30",
+    "friday": "11:00 - 15:30",
+    "saturday": "11:00 - 15:30",
     "sunday": ""
   },
   "specialInstructions": "Drive around the back of the building and park. Use the white door on the left hand side as you walk up to the building.\nWe are closed 3rd Friday of month\nWe are closed 3rd Saturday of month",
