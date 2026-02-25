@@ -1,0 +1,16 @@
+{
+    "name": "Willing Partners, Inc.",
+    "id": "fp.va-galax-001",
+    "verification": {
+        "verified_on": "02/24/2026",
+        "verified_by": "Mitchell Stanton",
+        "verification_expiry": "02/24/2029"
+    },
+    "status": {
+        "code": "ACTIVE",
+        "message": "Member is active and in good standing.",
+        "updated_by": "Mitchell Stanton",
+        "updated_on": "02/24/2026"
+    },
+    "reports": []
+}
